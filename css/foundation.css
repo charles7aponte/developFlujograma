@@ -4751,8 +4751,8 @@ dialog {
   top: 0;
   bottom: 0;
   position: absolute;
-  overflow-x: hidden;
-  overflow-y: auto;
+  /*overflow-x: hidden;
+  overflow-y: visible;*/
   background: #333333;
   z-index: 1001;
   box-sizing: content-box;

@@ -1,0 +1,100 @@
+
+/***** 
+handles
+bordes rectangulos 
+*/
+
+ .ui-resizable-n{
+	border-top : 1px dashed #669;
+
+ }
+
+.ui-resizable-s{
+	border-bottom:  1px dashed #669;
+}
+
+
+.ui-resizable-w
+{
+	border-left:  1px dashed #669;
+
+}
+
+.ui-resizable-e{
+border-right:   1px dashed #669;
+
+}
+
+
+
+/***
+los handles 
+para de los cuadritos 
+**
+***/
+
+.ui-resizable-ne {
+	
+	cursor: ne-resize;
+	width: 8px;
+	background: #fff;
+	height: 8px;
+	right: -7px;
+	top: -7px;
+	border-radius: 0;
+}
+
+
+.ui-resizable-se {
+	outline: 1px solid #669;
+	cursor: se-resize;
+	width: 8px;
+	background: #fff;
+	height: 8px;
+	right: -7px;
+	bottom: -7px;
+	border-radius: 0;
+}
+
+
+.ui-resizable-sw {
+	outline: 1px solid #669;
+	cursor: sw-resize;
+	width: 8px;
+	background: #fff;
+	height: 8px;
+	left: -7px;
+	bottom: -7px;
+	border-radius: 0;
+}
+
+
+
+.ui-resizable-nw {
+	outline: 1px solid #669;
+	cursor: se-resize;
+	width: 8px;
+	background: #fff;
+	height: 8px;
+	right: -7px;
+	bottom: -7px;
+	border-radius: 0;
+}
+
+
+
+.ui-resizable-nw ,  .ui-resizable-sw , .ui-resizable-se ,.ui-resizable-ne ,.ui-resizable-nw
+{
+	z-index: 10001;
+	display: block;
+	border: 1px solid #aeaeae;
+	background-color: #e5e5e5;
+	background-image: linear-gradient(top,#e5e5e5 60%,#d7d7d7 80%,#ccc 90%);
+	background-image: -o-linear-gradient(top,#e5e5e5 60%,#d7d7d7 80%,#ccc 90%);
+	background-image: -moz-linear-gradient(top,#e5e5e5 60%,#d7d7d7 80%,#ccc 90%);
+	background-image: -webkit-linear-gradient(top,#e5e5e5 60%,#d7d7d7 80%,#ccc 90%);
+	background-image: -ms-linear-gradient(top,#e5e5e5 60%,#d7d7d7 80%,#ccc 90%);
+	background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0.60,#e5e5e5),color-stop(0.80,#d7d7d7),color-stop(0.90,#ccc));
+
+}
+
