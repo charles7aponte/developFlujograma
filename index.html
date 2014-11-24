@@ -36,6 +36,9 @@
         border: none;
 
       }
+
+
+
     </style>
   <body>
 
@@ -67,44 +70,48 @@
             <li class="has-tip"
             data-tooltip aria-haspopup="true"  title="Conector" >
             <svg  id="ele_menu_izq_conector1" class="elemente_menu_izq "  data-elemento="n1"
+            data-mitipo="diagrama"
              ></svg></li>
             
 
             <li class="has-tip"
             data-tooltip aria-haspopup="true"  title="Terminal">
             <svg  id="ele_menu_izq_conector2" class="elemente_menu_izq"  data-elemento="n2"
-             ></svg></li>
+             data-mitipo="diagrama"></svg></li>
 
 
             <li class="has-tip" 
             data-tooltip aria-haspopup="true"  title="Actividad"
             >
             <svg  id="ele_menu_izq_conector3" class="elemente_menu_izq" data-elemento="n3"
-               ></svg></li>
+              data-mitipo="diagrama" ></svg></li>
             
 
             <li class="has-tip" data-tooltip aria-haspopup="true"  title="Proceso">
               <svg  id="ele_menu_izq_conector4" class="elemente_menu_izq"   data-elemento="n4"
-              ></svg></li>
+               data-mitipo="diagrama" ></svg></li>
             
             <li class="has-tip" data-tooltip aria-haspopup="true"  title="Conector de Página">
               <svg  id="ele_menu_izq_conector5" class="elemente_menu_izq " data-elemento="n5"
-              ></svg></li>
+               data-mitipo="diagrama" ></svg></li>
 
             <li class="has-tip" data-tooltip aria-haspopup="true"  title="Decisión">
               <svg  id="ele_menu_izq_conector6" class="elemente_menu_izq"  data-elemento="n6"
-               ></svg></li>
+               data-mitipo="diagrama" ></svg></li>
             
             <li class="has-tip" data-tooltip aria-haspopup="true"  title="Documento">
-              <svg  id="ele_menu_izq_conector7" class="elemente_menu_izq" data-elemento="n7"> </svg></li>
+              <svg  id="ele_menu_izq_conector7" class="elemente_menu_izq" data-elemento="n7"
+              data-mitipo="diagrama"> </svg></li>
            
             <li  class="has-tip" data-tooltip aria-haspopup="true"  title="Multidocumento">
-              <svg  id="ele_menu_izq_conector8" class="elemente_menu_izq"  data-elemento="n8"></svg></li>
+              <svg  id="ele_menu_izq_conector8" class="elemente_menu_izq"  data-elemento="n8"
+              data-mitipo="diagrama"></svg></li>
             
            
           </ul>
 
-          <div id="ito" style="background:#CCAAF2; width:200px; height:200px" >gat</div>
+          <svg id="ito" style="background:#CCAAF2; width:200px; height:200px" 
+          data-mitipo="diagrama"></svg>
 
         </div>
 
@@ -128,16 +135,47 @@
            style="overflow:auto; background:#66A8CC; margin : 10px; border-top: 1px solid rgb(212, 218, 218);
 border-left: 1px solid rgb(212,218,218); " >
 
+         
 
 
-           <div  class="paginas" style="width:5000px; height:5000px;position:relative; 
+
+           <div  id="contenedor_principal_pag_1" class="paginas" style="width:5000px; height:5000px;position:relative; 
+           cursor:default;
            border-top: 1px solid rgb(212, 218, 218);
            border-left: 1px solid rgb(212,218,218); 
            background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAT0lEQVQ4T2N8/fr/fwYiADfPP4avX5gIqmQEGSgqyshISOW373//c3EyE1Q3aiDukBwNQ5xhQ/1kAwpsQomaFHnqu3A06+EM/9GcQr+cAgBGqZrSrFyxegAAAABJRU5ErkJggg==); background-color: rgb(255, 255, 255);">
+      
+
+
+           <div class="punto_moviblefin punto_circle" style="">
+             <img src="./img/conexion_p.gif" style="
+
+               width: 200%;
+                height: 200%;
+                position: absolute;
+                max-width: none;
+                top: -40%;
+                display: none;
+            ">
+           </div>
+           
+            <div class="punto_movibleinicio punto_circle" style="">
+              <img src="./img/conexion_p.gif" style="
+               width: 200%;
+              height: 200%;
+              position: absolute;
+              max-width: none;
+              top: -40%;
+              display: none;
+            ">
+            </div>
+
+
+            <svg id="gato" style="width:200px:height:100px; position:absolute; overflow: visible;"></svg>
+           
            </div>
 
           
-          <svg id="gato"></svg>
           </div>
         </div><!-- fin - contenedor paginas-->
         
@@ -150,7 +188,9 @@ border-left: 1px solid rgb(212,218,218); " >
 
     <script src="js/vendor/jquery.js"></script>
     <script src="js/foundation.min.js"></script>
-   <script src="js/jquery-ui.js"></script>
+    <script src="js/jquery-ui.js"></script>
+    <script src="js/diagramaF1.js"></script>
+    <script src="js/Flujo.js"></script>
 
 
 
@@ -160,8 +200,21 @@ border-left: 1px solid rgb(212,218,218); " >
 
     <script>
       $(document).foundation();
+
+
       $('.off-canvas-wrap').foundation('offcanvas', 'show', 'move-right');
     
+      var $puntos = $(".punto_moviblefin ,.punto_movibleinicio");
+
+
+
+
+
+
+
+
+
+
 
     $("#contenedor_principal_pag").width( $(window).width()-$("#menu_izquierdo").width()-15);
     $("#contenedor_principal_pag").height( $(window).height()-$("#barra_navegacion_1").height()-67);
@@ -249,106 +302,7 @@ border-left: 1px solid rgb(212,218,218); " >
         });
 */
 
-      // conector 1 en la misma pagina
-      var sEleConector1= Snap("#ele_menu_izq_conector1");
-      var sEleConector1_c= sEleConector1.circle(33,33,30);
-      sEleConector1_c.attr({
-          fill: "#FDFEFA",
-          stroke: "#000",
-          strokeWidth: 2
-      });
-
-
-      // terminador  - ele_menu_izq_conector2
-      var sEleConector2= Snap("#ele_menu_izq_conector2");
-      var sEleConector2_c= sEleConector2.rect(2,12,60,40,20,20);
-      sEleConector2_c.attr({
-          fill: "#FDFEFA",
-          stroke: "#000",
-          strokeWidth: 2
-      });
-
-
-
-      // proceso (actividad)  - ele_menu_izq_conector3
-      var sEleConector3= Snap("#ele_menu_izq_conector3");
-      var sEleConector3_c= sEleConector3.rect(2,2,60,60);
-      sEleConector3_c.attr({
-          fill: "#FDFEFA",
-          stroke: "#000",
-          strokeWidth: 2
-      });
-
-
-
-
-
-
-      // llama del proceso   - ele_menu_izq_conector4
-      var sEleConector4= Snap("#ele_menu_izq_conector4");
-      var sEleConector4_c= sEleConector4.rect(2,5,60,50);
-      sEleConector4_c.attr({
-          fill: "#FDFEFA",
-          stroke: "#000",
-          strokeWidth: 2
-      });
-      var sEleConector4_c1= sEleConector4.rect(2,5,10,50);
-      sEleConector4_c1.attr({
-          fill: "#FDFEFA",
-          stroke: "#000",
-          strokeWidth: 2
-      });
-      var sEleConector4_c2= sEleConector4.rect(52,5,10,50);
-      sEleConector4_c2.attr({
-         fill: "#FDFEFA",
-          stroke: "#000",
-          strokeWidth: 2
-      });
-
-
-
-      // // llama del proceso   - ele_menu_izq_conector4
-      var sEleConector5=   Snap("#ele_menu_izq_conector5")
-      var sEleConector5_c= sEleConector5.polygon([2, 2, 62, 2, 62,30, 31,62,2,30]);
-      sEleConector5_c.attr({
-          fill: "#FDFEFA",
-          stroke: "#000",
-          strokeWidth: 2
-      });
-   
-      // decison    - ele_menu_izq_conector 6 
-      var sEleConector6=   Snap("#ele_menu_izq_conector6")
-      var sEleConector6_c= sEleConector6.polygon([32, 2, 62, 30, 32,60, 2,30]);
-      sEleConector6_c.attr({
-          fill: "#FDFEFA",
-          stroke: "#000",
-          strokeWidth: 2
-      });
-   
-
-
-      // documento    - ele_menu_izq_conector 7 
-      var sEleConector7=   Snap("#ele_menu_izq_conector7");
-      Snap.load("img/documente.svg", function(f){
-        var g= f.select("g");
-        g.attr({fill: "#bada55"});
-        
-        sEleConector7.append(f);
-      });
-  
-
-
-
-
-      // documento    - ele_menu_izq_conector 7 
-      var sEleConector8=   Snap("#ele_menu_izq_conector8");
-      Snap.load("img/muldocumento.svg", function(f){
-        var g= f.select("g");
-       // g.attr({fill: "#bada55"});
-        
-        sEleConector8.append(f);
-      });
-  
+      
 
     /*var p = s.path("M10-5-10,15M15,0,0,15M0-5-20,15").attr({
         fill: "none",
@@ -368,266 +322,30 @@ border-left: 1px solid rgb(212,218,218); " >
     });
 */
 
-  // ingresa la opcion del elemento n1 ..nn
-      function generarSVG(seleccion,elemento){
-      
-         var ss= Snap(elemento);
-         var op1={
-              fill: "#FDFEFA",
-              stroke: "#000",
-              strokeWidth: 2
-            };
-        var op2={
-              fill: "#FDFEFA",
-              stroke: "#000",
-              strokeWidth: 2
-            };
-        
-        var op3={
-              fill: "#FDFEFA",
-              stroke: "#000",
-              strokeWidth: 2
-            };    
-         var sc1=null;
-
-        console.log("...........");
-        console.log(seleccion);
-
-         switch(seleccion){
-            case "n1":
-            sc1= ss.circle(33,33,30).attr(op1);
-           
-            break;
-            
-            case "n2":
-            sc1= ss.rect(2,12,60,40,20,20).attr(op1);
-            break;
-            
-            case "n3":
-            sc1= ss.rect(2,2,60,60).attr(op1);
-            break;
-            
-            case "n4":
-            sc1= ss.rect(2,5,60,50).attr(op1);
-            sc1= ss.rect(2,5,10,50).attr(op1);
-            sc1= ss.rect(52,5,10,50).attr(op1);
-            break;
-           
-           
-            case "n5":
-            sc1= ss.polygon([2, 2, 62, 2, 62,30, 31,62,2,30]).attr(op1);
-            break;
-            
-            case "n6":
-            sc1= ss.polygon([32, 2, 62, 30, 32,60, 2,30]).attr(op1);
-            break;
-            
-            case "n7":
-              Snap.load("img/documente.svg", function(f){
-              var g= f.select("g");
-              g.attr({fill: "#bada55"});          
-              ss.append(f);
-              });
-            break;
-          
-          
-            case "n8":
-              Snap.load("img/muldocumento.svg", function(f){
-              var g= f.select("g");
-              g.attr({fill: "#bada55"});          
-              ss.append(f);
-              });
-            break;
-
-         }
-
-      }
 
 
-// manejo para drag and drop 
- $( ".elemente_menu_izq" ).draggable(
-    {cursor:"move"
-    //, cursorAt: { left:25,top:25 }
-    ,delay:1
-    /*,"helper": function(){
-      var $self=$(this);
-      var representacion= $self.data("elemento"))[0];
-      return representacion;
-    }*/
-    , revert:function(event, ui){
-      console.log(event);
-
-      if(event)
-        return false;
-
-      return true;
-    }
-    ,helper: "clone" 
-    ,opacity: 0.8
-    ,"zIndex": 100
-    ,scroll: false
-    ,drag:function( event, ui ){
-
-     // console.info(ui);
-    }
-  });
+var manejoFlujo = Flujo("");
+  manejoFlujo.inicializarEventosPrincipales();
 
 
+  manejoFlujo.convertirPaginaToDrop();
+  manejoFlujo.eventosMousePaginaActual();
 
 
-$( ".paginas" ).droppable({
-    accept:".elemente_menu_izq"
-    //,activeClass: "ui-state-highlight"
-    //,greedy: true
-   // , hoverClass: "drop-hover" 
-    
-    ,tolerance: "fit"
-    ,activate: function( event, ui ){
-      //console.log("ga");
-    }
-    ,deactivate:function ( event, ui ){
-      //console.log(ui);
-    }
-    , drop: function( event, ui ) {
-        var $midragg = $(ui.draggable);
-        //var $elemento = $(ui.draggable.data("elemento"));
+  manejoFlujo.eventosPuntoMoble();
 
-        //console.error(event);
-        console.info(ui);
-
-        dropElementoEvent(this,event, ui)
-    }
-  });
+  
 
 
 
 
 
 
-  /**************************
-  ****
-  *
-  *  el elemento drop 
-  *  el elemento es ingresado a una pagina o arrastrado a la
-  *  pagina
-  **/
-  function  dropElementoEvent(elemento, event, ui){
-
-        var $selft=$(elemento);
-        var miposition = ui.position;
-        var mioffset = ui.offset;
-
-        var tipoElemento =ui.draggable.data("elemento")+"";
-
-       var $nuevoElemento = $("<div width='60px' height='60px' style='width:60px;height:60px'>");
-       var $nuevoSVG =  $("<svg width='100%' height='100%' style='width:100%;height:100%'>");  
-       $nuevoElemento.append($nuevoSVG);
-        
-        $selft.append($nuevoElemento);
-        //$nuevoElemento.data("idpagina",manejadorPaginas.$paginaActual.attr("id"));
-        generarSVG(tipoElemento,$nuevoSVG[0]);/// -->seleccionar elementos para la funcion 
 
 
 
-        /******************************
-        ****convierto el nuevo elemento resize
-        ********************/ 
-        $nuevoElemento.resizable({
-        // autoHide: true 
-          handles: "n, e, s, w, ne, se, sw, nw, all" 
-        });
 
-
-        //propiedades al elemento nuevo
-        $nuevoElemento.css({
-              position:'absolute'
-            ,top: event.pageY-($nuevoElemento.height()/2)-$selft.offset().top
-            ,left: event.pageX-($nuevoElemento.width()/2)-$selft.offset().left
-            ,zIndex:10
-        });
-
-
-        //datos al nuevo elemento , datos que se necesitan 
-        //$nuevoElemento.data("pagina",manejadorPaginas.$paginaActual.attr("id"));
-
-
-         
-        //convierto el nuevo elemento draggable
-        $nuevoElemento.draggable({
-            cursor:"move"
-            ,iframeFix: true
-            ,containment: "parent"
-            ,delay:1
-            ,opacity: 0.6
-            ,"zIndex": 100
-            ,drag:function( event, ui ){
-
-              //console.info(ui);
-              //$("#herramientas_grupo_botones").css({display:'none'});
-             // $("#panel_tipo_color").spectrum("hide");
-            }
-            //,revert:""
-            ,scroll: false  
-          });
-
-
-
-        $nuevoElemento.resizable( "option", { disabled: true } );
-        $nuevoElemento.css({overflow:'visible'});
-        $nuevoElemento.addClass('padre_elemento');
-        $nuevoElemento.removeClass('ui-state-disabled');
-
-
-
-        //evento para seleccionar el eleemnto y activar la edicion del elemento seleccionado
-        $nuevoElemento.mousedown(function(e){
-          $elementoSeleccionado = $(this);
-          if($elementoSeleccionado)
-          {
-          //deseleccciona el elemento 
-          $elementoSeleccionado.resizable( "option", { disabled: true } );
-          $elementoSeleccionado.removeClass( "elemento_seleccionado" );
-          $elementoSeleccionado.removeClass('ui-state-disabled');
-          $elementoSeleccionado=null;                   
-
-          }
-
-          //muestra la caja de herramientas
-          $elementoSeleccionado= $nuevoElemento;
-
-          /*
-          $("#herramientas_grupo_botones").show(200);
-          $("#herramientas_grupo_botones").css({
-            top: $nuevoElemento.offset().top- 60
-            ,left:parseFloat($nuevoElemento.css("left")) + parseFloat(manejadorPaginas.$paginaActual.css("margin-left")) //$nuevoElemento.offset().left 
-          });
-
-      
-          if(banderaPanelLetra)
-          {
-              $("#panel_editar_letras").hide();
-              banderaPanelLetra=false;
-          }
-
-          $("#subgrupo_botones_boton_capa").hide();
-
-          actualizaPanelHerramientaEdicionLetras();
-
-          */
-        
-
-
-
-          
-          $nuevoElemento.resizable( "option", { disabled: false } );
-          $nuevoElemento.addClass( "elemento_seleccionado" );
-          
-          e.stopPropagation();
-        });
-      
-       // listaElementos.push($nuevoElemento[0]);
-
-  }
+  
 
 
 

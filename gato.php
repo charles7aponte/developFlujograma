@@ -1,15 +1,11 @@
-<?php 
+<?php
+header('Content-Type: text/csv; charset=utf-8');
+header('Content-Disposition: attachment; filename=data.csv');
+$output = fopen('php://output', 'w');
 
-$date1 = DateTime::createFromFormat("d-m-Y", "10-10-2014");
-
-$date2 = DateTime::createFromFormat("d-m-Y", "10-11-2014");
-
-$interval = $date1->diff($date2);
-$dias = $interval->format('%R%a');
-
-echo $dias/7;
-
-
+// output the column headings
+fputcsv($output, array(utf8_decode( ('Columññn 1')), 'Column 2', 'Column 3'),";");
+fputcsv($output, array('Column 1', 'Column 2', 'Column 3'),";");
 
 
 ?>

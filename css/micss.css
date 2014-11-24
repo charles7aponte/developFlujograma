@@ -33,9 +33,39 @@ para de los cuadritos
 **
 ***/
 
+.ui-resizable-rotate {
+	top: -25px;
+	left: 50%;
+	height: 10px;
+	width: 10px;
+	background: #919481;
+	
+}
+
+
+.ui-resizable-n {
+	
+	cursor: n-resize;
+	outline: 1px solid #669;
+	background: #fff;
+	border-radius: 0;
+	top: 0%;
+	left: 50%;
+	width: 8px;
+	height: 8px;
+	margin-top: -4px;
+	margin-left: -4px;
+	z-index: 10001;
+}
+
+
+
+
+
 .ui-resizable-ne {
 	
 	cursor: ne-resize;
+	outline: 1px solid #669;
 	width: 8px;
 	background: #fff;
 	height: 8px;
@@ -97,4 +127,109 @@ para de los cuadritos
 	background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0.60,#e5e5e5),color-stop(0.80,#d7d7d7),color-stop(0.90,#ccc));
 
 }
+
+
+/* elemento de posiciones  */
+.puntos_conexion
+{
+	width: 10px;
+	height: 10px;	
+	position: absolute;
+	background-image:url('../img/cruz.gif');
+	background-size: 100% 100%;
+	
+
+}
+
+
+/*n1*/
+div[data-mielemento=n1] .punto1
+{
+	top: 50%;
+	left: -15px;
+}
+
+
+div[data-mielemento=n1] .punto2
+{
+	top: 50%;
+	right: -15px;
+}
+
+
+div[data-mielemento=n1] .punto3
+{
+	bottom: -15px;
+	left: 50%;
+}
+
+div[data-mielemento=n1] .punto4
+{
+	top: -15px;
+	left: 50%;
+}
+
+/*n2*/
+div[data-mielemento=n2] .punto1,div[data-mielemento=n3] .punto1
+,div[data-mielemento=n4] .punto1,div[data-mielemento=n5] .punto1
+,div[data-mielemento=n6] .punto1,div[data-mielemento=n7] .punto1
+,div[data-mielemento=n8] .punto1
+{
+	top: 50%;
+	left: -15px;
+}
+
+
+div[data-mielemento=n2] .punto2,div[data-mielemento=n3] .punto2
+,div[data-mielemento=n4] .punto2,div[data-mielemento=n5] .punto2
+,div[data-mielemento=n6] .punto2,div[data-mielemento=n7] .punto2
+,div[data-mielemento=n8] .punto2
+{
+	top: 50%;
+	right: -15px;
+}
+
+
+div[data-mielemento=n2] .punto3,div[data-mielemento=n3] .punto3
+,div[data-mielemento=n4] .punto3,div[data-mielemento=n5] .punto3
+,div[data-mielemento=n6] .punto3,div[data-mielemento=n7] .punto3
+,div[data-mielemento=n8] .punto3
+{
+	bottom: -15px;
+	left: 50%;
+}
+
+div[data-mielemento=n2] .punto4 ,div[data-mielemento=n3] .punto4 
+,div[data-mielemento=n4] .punto4,div[data-mielemento=n5] .punto4
+,div[data-mielemento=n6] .punto4,div[data-mielemento=n7] .punto4
+,div[data-mielemento=n8] .punto4
+{
+	top: -15px;
+	left: 50%;
+}
+
+
+
+
+
+/* da efectos de sobras verdes a  la cruz de ancla*/
+.puntos_conexion_resaltados{
+	-webkit-box-shadow: 0px 0px 14px 0px rgba(50, 154, 50, 0.84);
+	-moz-box-shadow:    0px 0px 14px 0px rgba(50, 154, 50, 0.84);
+	box-shadow:         0px 0px 14px 0px rgba(50, 154, 50, 0.84);
+	background-color:  rgba(50, 154, 50, 0.84);
+} 
+
+     .punto_circle{
+        background:#DBDCD6;
+        border: 1px solid #B9B9B9;
+        z-index:200; 
+        position: absolute;
+        background-position: -626px -114px; 
+        width: 12px;
+        height: 12px;
+        border-radius: 10px;
+        cursor: url("cursor/icn_cursor_move.cur"),move !important;
+       
+              }
 
