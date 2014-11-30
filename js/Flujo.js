@@ -1,16 +1,18 @@
 function Flujo (idDOM){
 		
 	 return {
+
 	 		idPagina: idDOM
 	 		,$paginaActual : $("#contenedor_principal_pag_1")
 	 		,listaPaginas:[]
 	 		,estado:1/// qu se seleccion punte, lineas de conexion
+	 		,$lineaActual:null // linea hecha
 	 		,$elementoSeleccionado:null // elmento selecccionado actualmente
 	 		,elementoN5:null // elmeenot de conexion entre paginas .. este se carga
 			,elementoN6:null // elmeenot de conexion entre paginas .. este se carga
 			,elementoN7:null // elmeenot de conexion entre paginas .. este se carga
 			,elementoN8:null // elmeenot de conexion entre paginas .. este se carga
-
+			,lineaConexionSeleccionada:null // linea de conexion seleecciona
 	 		/// **************************
 	 		// FUNCIONES ............
 	 		// ************************** 
@@ -18,7 +20,7 @@ function Flujo (idDOM){
 	 		,inicializarEventosPrincipales:function(){
 	 			this.dibujarSVGMenuIz();// dibuja los elementos svg del menu izq
   				this.convertiMenuIzDragg();
-	 			this.eventosFueraPagina();
+	 			this.eventosPuntoMoble();
 
 	 		}// fin --> inicializarEventosPrincipales
 
@@ -269,7 +271,6 @@ function Flujo (idDOM){
 			  *  el elemento drop 
 			  *  el elemento es ingresado a una pagina o arrastrado a la
 			  *  pagina
-			  *
 			  **/
 			 ,dropElementoEvent: function  (elemento, event, ui){
 			 		var _self=this;// la pseuda clase
@@ -414,8 +415,11 @@ function Flujo (idDOM){
 				          
 				          _self.$elementoSeleccionado.resizable( "option", { disabled: false } );
 				          _self.$elementoSeleccionado.addClass( "elemento_seleccionado" );
-				          
-				          e.stopPropagation();
+
+				          console.log("mi e");				          
+
+				          console.log(e);
+				         e.stopPropagation();
 			        });
 			      
 
@@ -499,49 +503,202 @@ function Flujo (idDOM){
 
 
 		      	var ban_escribir=0;
-
-		      	_self.$paginaActual.mouseup(function(e){
-
-		      		
-		      		
-		      		ban_escribir=1;
-		      		//console.log("un elemento .."+e.offsetY);
-	
-		      		_self.$paginaActual.find(".punto_moviblefin")
-		      		.css({top:e.offsetY  , left:e.offsetX});
-
-		      	});
-
-
-
-
-				_self.$paginaActual.mouseover(function(e){
-		      		
-					if(_self.$paginaActual[0] != $(e.target)[0])
-						return ;
-
-		      		ban_escribir=1;
-		      		console.log(e);
-		      		console.log("un elemento .. move "+e.offsetY +" -- "+ e.offsetX);
-	
-		      		_self.$paginaActual.find(".punto_moviblefin")
-		      		.css({top:e.offsetY  , left:e.offsetX});
-
-		      	});
-
+		      	var _self= this;
 		      	
+		      	//_self.$paginaActual.mouseup(function(e){
+				_self.$paginaActual.on('mouseup',function(e){
+
+
+		      		console.log("un elemento . up.");
+		      		console.log(e);
+		      		
+
+
+
+							var $elementoEvent= $(e.target);
+
+							ban_escribir=0;
+							
+
+
+
+							if(!$elementoEvent.hasClass("punto_circle"))
+							{
+								_self.deseleccionaLineaConexion();
+								
+								var x = e.clientX - _self.$paginaActual.offset().left;
+					        	var y = e.clientY - _self.$paginaActual.offset().top;
+							 			
+					 			_self.$paginaActual.find(".punto_movibleinicio").css({
+					      				top: y,
+					      				left: x
+					      				});		
+
+
+								
+								
+							}
+							else{
+								//deselecciona el elemento
+
+							}
+
+		      	});
+
+
+
+				//evento de mover
+				_self.$paginaActual.mousemove(function(e){
+
+ 					console.log("move");
+ 					
+		      		
+						if(e && e.target )
+						{
+							var $elementoEvent= $(e.target);
+
+							if(!$elementoEvent.hasClass("punto_circle"))
+							{
+
+							
+					      		if(ban_escribir>0)
+					      		{	ban_escribir++;
+					      		}
+								
+								if(ban_escribir>10)
+								{
+								console.log("move inserta");
+		
+
+									//creacion de lineas de conexion NOTA:: debe ser mas parametrica
+									//console.info($(e.target).attr("id"));
+									var lineaSVG = LineaConexion();
+						      		lineaSVG.$pagina = _self.$paginaActual;
+						      		lineaSVG.dibujar();
+						      		_self.$lineaActual = lineaSVG.$elementoDOM;
+
+						      		//conexiones externas 
+						      		lineaSVG.functExFlujo_deseleccion = _self.deseleccionaLineaConexion;
+						      		lineaSVG.functExFlujo_lineaConexionSeleccionada	= _self.seleccionaLineaConexion;
+						      		_self.lineaConexionSeleccionada=lineaSVG;
+
+
+						      		var x = e.clientX - _self.$paginaActual.offset().left;
+						        	var y = e.clientY - _self.$paginaActual.offset().top;
+							
+									 			
+						 			_self.$paginaActual.find(".punto_moviblefin").show();
+						 			_self.$paginaActual.find(".punto_moviblefin").css({
+						      				top: y,
+								      				left: x
+								      				});		
+
+
+									//punto_movibleinicio
+ 
+						      		ban_escribir=0;
+
+								}
+
+							}// fin  if - has class	
+							else{
+								ban_escribir=0;
+							}
+							
+						}// fin -- e
+
+
+				});
+
+
+
+				// evento de manejo soltar	
 		      	_self.$paginaActual.mousedown(function(e){
 		      		
-		      	 
-		      		//console.log("un elemento 1.."+e.offsetY);
-		
-		      		_self.$paginaActual.find(".punto_movibleinicio")
-		      		.css({top:e.offsetY  , left:e.offsetX});
-
+		      		 	ban_escribir=1;
+		      		 
+		      		 	console.log("un elemento . down.");
+		      			//console.log(e);
+		      			
 		      	});
 
 
+		      }//FIN  de la funcion ..
 
+
+
+
+		      /*****************
+		      *
+		       function publica. para actualizar la linea de conexion seleccionada
+		      ** prepara la parte grafica . .. 
+		      @param tipo_lineaConexion {LineaConexion} la linea de conexion seleeccionada 
+		      */
+		      ,seleccionaLineaConexion:function(tipo_lineaConexion)
+		      {
+
+		      		_self.lineaConexionSeleccionada=tipo_lineaConexion;
+		      		if(tipo_lineaConexion)
+		      		{
+		      			_self.$lineaActual = tipo_lineaConexion.$elementoDOM;
+						
+	
+						var arrayPuntoFin = _self.$lineaActual.data("puntos_punto_moviblefin");
+						var arrayPuntoInicio = _self.$lineaActual.data("puntos_movibleinicio");
+						
+
+						console.log("las posiciones ");
+						console.log(arrayPuntoFin);
+						console.log(arrayPuntoInicio);
+
+						if(arrayPuntoFin!=null && 
+ 							arrayPuntoInicio!=null)
+						{
+
+							arrayPuntoFin = arrayPuntoFin.split(";");
+							arrayPuntoInicio = arrayPuntoInicio.split(";");
+
+							console.info(arrayPuntoInicio);
+							console.info(arrayPuntoFin);
+
+							_self.$paginaActual.find(".punto_movibleinicio").css({
+			      				top: arrayPuntoFin[1]+"px" ,
+			      				left: arrayPuntoFin[0]+"px"} );
+
+							_self.$paginaActual.find(".punto_moviblefin").css({
+		      				top: arrayPuntoInicio[1]+"px",
+		      				left: arrayPuntoInicio[0]+"px"
+		      				});
+
+						}
+
+						var posicionDataFin = 	_self.$lineaActual.data("puntos_punto_moviblefin");
+						var posicionDataInicio = 	_self.$lineaActual.data("puntos_punto_moviblefin");
+
+				
+		      			//_self.$paginaActual.find(".punto_movibleinicio").css({top: top});
+
+
+		      			/*;*/
+
+		      		}
+
+
+		      }
+
+
+		      /****************
+		      * funciton externa .. deselecciona la linea de conexion actaul
+		      */
+		      ,deseleccionaLineaConexion:function(){
+		      		if(_self.lineaConexionSeleccionada)
+		      		{
+
+		      			_self.lineaConexionSeleccionada
+		      				.eliminarSeleccionado();
+
+
+		      		}
 
 		      }
 
@@ -607,11 +764,11 @@ function Flujo (idDOM){
 		      ,eventosPuntoMoble:function(){
 		      	var _self= this;
 
-		      	$lineaActual= $("#gato");
+		      
 
 		      	var $puntos = $(".punto_moviblefin ,.punto_movibleinicio");
-  		      	var ancho=$lineaActual.width();
-	            var alto= $lineaActual.height();
+  		      //	var ancho=_self.$lineaActual.width();
+	           // var alto= _self.$lineaActual.height();
 
 
 		      	$puntos.draggable({
@@ -624,10 +781,15 @@ function Flujo (idDOM){
 			            ,opacity: 0.6
 			            //,"zIndex": 100
 			            ,drag:function( event, ui ){
-			            	 _self.actualizacionBolasLinea(_self,$lineaActual,event, ui);
+			            		if(_self.$lineaActual==null)
+		      						return;
+			            	 _self.actualizacionBolasLinea(_self,_self.$lineaActual,event, ui);
 			            }
 			            ,stop:function( event, ui ){
-			            	_self.actualizacionBolasLinea(_self,$lineaActual,event, ui);
+			            		if(_self.$lineaActual==null)
+		      						return;
+
+			            	_self.actualizacionBolasLinea(_self,_self.$lineaActual,event, ui);
 			            }
 			            //,revert:""
 			            ,scroll: false  
@@ -655,22 +817,24 @@ function Flujo (idDOM){
 	             var mitop=0; 
 	             var miAlto=0;
 	             
+	             var escalaY=1; 
 
-	             var escalaY=1;
-
+	             /// guarda las posiciones de esferas de conexion
+	             _self.$lineaActual.data("puntos_punto_moviblefin",""+(xFin-5)+";"+(yFin-5)); 
+	             _self.$lineaActual.data("puntos_movibleinicio",""+(xInicio-5)+";"+(yInicio-5)); 
 
 	              //manejo en el X
 	              if(xFin>xInicio)
 	              {
-	              	mileft=xInicio;
-	              	miAncho =xFin- xInicio;
-	              	escalaX=1;
+		              	mileft=xInicio;
+		              	miAncho =xFin- xInicio;
+		              	escalaX=1;
 	              }
 	              else {
 
-	              	mileft=xFin;
-	              	miAncho = xInicio-xFin;
-	              	escalaX=-1;
+		              	mileft=xFin;
+		              	miAncho = xInicio-xFin;
+		              	escalaX=-1;
 	              }
 
 
@@ -698,8 +862,13 @@ function Flujo (idDOM){
 		           if(miAlto<2)
 		           		miAlto =2;
 		           	
-	              $lineaActual.css({left: mileft, width: miAncho,
-	              			 transform: mitransform , top:mitop , height:miAlto});
+
+	              $lineaActual.css(
+	              			{left: mileft, 
+	              			 width: miAncho,
+	              			 transform: mitransform , 
+	              			 top:mitop ,
+	              			 height:miAlto});
 
 		     }// fin --> actualizacionBolasLinea()
 

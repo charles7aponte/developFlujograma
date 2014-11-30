@@ -1,8 +1,11 @@
-function LineaConexion{
+function LineaConexion(){
 
 	return {
 		$pagina:null
+		, functExFlujo_deseleccion:function(){}
+		, functExFlujo_lineaConexionSeleccionada:function(tipo_LineaConexion){}// se enlaza con el principal para indicar el elemento o linea seleccionada
 		,svgElemento:null
+		, $elementoDOM:null
 
 		,banderaSeleccionado:false
 		,lineaRecta1:null
@@ -13,13 +16,14 @@ function LineaConexion{
 		,dibujar:function(){
 			
 			var _seft= this;
-			var $elemento = $("<svg style='width:20px; height:20px;'>")
+			var $elemento = $("<svg class='linea_' id='uno' style='z-index:4;width:20px; height:20px;position:absolute; overflow: visible;'>");
+			 _seft.$elementoDOM = $elemento;
 			_seft.$pagina.append($elemento);
 
 			_seft.svgElemento = Snap($elemento[0]);
 	      	_seft.banderaSeleccionado =false;
-	      	_seft.lineaRecta1= mis.line('0%','0%','100%','100%');
-	      	_seft.lineaRecta= mis.line('0%','0%','100%','100%');
+	      	_seft.lineaRecta1= _seft.svgElemento.line('0%','0%','100%','100%');
+	      	_seft.lineaRecta= _seft.svgElemento.line('0%','0%','100%','100%');
       
                 _seft.lineaRecta.attr({
                       fill: "#FDFEFA",
@@ -35,6 +39,9 @@ function LineaConexion{
 
 
 
+            //eventos a la linea
+           _seft.eventoClick();
+
 		}// fin de la function->dibujar
 
 
@@ -43,35 +50,52 @@ function LineaConexion{
 		*/
 		,eventoClick:function(){
 
+
+
 		var _seft=this;
 
-          _seft.svgElemento.click(function (e) {
-           
-	              if(Snap(e.target).id !=mis.id)
-	              {
-	              
-	                console.log("si funciono ");
+          //_seft.$elementoDOM.on('mouseup',function (e) {
+		  //$(document).on('mouseup',function (e) {
+         _seft.svgElemento.click(function (e) {
+		  
+          		
+          		_seft.functExFlujo_deseleccion();
+          		_seft.functExFlujo_lineaConexionSeleccionada(_seft);
+
 	                _seft.banderaSeleccionado=true;
 	                _seft.cambiarColorAnimacion(false);
 	                $puntos.show();
-	              return true;
-	              }
-	              
-	              _seft.banderaSeleccionado=false;
-	               _seft.lineaRecta.attr({
-	                      fill: "#FDFEFA",
-	                      stroke: "#000",
-	                      strokeWidth: 3
-	                  });
-
-	               _seft.lineaRecta1.attr({
-	                      strokeWidth: 1
-	                  });
-
-	              $puntos.hide(); 
-	              return false;
+	             
+	             
 	          });
+
 		}// fin funcion->eventoClick
+
+
+		/****************
+		** cambia la seleccion del la linea cambiando el resalte
+		*/
+		,eliminarSeleccionado:function(){
+
+			var _seft= this;
+
+	 	 _seft.banderaSeleccionado=false;
+		               _seft.lineaRecta.attr({
+		                      fill: "#FDFEFA",
+		                      stroke: "#000",
+		                      strokeWidth: 3
+		                  });
+
+		               _seft.lineaRecta1.attr({
+		                      strokeWidth: 1
+		                  });
+
+		              $puntos.hide();
+
+
+		}
+
+
 
 
           // 
