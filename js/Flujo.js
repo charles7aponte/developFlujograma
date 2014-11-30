@@ -504,12 +504,15 @@ function Flujo (idDOM){
 
 		      	var ban_escribir=0;
 		      	var _self= this;
-		      	
+		      			
+
+		      	$(".punto_circle").hide(); /// de prueba
+
 		      	//_self.$paginaActual.mouseup(function(e){
-				_self.$paginaActual.on('mouseup',function(e){
+				_self.$paginaActual.on('mousedown',function(e){
 
 
-		      		console.log("un elemento . up.");
+		      		console.log("un elemento . down.");
 		      		console.log(e);
 		      		
 
@@ -519,13 +522,14 @@ function Flujo (idDOM){
 
 							ban_escribir=0;
 							
-
+					
 
 
 							if(!$elementoEvent.hasClass("punto_circle"))
 							{
 								_self.deseleccionaLineaConexion();
-								
+								ban_escribir=1;
+								console.log("es 1")
 								var x = e.clientX - _self.$paginaActual.offset().left;
 					        	var y = e.clientY - _self.$paginaActual.offset().top;
 							 			
@@ -586,13 +590,17 @@ function Flujo (idDOM){
 						      		var x = e.clientX - _self.$paginaActual.offset().left;
 						        	var y = e.clientY - _self.$paginaActual.offset().top;
 							
-									 			
+						        	_self.$paginaActual.find(".punto_movibleinicio").show();
 						 			_self.$paginaActual.find(".punto_moviblefin").show();
 						 			_self.$paginaActual.find(".punto_moviblefin").css({
 						      				top: y,
-								      				left: x
-								      				});		
+								      		left: x
+								      		});		
+						 			//_self.$paginaActual.find(".punto_moviblefin").mousedown();
+						 			//_self.$paginaActual.find(".punto_moviblefin").click();
 
+						 			_self.actualizacionBolasLinea(_self,_self.$lineaActual,e, null);
+						 			_self.$paginaActual.find(".punto_moviblefin").draggable( "instance" );		
 
 									//punto_movibleinicio
  
@@ -613,11 +621,11 @@ function Flujo (idDOM){
 
 
 				// evento de manejo soltar	
-		      	_self.$paginaActual.mousedown(function(e){
+		      	_self.$paginaActual.on('mouseup',function(e){
 		      		
-		      		 	ban_escribir=1;
+		      		 	ban_escribir=0;
 		      		 
-		      		 	console.log("un elemento . down.");
+		      		 	console.log("un elemento . up.");
 		      			//console.log(e);
 		      			
 		      	});
