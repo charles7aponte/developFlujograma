@@ -285,10 +285,10 @@ function Flujo (idDOM){
 			      
 			      console.log("este es valor ::: "+tipoElemento);
 
-			       var $punto1=$("<div class='puntos_conexion punto1'>");
-			       var $punto2=$("<div class='puntos_conexion punto2'>");
-			       var $punto3=$("<div class='puntos_conexion punto3'>");
-			       var $punto4=$("<div class='puntos_conexion punto4'>");
+			       var $punto1=$("<div class='puntos_conexion punto1' data-punto='punto1'>");
+			       var $punto2=$("<div class='puntos_conexion punto2' data-punto='punto2'>");
+			       var $punto3=$("<div class='puntos_conexion punto3' data-punto='punto3'>");
+			       var $punto4=$("<div class='puntos_conexion punto4' data-punto='punto4'>");
 			       
 			       $nuevoElemento.append($nuevoSVG);
 
@@ -332,9 +332,7 @@ function Flujo (idDOM){
 			        //$nuevoElemento.data("pagina",manejadorPaginas.$paginaActual.attr("id"));
 
 
-			        // convierte el nuevo elemento de diagrama en draggable
-			        _self.elementoToDraggable($nuevoElemento);
-
+			        
 
 			        $nuevoElemento.resizable( "option", { disabled: true } );
 			        $nuevoElemento.css({overflow:'visible'});
@@ -342,7 +340,15 @@ function Flujo (idDOM){
 			        $nuevoElemento.removeClass('ui-state-disabled');
 
 
+
 			        var $$diagramaF1 = DiagramaF1();
+
+			        // convierte el nuevo elemento de diagrama en draggable
+			        $$diagramaF1.elementoToDraggable($nuevoElemento);
+			        $$diagramaF1.$$padre= _self;
+
+
+			        $$diagramaF1.ext_getLineaActual = _self.getLineaAcutal;
 
 			        $$diagramaF1.$pagina=_self.$paginaActual;
 			        $$diagramaF1.enlazarPuntoCruz(
@@ -362,6 +368,17 @@ function Flujo (idDOM){
 
 			  }// fin - function dropElementoEvent
 
+
+
+			  , getLineaAcutal:function(){
+
+			  	var _self=this;
+
+			  	console.log("sellamo ")
+			  	console.log(_self.$lineaActual)
+			  	return _self.$lineaActual;
+
+			  }
 
 
 			  // *********************
@@ -416,9 +433,7 @@ function Flujo (idDOM){
 				          _self.$elementoSeleccionado.resizable( "option", { disabled: false } );
 				          _self.$elementoSeleccionado.addClass( "elemento_seleccionado" );
 
-				          console.log("mi e");				          
-
-				          console.log(e);
+				          
 				         e.stopPropagation();
 			        });
 			      
@@ -427,31 +442,6 @@ function Flujo (idDOM){
 
 
 
-			  // *****************************
-			  // convertir draggable un elemento diagrama de flujo 
-			  //
-			  ,elementoToDraggable:function($diagramaNuevo){
-			  	//convierto el nuevo elemento draggable
-			        $diagramaNuevo.draggable({
-			            cursor:"move"
-			            //,scroll:true
-			            ,iframeFix: true
-			            ,containment: "parent"
-			            ,delay:1
-			            ,opacity: 0.6
-			            ,"zIndex": 100
-			            ,drag:function( event, ui ){
-
-			              //console.info(ui);
-			              //$("#herramientas_grupo_botones").css({display:'none'});
-			             // $("#panel_tipo_color").spectrum("hide");
-			            }
-			            //,revert:""
-			            ,scroll: false  
-			          });
-
-
-			  }// fin --> elementoToDraggable
 
 
 
@@ -504,39 +494,30 @@ function Flujo (idDOM){
 
 		      	var ban_escribir=0;
 		      	var _self= this;
-		      			
+				var posicionesInicio={top:null, left:null};		      			
 
 		      	$(".punto_circle").hide(); /// de prueba
 
 		      	//_self.$paginaActual.mouseup(function(e){
 				_self.$paginaActual.on('mousedown',function(e){
 
-
-		      		console.log("un elemento . down.");
-		      		console.log(e);
-		      		
-
-
-
 							var $elementoEvent= $(e.target);
 
 							ban_escribir=0;
 							
-					
-
-
 							if(!$elementoEvent.hasClass("punto_circle"))
 							{
 								_self.deseleccionaLineaConexion();
 								ban_escribir=1;
-								console.log("es 1")
 								var x = e.clientX - _self.$paginaActual.offset().left;
 					        	var y = e.clientY - _self.$paginaActual.offset().top;
+
+					        	posicionesInicio={
+					        		left:x,
+					        		top:y
+					        	}
 							 			
-					 			_self.$paginaActual.find(".punto_movibleinicio").css({
-					      				top: y,
-					      				left: x
-					      				});		
+					 			
 
 
 								
@@ -554,7 +535,7 @@ function Flujo (idDOM){
 				//evento de mover
 				_self.$paginaActual.mousemove(function(e){
 
- 					console.log("move");
+ 					//console.log("move");
  					
 		      		
 						if(e && e.target )
@@ -571,19 +552,24 @@ function Flujo (idDOM){
 								
 								if(ban_escribir>10)
 								{
-								console.log("move inserta");
+								//console.log("move inserta");
 		
 
 									//creacion de lineas de conexion NOTA:: debe ser mas parametrica
 									//console.info($(e.target).attr("id"));
 									var lineaSVG = LineaConexion();
+
+									lineaSVG.$$padre = _self;
+
 						      		lineaSVG.$pagina = _self.$paginaActual;
 						      		lineaSVG.dibujar();
 						      		_self.$lineaActual = lineaSVG.$elementoDOM;
+						      		console.log("crecion lineaConexion")
+						      		console.log(_self.$lineaActual)
 
 						      		//conexiones externas 
-						      		lineaSVG.functExFlujo_deseleccion = _self.deseleccionaLineaConexion;
-						      		lineaSVG.functExFlujo_lineaConexionSeleccionada	= _self.seleccionaLineaConexion;
+						      		//lineaSVG.functExFlujo_deseleccion = _self.deseleccionaLineaConexion;
+						      		//lineaSVG.functExFlujo_lineaConexionSeleccionada	= _self.seleccionaLineaConexion;
 						      		_self.lineaConexionSeleccionada=lineaSVG;
 
 
@@ -592,6 +578,11 @@ function Flujo (idDOM){
 							
 						        	_self.$paginaActual.find(".punto_movibleinicio").show();
 						 			_self.$paginaActual.find(".punto_moviblefin").show();
+
+						 			_self.$paginaActual.find(".punto_movibleinicio").css(
+					      				posicionesInicio
+					      				);	
+						 			
 						 			_self.$paginaActual.find(".punto_moviblefin").css({
 						      				top: y,
 								      		left: x
@@ -600,8 +591,7 @@ function Flujo (idDOM){
 						 			//_self.$paginaActual.find(".punto_moviblefin").click();
 
 						 			_self.actualizacionBolasLinea(_self,_self.$lineaActual,e, null);
-						 			_self.$paginaActual.find(".punto_moviblefin").draggable( "instance" );		
-
+						 			
 									//punto_movibleinicio
  
 						      		ban_escribir=0;
@@ -625,7 +615,7 @@ function Flujo (idDOM){
 		      		
 		      		 	ban_escribir=0;
 		      		 
-		      		 	console.log("un elemento . up.");
+		      		 	//console.log("un elemento . up.");
 		      			//console.log(e);
 		      			
 		      	});
@@ -644,21 +634,34 @@ function Flujo (idDOM){
 		      */
 		      ,seleccionaLineaConexion:function(tipo_lineaConexion)
 		      {
-
+		      	var _self = this;
 		      		_self.lineaConexionSeleccionada=tipo_lineaConexion;
 		      		if(tipo_lineaConexion)
 		      		{
 		      			_self.$lineaActual = tipo_lineaConexion.$elementoDOM;
+
+		      			_self.seleccionLineaActulaDOM(tipo_lineaConexion.$elementoDOM);
+		      		}
+
+
+		      }// fin  fucion -->seleccionaLineaConexion
+
+
+		      //seleccioan Query de la linea actual
+		      ,seleccionLineaActulaDOM:function($lineaA){
+		      	var _self= this;
+		      	
+		      		_self.$lineaActual = $lineaA;
+					
+					console.log("modificaicon ->seleccionaLineaConexion")
+					console.log(_self.$lineaActual)
 						
 	
 						var arrayPuntoFin = _self.$lineaActual.data("puntos_punto_moviblefin");
 						var arrayPuntoInicio = _self.$lineaActual.data("puntos_movibleinicio");
 						
 
-						console.log("las posiciones ");
-						console.log(arrayPuntoFin);
-						console.log(arrayPuntoInicio);
-
+					
 						if(arrayPuntoFin!=null && 
  							arrayPuntoInicio!=null)
 						{
@@ -669,30 +672,19 @@ function Flujo (idDOM){
 							console.info(arrayPuntoInicio);
 							console.info(arrayPuntoFin);
 
-							_self.$paginaActual.find(".punto_movibleinicio").css({
+							_self.$paginaActual.find(".punto_moviblefin").css({
 			      				top: arrayPuntoFin[1]+"px" ,
 			      				left: arrayPuntoFin[0]+"px"} );
 
-							_self.$paginaActual.find(".punto_moviblefin").css({
+							_self.$paginaActual.find(".punto_movibleinicio").css({
 		      				top: arrayPuntoInicio[1]+"px",
 		      				left: arrayPuntoInicio[0]+"px"
 		      				});
 
 						}
 
-						var posicionDataFin = 	_self.$lineaActual.data("puntos_punto_moviblefin");
-						var posicionDataInicio = 	_self.$lineaActual.data("puntos_punto_moviblefin");
 
-				
-		      			//_self.$paginaActual.find(".punto_movibleinicio").css({top: top});
-
-
-		      			/*;*/
-
-		      		}
-
-
-		      }
+		      }// fin de la funcion -> seleccion$lineaActula
 
 
 		      /****************
@@ -796,6 +788,7 @@ function Flujo (idDOM){
 			            ,stop:function( event, ui ){
 			            		if(_self.$lineaActual==null)
 		      						return;
+
 
 			            	_self.actualizacionBolasLinea(_self,_self.$lineaActual,event, ui);
 			            }

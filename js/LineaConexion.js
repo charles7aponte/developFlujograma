@@ -2,14 +2,17 @@ function LineaConexion(){
 
 	return {
 		$pagina:null
-		, functExFlujo_deseleccion:function(){}
-		, functExFlujo_lineaConexionSeleccionada:function(tipo_LineaConexion){}// se enlaza con el principal para indicar el elemento o linea seleccionada
+		//, functExFlujo_deseleccion:function(){}
+		//, functExFlujo_lineaConexionSeleccionada:function(tipo_LineaConexion){}// se enlaza con el principal para indicar el elemento o linea seleccionada
 		,svgElemento:null
 		, $elementoDOM:null
 
 		,banderaSeleccionado:false
 		,lineaRecta1:null
 		,lineaRecta:null
+
+		/// padrea
+		, $$padre:null
 		/*	
 		dibuja la linea de conexion..
 		*/	
@@ -57,10 +60,11 @@ function LineaConexion(){
           //_seft.$elementoDOM.on('mouseup',function (e) {
 		  //$(document).on('mouseup',function (e) {
          _seft.svgElemento.click(function (e) {
-		  
+		  console.log("click sobre la linea")
           		
-          		_seft.functExFlujo_deseleccion();
-          		_seft.functExFlujo_lineaConexionSeleccionada(_seft);
+          		_seft.$$padre.deseleccionaLineaConexion();
+
+          		_seft.$$padre.seleccionaLineaConexion(_seft);
 
 	                _seft.banderaSeleccionado=true;
 	                _seft.cambiarColorAnimacion(false);

@@ -8,6 +8,22 @@ function DiagramaF1 (){
 			,$c3:null
 			,$c4:null
 
+			,$elemento:null // elmeen JQuery
+
+			//lineas conexion
+			,linea1:{$linea : null , $punto:null}
+			,linea2:{$linea : null , $punto:null}
+			,linea3:{$linea : null , $punto:null}
+			,linea4:{$linea : null , $punto:null}
+
+
+
+			//eventos externo ... 
+			,ext_getLineaActual:function(){ return null;} // se obtiene la linea actual
+			,$$padre:null // objeto padre o contendor
+
+
+
 			,enlazarPuntoCruz:function(c1,c2,c3,c4){
 				var _self=this;
 				_self.$c1=c1;
@@ -24,9 +40,10 @@ function DiagramaF1 (){
 
 
 
+
 			,eventoDeCruz:function($punto1){
 				
-				_self = this;
+				var _self = this;
 				
 				if(!$punto1)
 					return false;
@@ -40,6 +57,42 @@ function DiagramaF1 (){
 								
 								var $punto = _self.$pagina.find(ui.draggable[0])
 								$punto.find("img").hide();
+								
+
+								var tipoPuntoCirculo = $punto1.data("punto");
+								//var lineaActual =_self.ext_getLineaActual();
+								var lineaActual =_self.$$padre.$lineaActual;
+
+								switch(tipoPuntoCirculo){
+									case "punto1": 
+										_self.linea1.$linea= lineaActual;
+										_self.linea1.$punto= $punto;
+										console.log(1)
+									
+									break;
+
+									case "punto2": 
+										_self.linea2.$linea= lineaActual;
+										_self.linea2.$punto= $punto;
+										console.log(2)
+									break;
+
+									case "punto3": 
+										_self.linea3.$linea= lineaActual;
+										_self.linea3.$punto= $punto;
+										console.log(3)
+									break;
+
+									case "punto4": 
+										_self.linea4.$linea= lineaActual;
+										_self.linea4.$punto= $punto;
+										console.log(4)
+									break;
+								}
+
+
+
+								console.log("se inserto-...");
 							}
 
 							$punto1.removeClass("puntos_conexion_resaltados");
@@ -59,6 +112,33 @@ function DiagramaF1 (){
 							
 								var $punto = _self.$pagina.find(ui.draggable[0]);
 								$punto.find("img").hide();
+								
+
+								var tipoPuntoCirculo = $punto1.data("punto");
+								
+								switch(tipoPuntoCirculo){
+									case "punto1": 
+										_self.linea1.$linea= null;
+										_self.linea1.$punto= null;
+									
+									break;
+
+									case "punto2": 
+										_self.linea2.$linea= null;
+										_self.linea2.$punto= null;
+									break;
+
+									case "punto3": 
+										_self.linea3.$linea= null;
+										_self.linea3.$punto= null;
+									break;
+
+									case "punto4": 
+										_self.linea4.$linea= null;
+										_self.linea4.$punto= null;
+									break;
+								}
+
 							}
 
 							$punto1.removeClass("puntos_conexion_resaltados");
@@ -205,5 +285,100 @@ function DiagramaF1 (){
 
 
 
+
+
+			  // *****************************
+			  // convertir draggable un elemento diagrama de flujo 
+			  //
+			  ,elementoToDraggable:function($diagramaNuevo){
+			  	
+			  	var _self= this;
+
+			  	_self.$elemento= $diagramaNuevo;
+
+			  	//convierto el nuevo elemento draggable
+			        $diagramaNuevo.draggable({
+			            cursor:"move"
+			            //,scroll:true
+			            ,iframeFix: true
+			            ,containment: "parent"
+			            ,delay:1
+			            ,opacity: 0.6
+			            ,"zIndex": 100
+			           
+
+			            ,drag:function( event, ui ){
+
+
+			              _self.actualizaLineaAgrupada(_self.$c1, _self.linea1);
+			              _self.actualizaLineaAgrupada(_self.$c2, _self.linea2);
+			              _self.actualizaLineaAgrupada(_self.$c3, _self.linea3);
+			              _self.actualizaLineaAgrupada(_self.$c4, _self.linea4);
+			       
+			            }
+
+
+
+			            ,stop:function( event, ui ){
+
+
+			              _self.actualizaLineaAgrupada(_self.$c1, _self.linea1);
+			              _self.actualizaLineaAgrupada(_self.$c2, _self.linea2);
+			              _self.actualizaLineaAgrupada(_self.$c3, _self.linea3);
+			              _self.actualizaLineaAgrupada(_self.$c4, _self.linea4);
+			       
+			            }
+			            
+			            //,revert:""
+			            ,scroll: false  
+			          });
+
+
+			  }// fin --> elementoToDraggable
+
+
+
+			  // ************
+			  // actualiza la alinea cuando se mueve el elemento se llama la funcion 
+			  //
+		      // @param $lina {$linea : null , $punto:null}
+			  // ***********
+			  ,actualizaLineaAgrupada:function ($c, $$linea)
+			  {
+
+				var _self=this;
+			  	console.log(1);
+			  	console.log($c);
+			  	console.log($$linea);
+
+			  	if($c!=null &&  $$linea!=null
+			  	  && $$linea.$linea!=null 
+			  	  &&  $$linea.$punto!=null)
+			  	{
+  
+					var x = $c.offset().left - _self.$$padre.$paginaActual.offset().left;			  		
+					var y = $c.offset().top - _self.$$padre.$paginaActual.offset().top;
+
+					//colo los puntos en su ubiccaion y seleecion el objet
+					_self.$$padre.seleccionLineaActulaDOM($$linea.$linea);
+
+
+					var $punto = $$linea.$punto;
+					//$punto.show();
+
+					$punto.css({
+						top:y +"px",
+						left: x +"px"
+
+					});
+
+					//actualiza la linea
+					_self.$$padre.actualizacionBolasLinea(_self.$$padre,_self.$$padre.$lineaActual,null, null);
+
+
+			  	}
+
+
+			  }// fin de actualizaLineaAgrupada
 	};
 };
