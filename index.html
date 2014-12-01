@@ -6,7 +6,11 @@
       <title></title>
       <link rel="stylesheet" href="css/foundation.css" />
       <link rel="stylesheet" href="css/jquery-ui.css" />
+      <link rel="stylesheet" href="css/jquery-ui.structure.css" />
+      <link rel="stylesheet" href="css/jquery-ui.theme.css" />
+
       <link rel="stylesheet" href="css/micss.css" />
+      <link rel="stylesheet" href="css/font/foundation-icons.css" />
       
       <script src="js/vendor/modernizr.js"></script>
       <script src="js/snap.svg.js"></script>
@@ -20,6 +24,33 @@
           height: 65px;
        
       }
+
+      #botones_panel_superior{
+
+
+      }
+     #botones_panel_superior a {
+      background-color: #e7e7e7;
+      border-color: #b9b9b9;
+      color: #333333;
+    }
+
+     #botones_panel_superior>ul>li>a{
+      font-size: 34px;
+      padding: 2px 3px;
+      margin-left:4px; 
+    }
+
+
+    #dialog_diagrama label{
+      color:#EFEFED;
+    }
+
+
+.ui-button-text{
+  font-size: 12px;
+}
+
 
       svg.linea_{
 
@@ -65,7 +96,35 @@
              id="bton_toogle_menu_iz" onclick="return  false " href="#" aria-expanded="false"><span></span></a>
           </section>
 
+
+
+    
+
           <section class="middle tab-bar-section">
+        
+
+      <div class="button-bar" id="botones_panel_superior">
+        <ul class="button-group [radius round]">
+          <li class="">
+            <a href="#" class="[tiny small large] button [alert success secondary] [disabled]">
+          <span class="fi-comments"></span>
+          </a></li>
+          
+          <li><a href="#" class="[tiny small large] button [alert success secondary] [disabled]"><span class="fi-share">
+            
+          </span></a></li>
+      
+        </ul>
+        <!--
+
+        <ul class="button-group [radius round]">
+          <li><a href="#" class="[tiny small large] button [alert success secondary] [disabled]">Button 1</a></li>
+          <li><a href="#" class="[tiny small large] button [alert success secondary] [disabled]">Button 2</a></li>
+          <li><a href="#" class="[tiny small large] button [alert success secondary] [disabled]">Button 3</a></li>
+        </ul>
+      -->
+      </div>
+
             <h1 class="title">Flujo grama</h1>
           </section>
 
@@ -120,13 +179,55 @@
            
             <li  class="has-tip" data-tooltip aria-haspopup="true"  title="Multidocumento">
               <svg  id="ele_menu_izq_conector8" class="elemente_menu_izq"  data-elemento="n8"
-              data-mitipo="diagrama"></svg></li>
+              data-mitipo="diagrama"></svg>
+
+   
+            </li>
             
+
            
           </ul>
 
-          <svg id="ito" style="background:#CCAAF2; width:200px; height:200px" 
-          data-mitipo="diagrama"></svg>
+
+         <div id="dialog_diagrama" title="Datos">
+            <div class="row">
+              <div class="row">
+                <label for=""> Descripcion</label>
+              </div>
+              <div class="row">
+                <textarea name="" id="dialogo_descripcion"  rows="3">
+                  
+                </textarea>
+              </div>
+            </div>
+
+          <div class="row">
+              <div class="row">
+                <label for="">Registro</label>
+              </div>
+              <div class="row">
+                <textarea name="" id="dialogo_registro" >
+                  
+                </textarea>
+              </div>
+            </div>
+
+
+
+          <div class="row">
+              <div class="row">
+                <label for="">Observaciones</label>
+              </div>
+              <div class="row">
+                <textarea name="" id="dialogo_observacion" >
+                  
+                </textarea>
+              </div>
+            </div>
+
+
+
+        </div>
 
         </div>
 
@@ -218,6 +319,9 @@ border-left: 1px solid rgb(212,218,218); " >
     <script>
       $(document).foundation();
 
+
+
+$( "#dialog_diagrama" ).hide();
 
       $('.off-canvas-wrap').foundation('offcanvas', 'show', 'move-right');
     

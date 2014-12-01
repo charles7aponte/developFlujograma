@@ -73,6 +73,10 @@ function LineaConexion(){
 	             
 	          });
 
+
+
+
+
 		}// fin funcion->eventoClick
 
 

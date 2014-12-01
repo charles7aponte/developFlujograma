@@ -284,7 +284,35 @@ function DiagramaF1 (){
 			}// fin de la funcion -->setDiagrama
 
 
+			/******************************
+			        ****convierto el nuevo elemento resize
+			        ********************/ 
+			 ,elemetoToResize: function($diagramaNuevo){ 		
 
+			  	var _self= this;
+			  	_self.$elemento= $diagramaNuevo;
+
+			  		_self.$elemento.resizable({
+			        // autoHide: true 
+			          handles: "rotate, e, s, w, ne, se, sw, nw, all" 
+			          ,resize:function(event, ui)
+			           {
+			           	  _self.actualizaLineaAgrupada(_self.$c1, _self.linea1);
+			              _self.actualizaLineaAgrupada(_self.$c2, _self.linea2);
+			              _self.actualizaLineaAgrupada(_self.$c3, _self.linea3);
+			              _self.actualizaLineaAgrupada(_self.$c4, _self.linea4);
+			       
+			           	
+			           }
+			        });
+
+
+		        _self.$elemento.resizable( "option", { disabled: true } );
+		        _self.$elemento.css({overflow:'visible'});
+		        _self.$elemento.addClass('padre_elemento');
+		        _self.$elemento.removeClass('ui-state-disabled');
+
+			  }		
 
 
 			  // *****************************
@@ -295,6 +323,7 @@ function DiagramaF1 (){
 			  	var _self= this;
 
 			  	_self.$elemento= $diagramaNuevo;
+
 
 			  	//convierto el nuevo elemento draggable
 			        $diagramaNuevo.draggable({
@@ -347,9 +376,7 @@ function DiagramaF1 (){
 			  {
 
 				var _self=this;
-			  	console.log(1);
-			  	console.log($c);
-			  	console.log($$linea);
+	
 
 			  	if($c!=null &&  $$linea!=null
 			  	  && $$linea.$linea!=null 

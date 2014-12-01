@@ -280,7 +280,9 @@ function Flujo (idDOM){
 
 			       var tipoElemento =ui.draggable.data("elemento")+"";
 
-			       var $nuevoElemento = $("<div width='60px' data-mielemento='"+tipoElemento+"' height='60px' style='width:60px;height:60px; overflow:visible'>");
+			       var $nuevoElemento = $("<div width='60px' data-mielemento='"+tipoElemento+"' "+
+			       	+" data-descripcion='' data-registro=''  data-observacion=''  "
+			       	" height='60px' style='width:60px;height:60px; overflow:visible'>");
 			       var $nuevoSVG =  $("<svg width='100%' height='100%' style='width:100%;height:100%; overflow:visible'>");  
 			      
 			      console.log("este es valor ::: "+tipoElemento);
@@ -307,13 +309,7 @@ function Flujo (idDOM){
 
 
 
-			        /******************************
-			        ****convierto el nuevo elemento resize
-			        ********************/ 
-			        $nuevoElemento.resizable({
-			        // autoHide: true 
-			          handles: "rotate, e, s, w, ne, se, sw, nw, all" 
-			        });
+
 
 
 
@@ -328,16 +324,8 @@ function Flujo (idDOM){
 			        });
 
 
-			        //datos al nuevo elemento , datos que se necesitan 
-			        //$nuevoElemento.data("pagina",manejadorPaginas.$paginaActual.attr("id"));
-
-
 			        
-
-			        $nuevoElemento.resizable( "option", { disabled: true } );
-			        $nuevoElemento.css({overflow:'visible'});
-			        $nuevoElemento.addClass('padre_elemento');
-			        $nuevoElemento.removeClass('ui-state-disabled');
+			        
 
 
 
@@ -347,6 +335,7 @@ function Flujo (idDOM){
 			        $$diagramaF1.elementoToDraggable($nuevoElemento);
 			        $$diagramaF1.$$padre= _self;
 
+			        $$diagramaF1.elemetoToResize($nuevoElemento);
 
 			        $$diagramaF1.ext_getLineaActual = _self.getLineaAcutal;
 
@@ -406,29 +395,6 @@ function Flujo (idDOM){
 
 				          //muestra la caja de herramientas
 				          _self.$elementoSeleccionado= $nuevoElemento_seleccionado;
-				          /*
-				          $("#herramientas_grupo_botones").show(200);
-				          $("#herramientas_grupo_botones").css({
-				            top: $nuevoElemento.offset().top- 60
-				            ,left:parseFloat($nuevoElemento.css("left")) + parseFloat(manejadorPaginas.$paginaActual.css("margin-left")) //$nuevoElemento.offset().left 
-				          });
-
-				      
-				          if(banderaPanelLetra)
-				          {
-				              $("#panel_editar_letras").hide();
-				              banderaPanelLetra=false;
-				          }
-
-				          $("#subgrupo_botones_boton_capa").hide();
-
-				          actualizaPanelHerramientaEdicionLetras();
-
-				          */
-				        
-
-
-
 				          
 				          _self.$elementoSeleccionado.resizable( "option", { disabled: false } );
 				          _self.$elementoSeleccionado.addClass( "elemento_seleccionado" );
@@ -437,6 +403,34 @@ function Flujo (idDOM){
 				         e.stopPropagation();
 			        });
 			      
+
+
+			      // el doble click 
+			       $diagramaNuevo.dblclick(function(e){
+			       		$( "#dialog_diagrama" ).show();
+
+			       		var descripcion = _self.$elementoSeleccionado.data("descripcion");	
+			       		var registro = _self.$elementoSeleccionado.data("registro");
+			       		var observacion = _self.$elementoSeleccionado.data("observacion");
+
+
+			       		$( "#dialog_diagrama" ).dialog(
+						{ buttons: [ 
+								{ text: "Aceptar",
+								click: function()
+									{ $( this ).dialog( "close" ); 
+									} 
+								}
+								,
+								{ text: "Cancelar",
+								click: function()
+									{ $( this ).dialog( "close" ); 
+									} 
+								}			
+							] 
+						});
+
+			       });
 
 			  }// fin -->elementoToMousedown()
 
