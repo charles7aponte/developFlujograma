@@ -60,6 +60,10 @@ function LineaConexion(){
           //_seft.$elementoDOM.on('mouseup',function (e) {
 		  //$(document).on('mouseup',function (e) {
          _seft.svgElemento.click(function (e) {
+
+         	if(_seft.$$padre.estado!=2)
+         		return true;
+
 		  console.log("click sobre la linea")
           		
           		_seft.$$padre.deseleccionaLineaConexion();

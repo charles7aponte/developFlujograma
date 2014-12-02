@@ -19,6 +19,27 @@
 
 
     <style>
+
+
+    .paginas{
+      width:5000px; height:5000px;position:relative; 
+       cursor:default;
+       border-top: 1px solid rgb(212, 218, 218);
+       border-left: 1px solid rgb(212,218,218); 
+       background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAT0lEQVQ4T2N8/fr/fwYiADfPP4avX5gIqmQEGSgqyshISOW373//c3EyE1Q3aiDukBwNQ5xhQ/1kAwpsQomaFHnqu3A06+EM/9GcQr+cAgBGqZrSrFyxegAAAABJRU5ErkJggg==); background-color: rgb(255, 255, 255);
+
+    }
+
+
+  .imagen_punto_mobil{
+     width: 200%;
+      height: 200%;
+      position: absolute;
+      max-width: none;
+      top: -40%;
+      display: none
+  }
+
       .elemente_menu_izq{
           width: 65px;
           height: 65px;
@@ -163,11 +184,33 @@
 
       }
 
+
+      body[data-estado='1']
+       .puntos_conexion
+       {
+        opacity: 0 !important;
+        z-index: 1 !important;
+       }
+
+
+
+      body[data-estado='2']
+       .puntos_conexion
+       {
+        display:block !important;
+       }
     </style>
   
 
 
-  <body>
+  <body data-estado='1'>
+
+
+
+<div id="dialog_confirmacion_pagina" title="Eliminar Página" style="display:none">
+  <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>
+    ¿Esta seguro que desea eliminar la página actual?</p>
+</div>
 
    <div class="off-canvas-wrap " data-offcanvas >
       <div class="inner-wrap">
@@ -187,11 +230,11 @@
       <div class="button-bar" id="botones_panel_superior">
         <ul class="button-group [radius round]">
           <li class="">
-            <a href="#" class="[tiny small large] button [alert success secondary] [disabled]">
+            <a href="#" id="bton_estado1" onclick="false" class="miActivo [tiny small large] button [alert success secondary] [disabled]">
             <span class="fi-comments"></span>
             </a></li>
             
-            <li><a href="#" class="[tiny small large] button [alert success secondary] [disabled]"><span class="fi-share">
+            <li><a href="#" onclick="false" id="bton_estado2" class="[tiny small large] button [alert success secondary] [disabled]"><span class="fi-share">
                 
               </span></a>
             </li>
@@ -212,7 +255,7 @@
       -->
       </div>
 
-            <h1 class="title">Flujo grama</h1>
+            <h1 class="title"></h1>
           </section>
 
         <!--
@@ -334,7 +377,7 @@
          
 
 
-          <h5 style="margin-left:10px">pag. 1</h5>
+          <h5  id="nombre_pagina" style="margin-left:10px">pag. 1</h5>
           </div>
 
           
@@ -342,47 +385,18 @@
            style="overflow:auto; background:#66A8CC; margin : 10px; border-top: 1px solid rgb(212, 218, 218);
 border-left: 1px solid rgb(212,218,218); " >
 
-         
-
-
-
-           <div  id="contenedor_principal_pag_1" class="paginas" style="width:5000px; height:5000px;position:relative; 
-           cursor:default;
-           border-top: 1px solid rgb(212, 218, 218);
-           border-left: 1px solid rgb(212,218,218); 
-           background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAT0lEQVQ4T2N8/fr/fwYiADfPP4avX5gIqmQEGSgqyshISOW373//c3EyE1Q3aiDukBwNQ5xhQ/1kAwpsQomaFHnqu3A06+EM/9GcQr+cAgBGqZrSrFyxegAAAABJRU5ErkJggg==); background-color: rgb(255, 255, 255);">
-      
-
-
-           <div class="punto_moviblefin punto_circle" style="">
-             <img src="./img/conexion_p.gif" style="
-
-               width: 200%;
-                height: 200%;
-                position: absolute;
-                max-width: none;
-                top: -40%;
-                display: none;
-            ">
+                        
+          <!-- inicio pagina -->
+          <div  id="contenedor_principal_pag_1" class="paginas" >  
+               <div class="punto_moviblefin punto_circle" >
+                 <img src="./img/conexion_p.gif"  class="imagen_punto_mobil"> 
+               </div>
+               
+                <div class="punto_movibleinicio punto_circle" >
+                  <img src="./img/conexion_p.gif"  class="imagen_punto_mobil"> 
+                </div>
            </div>
-           
-            <div class="punto_movibleinicio punto_circle" style="">
-              <img src="./img/conexion_p.gif" style="
-               width: 200%;
-              height: 200%;
-              position: absolute;
-              max-width: none;
-              top: -40%;
-              display: none;
-            ">
-            </div>
-
-
-
-       
-           
-           </div>
-
+            <!-- fin pagina -->
           
           </div>
         </div><!-- fin - contenedor paginas-->
@@ -397,11 +411,16 @@ border-left: 1px solid rgb(212,218,218); " >
                  <div class="button-bar" id="botones_panel_inferior">
                     <ul class="button-group [radius round]">
                       <li class="">
-                        <a href="#" class="miboton [tiny small large] button [alert success secondary] [disabled]">
+                        <a href="#" onclick="false"  
+                        id="bton_nueva_pagina"
+                         class="miboton [tiny small large] button [alert success secondary] [disabled]">
                         <span class="fi-page-add"></span>
                         </a></li>
                         
-                        <li><a href="#" class="miboton [tinmibotony small large] button [alert success secondary] [disabled]"><span class="fi-page-delete">
+                        <li><a href="#" 
+                          onclick="false"  
+                          id="bton_elimina_pagina"
+                          class="miboton [tinmibotony small large] button [alert success secondary] [disabled]"><span class="fi-page-delete">
                             
                           </span></a>
                         </li>
@@ -423,7 +442,7 @@ border-left: 1px solid rgb(212,218,218); " >
             <div class="small-8 large-8 columns" style="overflow-y: scroll;
 height: 35px;">
               <div class="pagination-centered">
-                <ul class="pagination">
+                <ul class="pagination" id="el_numero_pagina">
                   <li class="arrow unavailable"><a href="">&laquo;</a></li>
                   <li class="current"><a href="">1</a></li>
                   <li><a href="">2</a></li>
@@ -574,18 +593,40 @@ var band_pagina=false;
 
 var manejoFlujo = Flujo("");
   manejoFlujo.inicializarEventosPrincipales();
-
-
-  manejoFlujo.convertirPaginaToDrop();
-  manejoFlujo.eventosMousePaginaActual();
-
-
-  manejoFlujo.eventosPuntoMoble();
+  manejoFlujo.eventosAllPaginaActual();
+  manejoFlujo.actualizaHtmlPagina();
 
   
 
+  $("#bton_nueva_pagina").click(function(e){
+      manejoFlujo.crearPaginaNueva();
+  });
 
 
+$("#bton_elimina_pagina").click(function(e){
+
+  manejoFlujo.eliminarPaginaActual();
+});
+  
+
+
+$("#bton_estado1").click(function(e){
+  manejoFlujo.estado=1;
+  $("#bton_estado1").addClass("miActivo");
+  $("#bton_estado2").removeClass("miActivo");
+  $(".punto_circle").hide();
+  $("body").attr("data-estado","1");
+
+  manejoFlujo.deseleccionarTodosLineas();
+});
+
+
+$("#bton_estado2").click(function(e){
+  manejoFlujo.estado=2;
+  $("#bton_estado2").addClass("miActivo");
+  $("#bton_estado1").removeClass("miActivo");
+$("body").attr("data-estado","2");
+});
 
 
 

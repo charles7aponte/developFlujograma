@@ -2,11 +2,12 @@ function Flujo (idDOM){
 		
 	 return {
 
-	 		idPagina: idDOM
+	 		numeroPagina: 0  // se basa en el arrray
 	 		,$paginaActual : $("#contenedor_principal_pag_1")
-	 		,listaPaginas:[]
+	 		,listaPaginas:[ $("#contenedor_principal_pag_1")]
 	 		,estado:1/// qu se seleccion punte, lineas de conexion
 	 		,$lineaActual:null // linea hecha
+	 		,listaLineaConexion:[]
 	 		,$elementoSeleccionado:null // elmento selecccionado actualmente
 	 		,elementoN5:null // elmeenot de conexion entre paginas .. este se carga
 			,elementoN6:null // elmeenot de conexion entre paginas .. este se carga
@@ -20,7 +21,7 @@ function Flujo (idDOM){
 	 		,inicializarEventosPrincipales:function(){
 	 			this.dibujarSVGMenuIz();// dibuja los elementos svg del menu izq
   				this.convertiMenuIzDragg();
-	 			this.eventosPuntoMoble();
+	 			
 
 	 		}// fin --> inicializarEventosPrincipales
 
@@ -282,7 +283,7 @@ function Flujo (idDOM){
 
 			       var $nuevoElemento = $("<div width='100px' data-mielemento='"+tipoElemento+"' "+
 			       	+" data-descripcion='' data-registro=''  data-observacion=''  "
-			       +" height='100px' style='width:100px;height:100px; overflow:visible'>");
+			       +" height='100px' style='width:100px;height:100px; overflow:visible;cursor:pointer'>");
 
 			       var $text  = $("<p class='descripcion_observada'>soy ele mejor de los gatos y no me voy a dejar vencer</p>" );
 			       var $textPersonaje  = $("<p class='descripcion_personaje'>personaje</p>" );
@@ -530,6 +531,9 @@ function Flujo (idDOM){
 		      	//_self.$paginaActual.mouseup(function(e){
 				_self.$paginaActual.on('mousedown',function(e){
 
+					if(_self.estado!=2)
+						return true;
+
 							var $elementoEvent= $(e.target);
 
 							ban_escribir=0;
@@ -565,7 +569,8 @@ function Flujo (idDOM){
 				_self.$paginaActual.mousemove(function(e){
 
  					//console.log("move");
- 					
+ 				   if(_self.estado!=2)
+						return true;
 		      		
 						if(e && e.target )
 						{
@@ -587,6 +592,8 @@ function Flujo (idDOM){
 									//creacion de lineas de conexion NOTA:: debe ser mas parametrica
 									//console.info($(e.target).attr("id"));
 									var lineaSVG = LineaConexion();
+
+									_self.listaLineaConexion.push(lineaSVG);
 
 									lineaSVG.$$padre = _self;
 
@@ -641,6 +648,9 @@ function Flujo (idDOM){
 
 				// evento de manejo soltar	
 		      	_self.$paginaActual.on('mouseup',function(e){
+
+		      		   if(_self.estado!=2)
+						return true;
 		      		
 		      		 	ban_escribir=0;
 		      		 
@@ -902,6 +912,169 @@ function Flujo (idDOM){
 
 		     }// fin --> actualizacionBolasLinea()
 
+
+
+		     //********************
+		     // crear una nueva pagina 
+		     // *******************
+		     ,crearPaginaNueva:function(){
+		     	var _self=this;
+		     	var html ="  <div  class='paginas' >    "
+				        +"       <div class='punto_moviblefin punto_circle' >  "
+				        +"         <img src='./img/conexion_p.gif'  class='imagen_punto_mobil'>   "
+				        +"       </div>  "
+				               
+				        +"        <div class='punto_movibleinicio punto_circle' >  "
+				        +"          <img src='./img/conexion_p.gif'  class='imagen_punto_mobil'>   "
+				        +"        </div>  "
+				        +"   </div>";
+
+				 $pagina = $(html);
+
+				 _self.$paginaActual = $pagina;
+
+				 _self.listaPaginas.push(_self.$paginaActual);
+				 $("#contenedor_principal_pag").append(_self.$paginaActual);
+
+				 _self.eventosAllPaginaActual();
+				 _self.numeroPagina++;
+
+				
+				 _self.actualizaHtmlPagina();
+
+
+		     }// fin funcion -> crearPaginaNueva
+
+
+		     // ************************
+		     // ******* eventos all pagina ...
+		     // 
+		     ,eventosAllPaginaActual:function(){
+		     	this.eventosPuntoMoble();	
+		     	this.convertirPaginaToDrop();
+				this.eventosMousePaginaActual();
+				this.eventosPuntoMoble();
+		     }// fin funcion -->eventosAllPaginaActual
+
+
+		     // **********************
+		     // ******* actualiza la parte visual de las paginas
+		     // 
+		     ,actualizaHtmlPagina:function(){
+		     	var _self=this;
+		     	var html="";
+
+
+		     	 for(var i=0; i< _self.listaPaginas.length; i++)
+				 {
+				 	_self.listaPaginas[i].hide();
+
+				 	if(i!= _self.numeroPagina)
+				 	{
+				 		html+="  <li><a href='#' onclick='manejoFlujo.cambiaPagina("+i+")' >"+(i+1)+"</a></li> ";
+				 	}
+				 	else{
+
+				 		html+="<li class='current'><a href='#' onclick='manejoFlujo.cambiaPagina("+i+")'>"+(i+1)+"</a></li>";
+				 	}
+				 }
+
+
+				 console.log(html);
+				 $("#el_numero_pagina").html(html);
+				 $("#nombre_pagina").html("pag. "+(_self.numeroPagina+1));
+				 _self.$paginaActual.show();
+
+		     }// fin funcion -->actualizaHtmlPagina
+
+
+		     /// *****************
+		     // cambia de pagina ***
+		     //***************+
+		     ,cambiaPagina:function(nPg)
+		     {
+		     	var _self=this;
+
+		     	_self.numeroPagina = nPg;
+		     	_self.$paginaActual = _self.listaPaginas[nPg];
+
+		     	_self.actualizaHtmlPagina();
+		     	return false;
+		     }// fin funciton -->cambiaPagina
+
+
+
+		     // ********************
+		     // elimina la pagiana
+		     //
+		     ,eliminarPaginaActual:function(){
+
+
+
+		     	var _self=this;
+		     	$( "#dialog_confirmacion_pagina" ).css({display:'block'});
+		     	console.log("se ");
+		     	 $( "#dialog_confirmacion_pagina" ).dialog({
+				      autoOpen: true,
+				      show: {
+				        effect: "blind",
+				        duration: 500
+				      },
+				      hide: {
+				        effect: "explode",
+				        duration: 500
+				      }
+				      ,resizable:false
+				      ,buttons: [ 
+									{ text: "Aceptar",
+									click: function()
+										{ 
+											if(_self.listaPaginas.length>1)
+											{
+
+												_self.listaPaginas.splice(_self.numeroPagina,1);
+
+												if(_self.numeroPagina>= _self.listaPaginas.length)
+												{
+													_self.numeroPagina--;
+												}
+
+												_self.$paginaActual = _self.listaPaginas[_self.numeroPagina];
+												_self.actualizaHtmlPagina();
+
+
+											}
+											else{
+
+												alert("Debe existir almenos una página!!");
+											}
+											
+
+
+											$( this ).dialog( "close" ); 
+										} 
+									}
+									,
+									{ text: "Cancelar",
+									click: function()
+										{ $( this ).dialog( "close" ); 
+										} 
+									}			
+								] 
+				    });
+		     }// fin function -->
+
+
+		     ,deseleccionarTodosLineas:function(){
+		     	var _self= this;
+		     	for(var i=0; _self.listaLineaConexion.length ; i++)
+		     	{
+		     		_self.listaLineaConexion[i].eliminarSeleccionado();
+
+
+		     	}
+		     	
+		     }
 
 	 }
 
