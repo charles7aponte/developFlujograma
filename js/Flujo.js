@@ -280,11 +280,15 @@ function Flujo (idDOM){
 
 			       var tipoElemento =ui.draggable.data("elemento")+"";
 
-			       var $nuevoElemento = $("<div width='60px' data-mielemento='"+tipoElemento+"' "+
+			       var $nuevoElemento = $("<div width='100px' data-mielemento='"+tipoElemento+"' "+
 			       	+" data-descripcion='' data-registro=''  data-observacion=''  "
-			       	" height='60px' style='width:60px;height:60px; overflow:visible'>");
+			       +" height='100px' style='width:100px;height:100px; overflow:visible'>");
+
+			       var $text  = $("<p class='descripcion_observada'>soy ele mejor de los gatos y no me voy a dejar vencer</p>" );
+			       var $textPersonaje  = $("<p class='descripcion_personaje'>personaje</p>" );
 			       var $nuevoSVG =  $("<svg width='100%' height='100%' style='width:100%;height:100%; overflow:visible'>");  
 			      
+
 			      console.log("este es valor ::: "+tipoElemento);
 
 			       var $punto1=$("<div class='puntos_conexion punto1' data-punto='punto1'>");
@@ -293,7 +297,8 @@ function Flujo (idDOM){
 			       var $punto4=$("<div class='puntos_conexion punto4' data-punto='punto4'>");
 			       
 			       $nuevoElemento.append($nuevoSVG);
-
+   			       $nuevoElemento.append($text);
+   			        $nuevoElemento.append($textPersonaje);
 
 
 			        
@@ -413,24 +418,54 @@ function Flujo (idDOM){
 			       		var registro = _self.$elementoSeleccionado.data("registro");
 			       		var observacion = _self.$elementoSeleccionado.data("observacion");
 
+			       		$("#dialogo_descripcion").val(descripcion);
+						$("#dialogo_registro").val(registro);
+						$("#dialogo_observacion").val(observacion);
 
+						// manejo de dialog para guardad los datos
 			       		$( "#dialog_diagrama" ).dialog(
-						{ buttons: [ 
-								{ text: "Aceptar",
-								click: function()
-									{ $( this ).dialog( "close" ); 
-									} 
-								}
-								,
-								{ text: "Cancelar",
-								click: function()
-									{ $( this ).dialog( "close" ); 
-									} 
-								}			
-							] 
-						});
+							{ buttons: [ 
+									{ text: "Aceptar",
+									click: function()
+										{ 
 
-			       });
+											descripcion =$("#dialogo_descripcion").val();
+											registro = $("#dialogo_registro").val();
+											observacion = $("#dialogo_observacion").val();
+
+
+									       	_self.$elementoSeleccionado.data("descripcion", descripcion);	
+								       		_self.$elementoSeleccionado.data("registro", registro);
+								       		_self.$elementoSeleccionado.data("observacion", observacion);
+
+								       		$diagramaNuevo.find("p.descripcion_observada").html(descripcion);
+
+											$( this ).dialog( "close" ); 
+										} 
+									}
+									,
+									{ text: "Cancelar",
+									click: function()
+										{ $( this ).dialog( "close" ); 
+										} 
+									}			
+								] 
+							
+							,show: {
+						        effect: "blind",
+						        duration: 500
+						      }
+
+						    ,hide: {
+						        effect: "clip",
+						        duration: 200
+						      }
+						
+						});// fin del creciona popup
+
+
+
+			       });// fom del evento doble click
 
 			  }// fin -->elementoToMousedown()
 

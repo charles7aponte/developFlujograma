@@ -195,6 +195,9 @@ function DiagramaF1 (){
 			}// fin de la funcion
 
 
+
+
+
 			/***************
 			al diagrama lo prepara para  recibir elemento dentro del el , como son las conexiones .
 			@parama {$} $diagrama elemento de DOM tipo Jquery, el cual representa El elemento del diagrama
@@ -364,6 +367,10 @@ function DiagramaF1 (){
 
 
 			  }// fin --> elementoToDraggable
+
+
+
+
 
 
 
