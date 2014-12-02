@@ -8,12 +8,19 @@
       <link rel="stylesheet" href="css/jquery-ui.css" />
       <link rel="stylesheet" href="css/jquery-ui.structure.css" />
       <link rel="stylesheet" href="css/jquery-ui.theme.css" />
+      <link rel="stylesheet" href="css/spectrum.css" />
+
+
+     
 
       <link rel="stylesheet" href="css/micss.css" />
       <link rel="stylesheet" href="css/font/foundation-icons.css" />
       
       <script src="js/vendor/modernizr.js"></script>
       <script src="js/snap.svg.js"></script>
+      
+
+      
 
     </head>
 
@@ -380,10 +387,142 @@
           <h5  id="nombre_pagina" style="margin-left:10px">pag. 1</h5>
           </div>
 
+
+
+
           
           <div id="contenedor_principal_pag" 
            style="overflow:auto; background:#66A8CC; margin : 10px; border-top: 1px solid rgb(212, 218, 218);
 border-left: 1px solid rgb(212,218,218); " >
+
+          <!--  inicio barra-->
+           <!-- herramienta -->
+                   <ul id="herramientas_grupo_botones" class=" button-group [radius round]" style="height: 40px">               
+                      <li>
+                        
+                        <div id="panel_editar_letras"  style="display:none" class="panel callout radius panel_grupo_botones">
+                         
+                         <table style="width: 100%">
+                          <thead>
+                            <tr>
+                              <th width="10"></th>
+                              <th width="70"></th>
+                              
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td>Color</td>
+                              <td><input type="text" id="panel_tipo_color" ></td>
+                            
+                            </tr>
+
+                            <tr>
+                              <td>Tamaño</td>
+                              <td><input type="text" readonly id="spinner" style="font-size:14px; padding:0px; margin:0px ; height:22px"></td>
+                            </tr>
+
+                            <tr>
+                              <td>font</td>
+                              <td>
+
+                                <select style="padding: 0;" name="" id="panel_tipo_letra">
+                                <option value="mi_comic_san">Comic Sans</option>
+                                <option value="cursive">Cursive</option>
+                                <option value="mi_comic_book">Comic Book</option>
+
+                                <option value="mi_jack_story_regular">Jack Story Regular</option>
+                                <option value="fantasy">Final Fantasy</option>
+                                 <option value="mi_futura_heavy_bt">Futura Heavy Bt</option>
+
+                                <option value="mi_HORNSWOG">Hornswoggle</option>
+                                <option value="mi_Kalocsai_Flowers">Kalocsai Flowers</option>
+                                 <option value="mi_KaushanScript-Regular">KaushanScript Regular</option>
+
+                                 <option value="monospace">Monospace</option>
+                                 <option value="san-serif">San Serif</option>
+                              </select></td>
+                            </tr>
+
+                            <tr>
+                              <td>style</td>
+                              <td>
+                                <table style="width: 100%">
+                                  <tr>
+                                    <td><p class="fi-bold letras_alineacion"  id="panel_letras_bold" data-propiedad="font-weight" data-descativo="none" data-activo="bold"></p></td>
+                                    <td><p class="fi-italic letras_alineacion"  id="panel_letras_cursiva" data-propiedad="font-style" data-descativo="none" data-activo="italic"></p></td>
+                                    <td><p class="fi-underline letras_alineacion"  id="panel_letras_subrayado" data-propiedad="text-decoration" data-descativo="none" data-activo="underline"></p></td>
+                                  </tr>
+
+                                  <tr>
+                                    <td><p class="fi-align-center letras_alineacion"  id="panel_letras_center" data-propiedad="text-align"  data-activo="center" ></p></td>
+
+                                    <td><p class="fi-align-left letras_alineacion"  id="panel_letras_left" data-propiedad="text-align" data-descativo="none" data-activo="left" ></p></td>
+
+                                    <td ><p class="fi-align-right letras_alineacion"  id="panel_letras_right" data-propiedad="text-align" data-descativo="none" data-activo="right"></p></td>
+                                  </tr>
+                                </table>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                        </div>
+                      </li>
+
+
+                      <li>
+                        <a id="boton_color_grupo"   style="display:none"  class=" icon2  mi_h1_" title="editar letra" alt="editar letra">
+                        </a>                
+                      </li>
+
+                      <li>
+                        <a id="boton_capa" class=" icon2  mi_h2_" title="capas" alt="capas">
+                          
+                        </a>
+                          
+                          <ul id="subgrupo_botones_boton_capa" class="button-group [radius round]" style="width:40px"> 
+                              <li>
+                                <a id="subgrupo_botones_boton_capa1"  onclick="elegirCapa(1)" class="icon2 sub_boton" title="1" alt="1">
+                                   <i class="mi_icons2">1</i>
+                                </a>
+                              </li> 
+         
+                              <li>
+                                <a id="subgrupo_botones_boton_capa2"  onclick="elegirCapa(2)" class=" icon2 sub_boton" title="2" alt="2">
+                                   <i class="mi_icons2 ">2</i>
+                                </a>
+                              </li> 
+
+                              <li>
+                                <a id="subgrupo_botones_boton_capa3" onclick="elegirCapa(3)" class=" icon2 sub_boton" title="3" alt="3">
+                                   <i class="mi_icons2 ">3</i>
+                                </a>
+                              </li> 
+                          </ul>
+                      </li> 
+
+
+                      <li>
+                        <a id="boton_delete_grupo"    class=" icon2   mi_h3_" title="eliminar" alt="eliminar">
+                          
+                        </a>
+                      </li> 
+
+                      
+
+                      <li>
+                        <a id="herramientas_grupo" class=" main icon2  mi_h4_ "  style="curso:move" title="" alt="">
+                         
+                        </a>
+                      </li> 
+                  </ul>
+                  <!--fin  herramienta -->
+                    
+
+
+          <!-- fin barra-->
+
+
 
                         
           <!-- inicio pagina -->
@@ -467,7 +606,10 @@ height: 35px;">
 
     <script src="js/vendor/jquery.js"></script>
     <script src="js/foundation.min.js"></script>
+
+
     <script src="js/jquery-ui.js"></script>
+    <script src="js/spectrum.js"></script>
      <script src="js/LineaConexion.js"></script>
     <script src="js/diagramaF1.js"></script>
     <script src="js/Flujo.js"></script>
@@ -481,6 +623,11 @@ height: 35px;">
 
     <script>
       $(document).foundation();
+
+
+
+  
+
 
 
 
@@ -636,11 +783,98 @@ $("body").attr("data-estado","2");
 
   
 
+/**************************************
+caja de herramientas 
+*/
+$herramientaBotones=$("#herramientas_grupo_botones");
+$herramientaBotones.draggable({
+    handle:"#herramientas_grupo",
+    drag:function(){
+      //$("#panel_tipo_color").spectrum("hide");
+    }
+    ,scroll:false
+  });
+
+
+$("#subgrupo_botones_boton_capa").hide();
 
 
 
+//evita la porpgacion
+$herramientaBotones.mousedown(function(e){
+  e.stopPropagation();
+  //return false;
+});
 
 
+
+  $( "#spinner" ).spinner({
+     min:1
+    
+    ,numberFormat: "n" 
+    
+    ,change:function(event, ui){
+      cambiarTamLetra();    
+
+    }
+
+    ,spin: function(event, ui){
+      cambiarTamLetra();
+    } 
+  });
+
+  $( "#spinner" ).blur(function(){
+    cambiarTamLetra();
+  });
+
+
+  function cambiarTamLetra(){
+  var valor= $( "#spinner" ).spinner("value");
+
+        if(!/[123456789][0-9]*/.test(valor))
+        {
+          valor=1;
+          $( "#spinner" ).spinner("value",1);
+        }
+
+
+        if(manejoFlujo.$elementoSeleccionado)
+        {
+          
+          manejoFlujo.$elementoSeleccionado.css("font-size",valor+"px");
+          manejoFlujo.$elementoSeleccionado.find("p.descripcion_observada").css("font-size",valor+"px"); 
+        }
+}
+
+
+//color 
+
+var color=$("#panel_tipo_color").spectrum({
+    color: "#f00"
+    ,showInitial: false    
+    ,chooseText: "Aceptar"
+    ,cancelText: "Cancelar"
+    ,showButtons: false
+    ,change: function(color) {
+      color.toHexString(); // #ff0000
+      
+  }
+
+  ,move: function(color) {
+    color.toHexString(); // #ff0000
+   
+
+     /* if($elementoSeleccionado.data("tipo")=="textarea")
+      {
+
+      $elementoSeleccionado.css("color",color.toHexString());
+    $elementoSeleccionado.find("textarea").css("color",color.toHexString());
+                
+    
+      }//fin de la valicion para text are
+    */
+  }
+});
 
 
 

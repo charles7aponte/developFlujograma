@@ -233,3 +233,130 @@ div[data-mielemento=n2] .punto4 ,div[data-mielemento=n3] .punto4
        
               }
 
+
+
+
+
+
+/**************************************/
+
+
+/*#contextMenuItems */
+#herramientas_grupo_botones {
+	
+	display: inline-block;
+	position: absolute;
+	z-index: 1000;
+	background-color: #235695;
+}
+
+#herramientas_grupo_botones .icon2 ,#botones_principales .icon2 {
+	
+	display: block;
+	/*
+	border: 1px solid #635C5C;
+	background-image: -webkit-gradient(linear,left top,left bottom,from(#FFFFFF),to(#BBC2F5));
+	background-image: -moz-linear-gradient(top,#FBFBFB,#ECECEC);
+	position: absolute;*/
+	width: 38px;
+	height: 38px;
+	
+	margin: 1px;
+	padding: 3;
+	-webkit-transition: top .30s ease-in-out;
+	-moz-transition: top .30s ease-in-out;
+	 transition: top .30s ease-in-out; 
+	/*box-shadow: 2px 2px 4px grey;*/
+	overflow: hidden;
+	text-align: center;
+}
+
+
+.active_icons{
+	background: #235695 !important;
+	color: black;
+}
+
+
+/************ menu movil ******************/
+
+#herramientas_grupo_botones .icon2:hover  {
+	cursor: pointer;
+	/*
+	background-image: -webkit-gradient(linear,left top,left bottom,from(#BEBEBE),to(#BBC2F5));
+	background-image: -moz-linear-gradient(top,#AEAEAE,#ECECEC);*/
+	text-decoration: none;
+	background-color: #2F73C6;
+	
+}
+
+
+ #herramientas_grupo_botones .main  {
+	width: 20px;
+	height: 38px;
+	margin: 0;
+	cursor: move !important;
+}
+
+#herramientas_grupo_botones .mi_icons ,#botones_principales .mi_icons{
+	font-size: 32px;
+	/* overflow: hidden; */
+	line-height: 0px;
+	
+}
+
+
+.mi_icons2{
+
+	font-size: 30px;
+	color:#F0F0EE;
+	
+
+	/* overflow: hidden; */
+	line-height: 30px;
+}
+
+
+.sub_boton{
+	background: #235695;
+}
+
+
+
+#herramientas_grupo_botones .panel_grupo_botones{
+
+	position: absolute;
+	top: 50px;
+	left: -50px;
+	background-color: #F4F4F4;
+	padding: 2px;
+	box-shadow: 2px 2px 4px grey;
+	border: 1px solid #999;
+	border-radius: 5px;
+	/*width: 100px;*/
+	height: auto;
+	width: 200px;
+	
+	background-image: -webkit-gradient(linear,left top,left bottom,from(#FFFFFF),to(#BBC2F5));
+	background-image: -moz-linear-gradient(top,#FBFBFB,#ECECEC);
+}
+
+#herramientas_grupo_botones .panel_grupo_botones:hover{
+	
+}
+
+#panel_editar_letras td{
+	 padding: 0px;
+	font-size: 0.875rem;
+	color: #61606D; 
+	border: none;
+	border-color: none;
+	text-align: center;
+}
+
+#panel_tipo_color{
+
+	height: 20px;
+	margin: 2px auto;
+}
+/************ fin menu movil ******************/
