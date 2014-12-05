@@ -9,6 +9,7 @@ function DiagramaF1 (){
 			,$c4:null
 
 			,$elemento:null // elmeen JQuery
+			,listasSVG:[]
 
 			//lineas conexion
 			,linea1:{$linea : null , $punto:null}
@@ -297,7 +298,7 @@ function DiagramaF1 (){
 
 			  		_self.$elemento.resizable({
 			        // autoHide: true 
-			          handles: "rotate, e, s, w, ne, se, sw, nw, all" 
+			          handles: "bton_edicion,n, e, s, w, ne, se, sw, nw, all" 
 			          ,resize:function(event, ui)
 			           {
 			           	  _self.actualizaLineaAgrupada(_self.$c1, _self.linea1);
@@ -310,10 +311,31 @@ function DiagramaF1 (){
 			        });
 
 
+
+
 		        _self.$elemento.resizable( "option", { disabled: true } );
 		        _self.$elemento.css({overflow:'visible'});
 		        _self.$elemento.addClass('padre_elemento');
 		        _self.$elemento.removeClass('ui-state-disabled');
+		        var $boton = _self.$elemento.find(".ui-resizable-bton_edicion");
+
+
+		        // maneja el aparecer la ventanan
+		        if($boton.length>0)
+		        {
+		        	$boton.html("<a onclick='return false' class='fi-background-color' title='editar' alt='editar'> </a>");
+		        	//abrir el cuadro de dialog
+		        	$boton.click(function(){
+		        		_self.$$padre.mostrarDialogoEdicion();
+
+		 
+		        	});
+
+
+		        }
+
+
+
 
 			  }		
 
@@ -384,7 +406,6 @@ function DiagramaF1 (){
 
 				var _self=this;
 	
-
 			  	if($c!=null &&  $$linea!=null
 			  	  && $$linea.$linea!=null 
 			  	  &&  $$linea.$punto!=null)
@@ -414,5 +435,31 @@ function DiagramaF1 (){
 
 
 			  }// fin de actualizaLineaAgrupada
+
+
+
+			   // ******************
+          // ***
+          //
+          ,cambiarColorDeFondo:function(color){
+
+          	var _seft =this;
+
+          	for(var i=0; i< _seft.listasSVG.length ; i++ )
+	          	{
+	          		_seft.listasSVG[i].attr({
+			          fill: color			         
+			     	 });
+
+
+	          	}	
+
+            var svg =_seft.$elemento.find("path");
+            if(svg.length>0)
+            {
+             svg.css({fill: color});
+            }
+
+         }
 	};
 };

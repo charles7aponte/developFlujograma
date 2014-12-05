@@ -11,8 +11,27 @@ function LineaConexion(){
 		,lineaRecta1:null
 		,lineaRecta:null
 
+
+		,$textoP:null
+
 		/// padrea
 		, $$padre:null
+
+
+		,borrar:function(){
+			if(_seft.$textoP)
+			{
+				_seft.$textoP.remove();	
+			}
+
+			 if(_seft.$elementoDOM )
+			 {
+			 	_seft.$elementoDOM.remove();
+
+			 }
+			
+		}
+
 		/*	
 		dibuja la linea de conexion..
 		*/	
@@ -20,19 +39,28 @@ function LineaConexion(){
 			
 			var _seft= this;
 			var $elemento = $("<svg class='linea_' id='uno' style='z-index:4;width:20px; height:20px;position:absolute; overflow: visible;'>");
+			_seft.$textoP = $("<p>gato</p>") ;
+
 			 _seft.$elementoDOM = $elemento;
 			_seft.$pagina.append($elemento);
+			_seft.$pagina.append(_seft.$textoP);
 
 			_seft.svgElemento = Snap($elemento[0]);
 	      	_seft.banderaSeleccionado =false;
 	      	_seft.lineaRecta1= _seft.svgElemento.line('0%','0%','100%','100%');
 	      	_seft.lineaRecta= _seft.svgElemento.line('0%','0%','100%','100%');
-      
+      		
+            
+
                 _seft.lineaRecta.attr({
                       fill: "#FDFEFA",
                       stroke: "#000",
                       strokeWidth: 3
                 });
+
+
+
+
 
                 _seft.lineaRecta1.attr({
                       fill: "#FDFEFA",
@@ -64,7 +92,7 @@ function LineaConexion(){
          	if(_seft.$$padre.estado!=2)
          		return true;
 
-		  console.log("click sobre la linea")
+		 ///console.log("click sobre la linea")
           		
           		_seft.$$padre.deseleccionaLineaConexion();
 
@@ -151,6 +179,22 @@ function LineaConexion(){
           }// fin function ->cambiarColorAnimacion
 
 
+
+
+          // ********************
+          // actualiza la posicion del  texto elemento 
+          , actualizaPosicionTexto: function(){
+             	if(_seft.$textoP)
+             	{
+
+             		
+             	}
+
+
+          }
+
+
+         
 
 
 	};

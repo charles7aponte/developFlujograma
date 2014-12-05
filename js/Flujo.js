@@ -6,8 +6,12 @@ function Flujo (idDOM){
 	 		,$paginaActual : $("#contenedor_principal_pag_1")
 	 		,listaPaginas:[ $("#contenedor_principal_pag_1")]
 	 		,estado:1/// qu se seleccion punte, lineas de conexion
+
+
 	 		,$lineaActual:null // linea hecha
 	 		,listaLineaConexion:[]
+	 		,listaElementos:[]
+
 	 		,$elementoSeleccionado:null // elmento selecccionado actualmente
 	 		,elementoN5:null // elmeenot de conexion entre paginas .. este se carga
 			,elementoN6:null // elmeenot de conexion entre paginas .. este se carga
@@ -143,6 +147,7 @@ function Flujo (idDOM){
 		    ,generarSVG:  function (seleccion,elemento){
 		      
 		          var _self=this;
+		          var listasSVG=[];
 
 		         var ss= Snap(elemento);
 		         var op1={
@@ -164,24 +169,31 @@ function Flujo (idDOM){
 		         var sc1=null;
 
 
+
+
 		         switch(seleccion){
 		            case "n1":
 		            sc1= ss.circle('50%','50%','49%').attr(op1);
-		           
+		           	listasSVG.push(sc1);
 		            break;
 		            
 		            case "n2":
 		            sc1= ss.rect('1%','15%','99%','72%','30%','30%').attr(op1);
+		            listasSVG.push(sc1);
 		            break;
 		            
 		            case "n3":
 		            sc1= ss.rect('1%','1%','99%','99%').attr(op1);
+		            listasSVG.push(sc1);
 		            break;
 		            
 		            case "n4":
 		            sc1= ss.rect('1%','5%','99%','75%').attr(op1);
+		           	listasSVG.push(sc1);
 		            sc1= ss.rect('1%','5%','15%','75%').attr(op1);
+		            listasSVG.push(sc1);
 		            sc1= ss.rect('85%','5%','15%','75%').attr(op1);
+		            listasSVG.push(sc1);
 		            break;
 		           
 		           
@@ -190,6 +202,7 @@ function Flujo (idDOM){
 		            	if( _self.elementoN5)
 		            	{
 		            		var n5Axiliar = _self.elementoN5.paper.clone();
+			            	listasSVG.push(n5Axiliar);
 			            	ss.append(n5Axiliar);		
 		            	}
 
@@ -199,6 +212,7 @@ function Flujo (idDOM){
 			            if( _self.elementoN6)
 			            	{
 			            		var n6Axiliar = _self.elementoN6.paper.clone();
+			            		listasSVG.push(n6Axiliar);
 				            	ss.append(n6Axiliar);		
 			            	}
 		            break;
@@ -207,6 +221,7 @@ function Flujo (idDOM){
 		                 if( _self.elementoN7)
 			            	{
 			            		var n7Axiliar = _self.elementoN7.paper.clone();
+			            		listasSVG.push(n7Axiliar);
 				            	ss.append(n7Axiliar);		
 			            	}
 		            break;
@@ -216,13 +231,17 @@ function Flujo (idDOM){
 		               if( _self.elementoN8)
 			            	{
 			            		var n8Axiliar = _self.elementoN8.paper.clone();
+			            		listasSVG.push(n8Axiliar);
 				            	ss.append(n8Axiliar);		
 			            	}
 		            break;
 
 		         }
 
+		         return listasSVG;
+
 		      }// fin funcion --> generar SVG
+
 
 
 
@@ -281,11 +300,14 @@ function Flujo (idDOM){
 
 			       var tipoElemento =ui.draggable.data("elemento")+"";
 
-			       var $nuevoElemento = $("<div width='100px' data-mielemento='"+tipoElemento+"' "+
+			       var $nuevoElemento = $("<div ' data-mielemento='"+tipoElemento+"' "+
 			       	+" data-descripcion='' data-registro=''  data-observacion=''  "
-			       +" height='100px' style='width:100px;height:100px; overflow:visible;cursor:pointer'>");
+			         +" data-personal='' data-resumen=''   "
+			       //	+" data-colortexto='#000' data-background='transparent'   data-font-size='12'  "
+			      // 	+" data-text-align='left'  data-svg-fondo='#ffffff' "
+			       	+"  style='overflow:visible;cursor:pointer'>");
 
-			       var $text  = $("<p class='descripcion_observada'>soy ele mejor de los gatos y no me voy a dejar vencer</p>" );
+			       var $text  = $("<div contentEditable='true' class='descripcion_observada'></div>" );
 			       var $textPersonaje  = $("<p class='descripcion_personaje'>personaje</p>" );
 			       var $nuevoSVG =  $("<svg width='100%' height='100%' style='width:100%;height:100%; overflow:visible'>");  
 			      
@@ -311,11 +333,7 @@ function Flujo (idDOM){
 
 
 			        //$nuevoElemento.data("idpagina",manejadorPaginas.$paginaActual.attr("id"));
-			        _self.generarSVG(tipoElemento,$nuevoSVG[0]);/// -->seleccionar elementos para la funcion 
-
-
-
-
+			        var listasSVG = _self.generarSVG(tipoElemento,$nuevoSVG[0]);/// -->seleccionar elementos para la funcion 
 
 
 
@@ -337,9 +355,12 @@ function Flujo (idDOM){
 
 			        var $$diagramaF1 = DiagramaF1();
 
+
+
 			        // convierte el nuevo elemento de diagrama en draggable
 			        $$diagramaF1.elementoToDraggable($nuevoElemento);
 			        $$diagramaF1.$$padre= _self;
+			        $$diagramaF1.listasSVG =listasSVG;
 
 			        $$diagramaF1.elemetoToResize($nuevoElemento);
 
@@ -358,6 +379,7 @@ function Flujo (idDOM){
 			        //evento al dar click y sin soltar
 			        _self.elementoToMousedown($nuevoElemento);
 
+			        _self.listaElementos.push($$diagramaF1);
 
 				       // listaElementos.push($nuevoElemento[0]);
 
@@ -389,13 +411,15 @@ function Flujo (idDOM){
 			        
 				          $nuevoElemento_seleccionado =$(this);// nuevo elemento seleccionado
 
+
 				          if(_self.$elementoSeleccionado)
 				          {
 				          //deseleccciona el elemento 
 				          _self.$elementoSeleccionado.resizable( "option", { disabled: true } );
 				          _self.$elementoSeleccionado.removeClass( "elemento_seleccionado" );
 				          _self.$elementoSeleccionado.removeClass('ui-state-disabled');
-				          _self.$elementoSeleccionado=null;                   
+				          //_self.$elementoSeleccionado=null;                   
+
 
 				          }
 
@@ -405,7 +429,21 @@ function Flujo (idDOM){
 				          _self.$elementoSeleccionado.resizable( "option", { disabled: false } );
 				          _self.$elementoSeleccionado.addClass( "elemento_seleccionado" );
 
-				          
+				          $herramientaBotones.css({
+				          	 top: _self.$elementoSeleccionado.position().top
+				          	,left: _self.$elementoSeleccionado.position().left
+				          })
+				          $herramientaBotones.show();
+
+				          	try{
+
+				             actualizarColorTexto(manejoFlujo.$elementoSeleccionado.data("colortexto"));
+							 actualizarColorFondo(manejoFlujo.$elementoSeleccionado.data("background"))
+							 actualizarAlinecionEnPanel();
+							 actualizarColorFOndoSVG(manejoFlujo.$elementoSeleccionado.data("svg-fondo"))
+				          	}
+				          	catch(e){}
+
 				         e.stopPropagation();
 			        });
 			      
@@ -413,65 +451,81 @@ function Flujo (idDOM){
 
 			      // el doble click 
 			       $diagramaNuevo.dblclick(function(e){
-			       		$( "#dialog_diagrama" ).show();
+			       	
+			       	$diagramaNuevo.find(".descripcion_observada").focus();
 
-			       		var descripcion = _self.$elementoSeleccionado.data("descripcion");	
-			       		var registro = _self.$elementoSeleccionado.data("registro");
-			       		var observacion = _self.$elementoSeleccionado.data("observacion");
-
-			       		$("#dialogo_descripcion").val(descripcion);
-						$("#dialogo_registro").val(registro);
-						$("#dialogo_observacion").val(observacion);
-
-						// manejo de dialog para guardad los datos
-			       		$( "#dialog_diagrama" ).dialog(
-							{ buttons: [ 
-									{ text: "Aceptar",
-									click: function()
-										{ 
-
-											descripcion =$("#dialogo_descripcion").val();
-											registro = $("#dialogo_registro").val();
-											observacion = $("#dialogo_observacion").val();
-
-
-									       	_self.$elementoSeleccionado.data("descripcion", descripcion);	
-								       		_self.$elementoSeleccionado.data("registro", registro);
-								       		_self.$elementoSeleccionado.data("observacion", observacion);
-
-								       		$diagramaNuevo.find("p.descripcion_observada").html(descripcion);
-
-											$( this ).dialog( "close" ); 
-										} 
-									}
-									,
-									{ text: "Cancelar",
-									click: function()
-										{ $( this ).dialog( "close" ); 
-										} 
-									}			
-								] 
-							
-							,show: {
-						        effect: "blind",
-						        duration: 500
-						      }
-
-						    ,hide: {
-						        effect: "clip",
-						        duration: 200
-						      }
-						
-						});// fin del creciona popup
-
-
+			       	//_self.mostrarDialogoEdicion();
 
 			       });// fom del evento doble click
+
+
+			       // perdica de foco en el resumen
+			       	$diagramaNuevo.find(".descripcion_observada").blur(function(e){
+			       		$diagramaNuevo.data("resumen",$diagramaNuevo.find(".descripcion_observada").html() );
+			       });// fom del evento doble click
+
 
 			  }// fin -->elementoToMousedown()
 
 
+			  // *************************
+			  // llama e diagolog de eidcion 
+			  // 
+			  ,mostrarDialogoEdicion:function(){
 
+					$( "#dialog_diagrama" ).show();
+
+				       		var descripcion = _self.$elementoSeleccionado.data("descripcion");	
+				       		var registro = _self.$elementoSeleccionado.data("registro");
+				       		var observacion = _self.$elementoSeleccionado.data("observacion");
+
+				       		$("#dialogo_descripcion").val(descripcion);
+							$("#dialogo_registro").val(registro);
+							$("#dialogo_observacion").val(observacion);
+
+							// manejo de dialog para guardad los datos
+				       		$( "#dialog_diagrama" ).dialog(
+								{ buttons: [ 
+										{ text: "Aceptar",
+										click: function()
+											{ 
+
+												descripcion =$("#dialogo_descripcion").val();
+												registro = $("#dialogo_registro").val();
+												observacion = $("#dialogo_observacion").val();
+
+
+										       	_self.$elementoSeleccionado.data("descripcion", descripcion);	
+									       		_self.$elementoSeleccionado.data("registro", registro);
+									       		_self.$elementoSeleccionado.data("observacion", observacion);
+
+									       		//_self.$elementoSeleccionado.find("p.descripcion_observada").html(descripcion);
+
+												$( this ).dialog( "close" ); 
+											} 
+										}
+										,
+										{ text: "Cancelar",
+										click: function()
+											{ $( this ).dialog( "close" ); 
+											} 
+										}			
+									] 
+								
+								,show: {
+							        effect: "blind",
+							        duration: 500
+							      }
+
+							    ,hide: {
+							        effect: "clip",
+							        duration: 200
+							      }
+							
+							});// fin del creciona popup
+
+
+			  }// fin funciton--> mostrarDialogoEdicion
 
 
 
@@ -762,6 +816,7 @@ function Flujo (idDOM){
 						_self.$elementoSeleccionado.resizable( "option", { disabled: true } );
 						_self.$elementoSeleccionado.removeClass( "elemento_seleccionado" );
 						_self.$elementoSeleccionado.removeClass('ui-state-disabled');
+						
 						_self.$elementoSeleccionado=null;
 
 						//oculta la caja de herramientas
@@ -808,6 +863,7 @@ function Flujo (idDOM){
 		      	var $puntos = $(".punto_moviblefin ,.punto_movibleinicio");
   		      //	var ancho=_self.$lineaActual.width();
 	           // var alto= _self.$lineaActual.height();
+
 
 
 		      	$puntos.draggable({
@@ -1067,15 +1123,140 @@ function Flujo (idDOM){
 
 		     ,deseleccionarTodosLineas:function(){
 		     	var _self= this;
-		     	for(var i=0; _self.listaLineaConexion.length ; i++)
+
+		     	for(var i=0; i< _self.listaLineaConexion.length ; i++)
 		     	{
 		     		_self.listaLineaConexion[i].eliminarSeleccionado();
 
 
 		     	}
 		     	
-		     }
+		     }/// funcion --s>
+
+
+		     // ******************
+		     // elinnia la conexiones  actual..
+		     //
+		     ,eliminarLinea:function()
+		     {
+		     	var _self= this;
+		     	if(_self.lineaConexionSeleccionada)
+		     	{
+		     		for(var i=0; i< _self.listaLineaConexion.length ; i++)
+		     		{
+		     			if(_self.listaLineaConexion[i]== _self.lineaConexionSeleccionada )
+		     			{
+		     				_self.lineaConexionSeleccionada.borrar();
+		     				_self.listaLineaConexion.splice(i,1);
+
+		     				_self.lineaConexionSeleccionada=null;
+		     				_self.$lineaActual=null;
+
+		     			}
+		     		}// fin de for
+
+		     	}
+
+		     }// fin function -->eliminarLinea
+
+
+
+		     /// *********************
+		     //  eliminar elemento diagrama 
+		     // ***********
+		     ,eliminarDiagramaF1:function(){
+		     	var _self=this;
+
+		     	for(var i = 0; i< _self.listaElementos.length ; i++ )
+		     	{
+
+		     		if(_self.$elementoSeleccionado && 
+		     			_self.$elementoSeleccionado[0] == _self.listaElementos[i].$elemento[0] )
+		     		{
+
+		     			_self.listaElementos[i].$elemento.remove();
+		     			_self.listaElementos.splice(i,1);
+		     			_self.$elementoSeleccionado=null;
+		     			$herramientaBotones.hide();
+		     		}
+
+		     	}
+
+		     }// function -->eliminarDiagramaF1 
+
+
+		   // ********************
+		   // buscar LIneaAconexion
+		   // 
+		   ,getDiagramaF1:function()
+		   {
+
+		     
+		     	var _self=this;
+
+		     	for(var i = 0; i< _self.listaElementos.length ; i++ )
+		     	{
+
+		     		if(_self.$elementoSeleccionado && 
+		     			_self.$elementoSeleccionado[0] == _self.listaElementos[i].$elemento[0] )
+		     		{
+		     			return  _self.listaElementos[i];
+		     		}
+
+		     	}
+
+		     	return null;
+		     
+
+		   } // fin de la funcion --->
+
+
+
+		  // *************************
+		  // llama e diagolog de eidcion 
+		  // 
+		  ,mostrarDialogoLinea:function(){
+
+					$( "#dialog_configuracion_linea" ).show();
+
+				       	
+							// manejo de dialog para guardad los datos
+				       		$( "#dialog_configuracion_linea" ).dialog(
+								{ buttons: [ 
+										{ text: "Aceptar",
+										click: function()
+											{ 
+
+											
+												$( this ).dialog( "close" ); 
+											} 
+										}
+										,
+										{ text: "Cancelar",
+										click: function()
+											{ $( this ).dialog( "close" ); 
+											} 
+										}			
+									] 
+								
+								,show: {
+							        effect: "blind",
+							        duration: 500
+							      }
+
+							    ,hide: {
+							        effect: "clip",
+							        duration: 200
+							      }
+							
+							});// fin del creciona popup
+
+
+			  }// fin funciton--> mostrarDialogoEdicion
+
+ 	
 
 	 }
 
 };
+

@@ -43,20 +43,6 @@ para de los cuadritos
 }
 
 
-.ui-resizable-n {
-	
-	cursor: n-resize;
-	outline: 1px solid #669;
-	background: #fff;
-	border-radius: 0;
-	top: 0%;
-	left: 50%;
-	width: 8px;
-	height: 8px;
-	margin-top: -4px;
-	margin-left: -4px;
-	z-index: 10001;
-}
 
 
 
@@ -140,6 +126,72 @@ para de los cuadritos
 	
 
 }
+
+div[data-mielemento] .ui-resizable-bton_edicion>a{
+	color: #F1F1EF;
+}
+div[data-mielemento] .ui-resizable-bton_edicion:hover{
+	opacity: 1;
+}
+
+div[data-mielemento] .ui-resizable-bton_edicion{
+	opacity: 0.6;
+	line-height: 0.1;
+	height: 27px;
+	width: 30px;
+	border-radius: 7px;
+	top: -36px;
+	right: -5px;
+
+	margin: 1px;
+	overflow: hidden;
+	text-align: center;
+	font-size: 28px;
+	/*background: rgb(231, 231, 231);
+	color: rgb(35, 86, 149);
+	
+	*/
+	border-radius: 6px;
+	padding: 1px;
+	vertical-align: middle;
+	box-shadow: 2px 2px 5px #999;
+	position: absolute;
+
+			background-color: #284570;
+						background-image: -moz-linear-gradient(top, #5683b1, #235695);
+						background-image: -ms-linear-gradient(top, #5683b1, #235695);
+						background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#5683b1), to(#235695));
+						background-image: -webkit-linear-gradient(top, #5683b1, #235695);
+						background-image: -o-linear-gradient(top, #5683b1, #235695);
+						background-image: linear-gradient(top, #5683b1, #235695);
+						background-repeat: repeat-x;
+						filter: progid:dximagetransform.microsoft.gradient(GradientType=0, StartColorStr='#5683B1', EndColorStr='#235695');
+						border-color: #235695 #235695 #003580;
+						border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+						filter: progid:dximagetransform.microsoft.gradient(enabled=false);
+						color: #fff;
+
+
+}
+
+div[data-mielemento=n1]{
+	width: 54px;
+	height: 54px;
+}
+
+div[data-mielemento=n2]{
+	width: 72px;
+	height: 64px;
+}
+
+div[data-mielemento=n3] , div[data-mielemento=n4],div[data-mielemento=n5],div[data-mielemento=n6],div[data-mielemento=n7]
+,div[data-mielemento=n8]{
+	width: 150px;
+	height: 150px;
+}
+
+
+
 
 
 /*n1*/
@@ -242,31 +294,29 @@ div[data-mielemento=n2] .punto4 ,div[data-mielemento=n3] .punto4
 
 
 /*#contextMenuItems */
-#herramientas_grupo_botones {
+#herramientas_grupo_botones 
+,#herramientas_grupo_botones2 {
 	
 	display: inline-block;
 	position: absolute;
 	z-index: 1000;
-	background-color: #235695;
+	background-color: transparent;
 }
 
-#herramientas_grupo_botones .icon2 ,#botones_principales .icon2 {
+#herramientas_grupo_botones .icon2 ,#botones_principales .icon2,
+#herramientas_grupo_botones2 .icon2 ,#botones_principales2 .icon2 {
 	
 	display: block;
-	/*
-	border: 1px solid #635C5C;
-	background-image: -webkit-gradient(linear,left top,left bottom,from(#FFFFFF),to(#BBC2F5));
-	background-image: -moz-linear-gradient(top,#FBFBFB,#ECECEC);
-	position: absolute;*/
 	width: 38px;
 	height: 38px;
-	
 	margin: 1px;
 	padding: 3;
 	-webkit-transition: top .30s ease-in-out;
 	-moz-transition: top .30s ease-in-out;
 	 transition: top .30s ease-in-out; 
-	/*box-shadow: 2px 2px 4px grey;*/
+	/*
+	box-shadow: 2px 2px 4px grey;
+	*/
 	overflow: hidden;
 	text-align: center;
 }
@@ -280,25 +330,30 @@ div[data-mielemento=n2] .punto4 ,div[data-mielemento=n3] .punto4
 
 /************ menu movil ******************/
 
-#herramientas_grupo_botones .icon2:hover  {
+#herramientas_grupo_botones .icon2:hover
+,#herramientas_grupo_botones2 .icon2:hover  {
 	cursor: pointer;
 	/*
 	background-image: -webkit-gradient(linear,left top,left bottom,from(#BEBEBE),to(#BBC2F5));
 	background-image: -moz-linear-gradient(top,#AEAEAE,#ECECEC);*/
 	text-decoration: none;
-	background-color: #2F73C6;
+	background-color: #FFFFFF;
+	color:#5F89BD;
 	
 }
 
 
- #herramientas_grupo_botones .main  {
+ #herramientas_grupo_botones .main
+ ,#herramientas_grupo_botones2 .main  {
 	width: 20px;
 	height: 38px;
 	margin: 0;
 	cursor: move !important;
 }
 
-#herramientas_grupo_botones .mi_icons ,#botones_principales .mi_icons{
+#herramientas_grupo_botones .mi_icons ,#botones_principales .mi_icons
+,
+#herramientas_grupo_botones2 .mi_icons ,#botones_principales2 .mi_icons{
 	font-size: 32px;
 	/* overflow: hidden; */
 	line-height: 0px;
@@ -323,7 +378,8 @@ div[data-mielemento=n2] .punto4 ,div[data-mielemento=n3] .punto4
 
 
 
-#herramientas_grupo_botones .panel_grupo_botones{
+#herramientas_grupo_botones .panel_grupo_botones
+,#herramientas_grupo_botones2 .panel_grupo_botones{
 
 	position: absolute;
 	top: 50px;
@@ -345,7 +401,8 @@ div[data-mielemento=n2] .punto4 ,div[data-mielemento=n3] .punto4
 	
 }
 
-#panel_editar_letras td{
+#panel_editar_letras td,
+#panel_editar_letras2 td{
 	 padding: 0px;
 	font-size: 0.875rem;
 	color: #61606D; 
