@@ -311,6 +311,8 @@ function DiagramaF1 (){
 			        });
 
 
+			  	_self.$elemento.find(".ui-resizable-handle").attr("style","z-index:90");
+
 
 
 		        _self.$elemento.resizable( "option", { disabled: true } );
@@ -387,6 +389,13 @@ function DiagramaF1 (){
 			            ,scroll: false  
 			          });
 
+
+				if(_self.$$padre.estado!=1)
+				{
+					$diagramaNuevo.draggable('disable');
+				}
+				
+				
 
 			  }// fin --> elementoToDraggable
 

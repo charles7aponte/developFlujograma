@@ -354,12 +354,13 @@ function Flujo (idDOM){
 
 
 			        var $$diagramaF1 = DiagramaF1();
-
+			        $$diagramaF1.$$padre= _self;
 
 
 			        // convierte el nuevo elemento de diagrama en draggable
+			        
 			        $$diagramaF1.elementoToDraggable($nuevoElemento);
-			        $$diagramaF1.$$padre= _self;
+			        
 			        $$diagramaF1.listasSVG =listasSVG;
 
 			        $$diagramaF1.elemetoToResize($nuevoElemento);
@@ -429,7 +430,7 @@ function Flujo (idDOM){
 				          _self.$elementoSeleccionado.resizable( "option", { disabled: false } );
 				          _self.$elementoSeleccionado.addClass( "elemento_seleccionado" );
 
-				          $herramientaBotones.css({
+				          /*$herramientaBotones.css({
 				          	 top: _self.$elementoSeleccionado.position().top
 				          	,left: _self.$elementoSeleccionado.position().left
 				          })
@@ -442,7 +443,7 @@ function Flujo (idDOM){
 							 actualizarAlinecionEnPanel();
 							 actualizarColorFOndoSVG(manejoFlujo.$elementoSeleccionado.data("svg-fondo"))
 				          	}
-				          	catch(e){}
+				          	catch(e){}*/
 
 				         e.stopPropagation();
 			        });
@@ -451,8 +452,24 @@ function Flujo (idDOM){
 
 			      // el doble click 
 			       $diagramaNuevo.dblclick(function(e){
+			       
+
+			       	switch(_self.estado)
+			       	{
+
+			       		case 1:
+			       			$diagramaNuevo.find(".descripcion_observada").focus();
+			       		break;
+
+
+			       		case 2:
+			       			_self.cambioEstado(1);
+			       			$diagramaNuevo.find(".descripcion_observada").focus();
+			       		break;
+			       	}	
+			       
 			       	
-			       	$diagramaNuevo.find(".descripcion_observada").focus();
+			       
 
 			       	//_self.mostrarDialogoEdicion();
 
@@ -466,6 +483,21 @@ function Flujo (idDOM){
 
 
 			  }// fin -->elementoToMousedown()
+
+
+			  // *********************
+			  // cerrra diaglo de edicion
+			  //
+			  ,cerrarDialogEdicion:function(){
+
+			  	if($( "#dialog_diagrama" ).css("display")!="none")
+				  	{
+				  		$( "#dialog_diagrama" ).dialog('close');
+				  		
+				  	}	
+
+			  }
+
 
 
 			  // *************************
@@ -685,6 +717,8 @@ function Flujo (idDOM){
 									//punto_movibleinicio
  
 						      		ban_escribir=0;
+
+						      		e.stopPropagation();
 
 								}
 
@@ -1069,7 +1103,8 @@ function Flujo (idDOM){
 
 		     	var _self=this;
 		     	$( "#dialog_confirmacion_pagina" ).css({display:'block'});
-		     	console.log("se ");
+		    
+
 		     	 $( "#dialog_confirmacion_pagina" ).dialog({
 				      autoOpen: true,
 				      show: {
@@ -1255,6 +1290,80 @@ function Flujo (idDOM){
 			  }// fin funciton--> mostrarDialogoEdicion
 
  	
+
+
+ 		/// function maneja el cambio de estado
+ 		//
+ 		,cambioEstado:function(estado){
+ 			var _self= this;
+
+ 			_self.estado= estado;
+
+
+ 			switch(estado)
+ 			{
+
+ 				case 1:
+ 					$("#bton_estado1").addClass("miActivo");
+					$("#bton_estado2").removeClass("miActivo");
+					$(".punto_circle").hide();
+					$("body").attr("data-estado","1");
+					_self.enbledDragDiagrama(true);
+
+ 				break;
+
+
+ 				case 2:
+
+ 					_self.cerrarDialogEdicion();
+ 					  $("#bton_estado2").addClass("miActivo");
+					  $("#bton_estado1").removeClass("miActivo");
+					  $("body").attr("data-estado","2");
+					  _self.enbledDragDiagrama(false);
+
+ 				break;
+ 			}
+
+
+
+ 		}//fin de la funcion 
+
+
+
+
+	    ///*****************
+          // habliakta o desabilida el dragg de los diagramas 
+          ,enbledDragDiagrama: function(bool){
+          	var _self= this;
+          	for(var i=0; i< _self.listaElementos.length ; i++)
+          	{
+          		if(bool)
+          		{
+          			_self.listaElementos[i].$elemento.draggable('enable');
+          		}
+          		else{
+          			_self.listaElementos[i].$elemento.draggable('disable');
+          		}
+
+				          //deseleccciona el elemento 
+		          _self.listaElementos[i].$elemento.resizable( "option", { disabled: true } );
+		          _self.listaElementos[i].$elemento.removeClass( "elemento_seleccionado" );
+		          _self.listaElementos[i].$elemento.removeClass('ui-state-disabled');
+          	
+          	}
+
+
+          	// ELEMENTO SELECCIONADO
+          	if(_self.$elementoSeleccionado!=null && _self.$elementoSeleccionado)
+          	{
+ 
+
+				_self.$elementoSeleccionado.resizable( "option", { disabled: false } );
+				_self.$elementoSeleccionado.addClass( "elemento_seleccionado" );
+          	}
+
+          }// fin el funcion ->enbledDragDiagrama
+
 
 	 }
 

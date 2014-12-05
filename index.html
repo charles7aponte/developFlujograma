@@ -133,9 +133,9 @@
       padding: 2px 3px;
       margin-left: 4px;
       border-radius: 5px;
-      width: 38px;
-      margin-top: 2px;
-      height: 40px;
+      width: 30px;
+      margin-top: 8px;
+      height: 30px;
     }
 
     #botones_panel_superior>ul>li>a:hover{
@@ -147,15 +147,17 @@
 
   #botones_panel_superior>ul>li>a.miActivo, a.miActivo
   {
-   background: #008CBA;
+  background: #124759;
   color: #E5F3F8;
+  border: none;
+  opacity: 0.8;
   }
   
-  #botones_panel_superior>ul>li>a.miActivo:hover, a.miActivo:hover
+  /*#botones_panel_superior>ul>li>a.miActivo:hover, a.miActivo:hover
   {
  color: #5F89BD;
       background:#fff;
-  }
+  }*/
 
 
 
@@ -213,7 +215,18 @@
         opacity: 0 !important;
         z-index: 1 !important;
        }
+        
+       body[data-estado='1']
+         .ui-resizable-handle
+        {
 
+        }
+
+      body[data-estado='2']
+         .ui-resizable-handle
+        {
+          display: none !important
+        }
 
 
       body[data-estado='2']
@@ -305,36 +318,63 @@
 
 
           <section class="middle tab-bar-section">
-      <div class="button-bar" id="botones_panel_superior">
-        <ul class="button-group [radius round]">
-          <li class="">
-            <a href="#" id="bton_estado1" onclick="false" class="miActivo [tiny small large] button [alert success secondary] [disabled]">
-            <span class="fi-comments"></span>
-            </a></li>
-            
-            <li><a href="#" onclick="false" id="bton_estado2" class="[tiny small large] button [alert success secondary] [disabled]"><span class="fi-share">
-                
-              </span></a>
-            </li>
+        <div class="button-bar" id="botones_panel_superior">
+          <ul class="button-group [radius round]">
+            <li class="">
+              <a href="#" id="bton_estado1" onclick="false" 
+              class="botonFondo miActivo [tiny small large] button [alert success secondary] [disabled]"
+              style="background-image:url('img/icon1.png'); background-size: 71%;
+                background-repeat: no-repeat;
+                background-position: 50%;"    
+              >
+              
+              </a></li>
+              
+              <li>
+                <a href="#" onclick="false" id="bton_estado2" 
+                class="botonFondo [tiny small large] button [alert success secondary] [disabled]"
+                style="background-image:url('img/icon2.png') ;background-size: 71%;
+                  background-repeat: no-repeat;
+                  background-position: 50%;"
+                  >
+                </a>
+              </li>
 
-            <li><a href="#"  onclick="false" id="bton_option_pagina" class="[tiny small large] button [alert success secondary] [disabled]"><span class="fi-page-multiple">
-                
-              </span></a>
-            </li>
-      
-        </ul>
-        <!--
+              <li>
+                  <a href="#"  onclick="false" id="bton_option_pagina" 
+                  class=" botonFondo [tiny small large] button [alert success secondary] [disabled]"
+                    style="background-image:url('img/icon2.png')"
+                  >
+                     
+                  </a>
+              </li>
+        
+          </ul>
+          <!--
 
-        <ul class="button-group [radius round]">
-          <li><a href="#" class="[tiny small large] button [alert success secondary] [disabled]">Button 1</a></li>
-          <li><a href="#" class="[tiny small large] button [alert success secondary] [disabled]">Button 2</a></li>
-          <li><a href="#" class="[tiny small large] button [alert success secondary] [disabled]">Button 3</a></li>
-        </ul>
-      -->
-      </div>
+          <ul class="button-group [radius round]">
+            <li><a href="#" class="[tiny small large] button [alert success secondary] [disabled]">Button 1</a></li>
+            <li><a href="#" class="[tiny small large] button [alert success secondary] [disabled]">Button 2</a></li>
+            <li><a href="#" class="[tiny small large] button [alert success secondary] [disabled]">Button 3</a></li>
+          </ul>
+        -->
+        </div>
 
-            <h1 class="title"></h1>
-          </section>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         <!--
           <section class="right-small">
@@ -904,21 +944,14 @@ $("#bton_elimina_pagina").click(function(e){
 
 
 $("#bton_estado1").click(function(e){
-  manejoFlujo.estado=1;
-  $("#bton_estado1").addClass("miActivo");
-  $("#bton_estado2").removeClass("miActivo");
-  $(".punto_circle").hide();
-  $("body").attr("data-estado","1");
-
+  manejoFlujo.cambioEstado(1);
   manejoFlujo.deseleccionarTodosLineas();
 });
 
 
 $("#bton_estado2").click(function(e){
-  manejoFlujo.estado=2;
-  $("#bton_estado2").addClass("miActivo");
-  $("#bton_estado1").removeClass("miActivo");
-$("body").attr("data-estado","2");
+  manejoFlujo.cambioEstado(2);
+
 });
 
 
