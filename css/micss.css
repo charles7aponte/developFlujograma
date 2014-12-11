@@ -126,14 +126,18 @@ para de los cuadritos
 	
 }
 
-div[data-mielemento] .ui-resizable-bton_edicion>a{
+div[data-mielemento] .ui-resizable-bton_edicion>a, 
+div[data-mielemento] .ui-resizable-bton_ver_personal>a {
 	color: #F1F1EF;
 }
-div[data-mielemento] .ui-resizable-bton_edicion:hover{
+div[data-mielemento] .ui-resizable-bton_edicion:hover,
+div[data-mielemento] .ui-resizable-bton_ver_personal:hover{
+
 	opacity: 1;
 }
 
-div[data-mielemento] .ui-resizable-bton_edicion{
+div[data-mielemento] .ui-resizable-bton_edicion,
+div[data-mielemento] .ui-resizable-bton_ver_personal{
 	opacity: 0.6;
 	line-height: 0.1;
 	height: 27px;
@@ -171,6 +175,11 @@ div[data-mielemento] .ui-resizable-bton_edicion{
 						color: #fff;
 
 
+}
+
+
+div[data-mielemento] .ui-resizable-bton_ver_personal{
+ right: 30px !important;	
 }
 
 div[data-mielemento=n1]{

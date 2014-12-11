@@ -11,6 +11,8 @@ function Flujo (idDOM){
 	 		,listaLineaConexion:[]
 	 		,listaElementos:[]
 
+	 		,ban_escribir:0// bandera maneja las conexiones en orde
+
 	 		,$elementoSeleccionado:null // elmento selecccionado actualmente
 	 		,elementoN5:null // elmeenot de conexion entre paginas .. este se carga
 			,elementoN6:null // elmeenot de conexion entre paginas .. este se carga
@@ -303,7 +305,7 @@ function Flujo (idDOM){
 
 			       var $nuevoElemento = $("<div ' data-mielemento='"+tipoElemento+"' "+
 			       	+" data-descripcion='' data-registro=''  data-observacion=''  "
-			         +" data-personal='' data-resumen=''  data-personal='' "
+			         +" data-personal='' data-resumen=''  data-ver_personal='S' "
 			       //	+" data-colortexto='#000' data-background='transparent'   data-font-size='12'  "
 			      // 	+" data-text-align='left'  data-svg-fondo='#ffffff' "
 			       	+"  style='overflow:visible;cursor:pointer'>");
@@ -460,7 +462,7 @@ function Flujo (idDOM){
 			      // el doble click 
 			       $diagramaNuevo.dblclick(function(e){
 			       
-
+alert("si gato")
 			       	switch(_self.estado)
 			       	{
 
@@ -638,7 +640,6 @@ function Flujo (idDOM){
 
 		      ,creacionLineasMouse:function($elementos){
 
-		      	var ban_escribir=0;
 		      	var _self= this;
 				var posicionesInicio={top:null, left:null};		      			
 
@@ -656,13 +657,19 @@ function Flujo (idDOM){
 
 				
 					if(_self.estado!=2)
-						return true;
+						{
+							_self.ban_escribir=0;
+							return true;
+						}
 
 							var $elementoEvent= $(e.target);
 
 							//ban_escribir=0;
-							if(ban_escribir!=0)
-								return true;
+							if(_self.ban_escribir!=0)
+								{
+					      		   	
+					      		   	return true;
+					      		   }
 
 
 
@@ -672,7 +679,7 @@ function Flujo (idDOM){
 								
 								console.log("mousedown -->")
 
-								ban_escribir=1;
+								_self.ban_escribir=1;
 								var x = e.clientX - _self.$paginaActual.offset().left-7;
 					        	var y = e.clientY - _self.$paginaActual.offset().top-5;
 
@@ -717,7 +724,7 @@ function Flujo (idDOM){
 							
 										
 						      	
-						 			ban_escribir=2;
+						 			_self.ban_escribir=2;
 						      	
 
 						      		var x = e.clientX - _self.$paginaActual.offset().left-7;
@@ -749,6 +756,7 @@ function Flujo (idDOM){
 						 			_self.actualizacionBolasLinea(_self,_self.$lineaActual,e, null);
 						 			
 						 			_self.$lineaActual.show();
+						 			_self.$lineaActual.click();//actuliza la animacion
 
 
 						 			}
@@ -784,16 +792,20 @@ function Flujo (idDOM){
 				// evento de manejo soltar	
 		      	$elementos.on('mouseup',function(e){
 
-		      		console.log("mouse up -->"+ban_escribir);
+		      		console.log("mouse up -->"+_self.ban_escribir);
 		      		   if(_self.estado!=2)
-						return true;
+		      		   {
+		      		   	_self.ban_escribir=0;
+		      		   	return true;
+		      		   }
+						
 		      		
-		      		 	if(ban_escribir==1)
+		      		 	if(_self.ban_escribir==1)
 		      		 	{
-		      		 		ban_escribir=2;
+		      		 		_self.ban_escribir=2;
 		      		 	}
 		      		 	// segunda vez que se suelta la segunda esfera
-		      		 	else if(ban_escribir==2)
+		      		 	else if(_self.ban_escribir==2)
 		      		 	{
 		      		 		console.log("mouse up 2");
 
@@ -807,10 +819,10 @@ function Flujo (idDOM){
 		      		 			
 		      		 			console.log("se elimio la linea..");
 		      		 		}
-		      		 		ban_escribir=0;
+		      		 		_self.ban_escribir=0;
 		      		 	}
 		      		 	else{
-		      		 		ban_escribir=0;
+		      		 		_self.ban_escribir=0;
 		      		 	}
 		      		 	//console.log("un elemento . up.");
 		      			//console.log(e);

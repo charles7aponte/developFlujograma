@@ -405,6 +405,11 @@ function DiagramaF1 (){
 
 
 
+	 			_self.$text.on('mousedown',function(e){
+
+	 				e.stopPropagation();
+	 			});
+
 	 			_self.$text.on('blur',function(e){
 
 	 				_self.estadoFocus= 0;
@@ -494,8 +499,10 @@ function DiagramaF1 (){
 		        _self.$elemento.css({overflow:'visible'});
 		        _self.$elemento.addClass('padre_elemento');
 		        _self.$elemento.removeClass('ui-state-disabled');
-		        var $boton = _self.$elemento.find(".ui-resizable-bton_edicion");
 
+
+		        //creacion del bton de edicion detallada
+		        var $boton = _self.$elemento.find(".ui-resizable-bton_edicion");
 
 		        // maneja el aparecer la ventanan
 		        if($boton.length>0)
@@ -507,14 +514,85 @@ function DiagramaF1 (){
 
 		 
 		        	});
+		        }//fin del creacion del bton detallado
 
 
-		        }
 
+
+
+
+		        //creacion del bton de edicion detallada
+		        var $botonVerPersonal = _self.$elemento.find(".ui-resizable-bton_ver_personal");
+
+		        // maneja el aparecer la ventanan
+		        if($botonVerPersonal.length>0)
+		        {
+		        	$botonVerPersonal.html("<a onclick='return false' class='fi-results-demographics' title='personal' alt='Personal'> </a>");
+		        	
+		        	$botonVerPersonal.click(function(){
+		        		var $padre =  $botonVerPersonal.parent();
+		        		_self.actualizaEstadoVerPersonal(true);
+
+		        	});
+
+
+		        	//actualiza el ver personal solo parte visual ...
+	        		_self.actualizaEstadoVerPersonal(false);
+
+		        }//fin del creacion del bton detallado
 
 
 
 			  }		
+
+
+
+			  // *****************
+			  // function -> actualiza el estado de ver personal
+				//@param actulizaDatos  boolean true si se debe actualiza los datos y false solo la parte visual
+			  ,actualizaEstadoVerPersonal: function(actulizaDatos){
+
+			  		var _self =this;
+			  		var $padre= _self.$elemento;
+			  		var personalActivo=$padre.data('ver_personal');
+
+			  		if(actulizaDatos)
+			  		{
+			  			switch(personalActivo)
+			  			{
+			  				case "S":
+			  					personalActivo='N';
+								$padre.data('ver_personal','N');
+			  				break;
+
+			  				case "N":
+			  					personalActivo='S';
+								$padre.data('ver_personal','S');
+			  				break;
+			  			}
+			  		}
+
+
+			  			//ejecuta la parte visual ... confirmando
+		        		if(personalActivo=="N")
+		        		{
+		        			$padre.find(".descripcion_personaje").hide( "slide", { direction: "down" }, "slow" , function(e){
+		        				//confirmacion
+		        				$padre.data('ver_personal','N');
+		        				$padre.find(".descripcion_observada").removeClass("descripcio_observada_con_persona");
+		        			});
+
+		        		}
+		        		else{
+		        			$padre.find(".descripcion_personaje").show( "slide", { direction: "down" }, "slow" , function(e){
+		        				//confrmacion
+		        				$padre.data('ver_personal','S');
+		        				$padre.find(".descripcion_observada").addClass("descripcio_observada_con_persona");
+		        				
+		        			});
+		        		}
+
+			  }//fin  function --> actualizaEstadoVerPersonal
 
 
 			  // *****************************
