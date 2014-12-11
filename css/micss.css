@@ -118,8 +118,8 @@ para de los cuadritos
 /* elemento de posiciones  */
 .puntos_conexion
 {
-	width: 10px;
-	height: 10px;	
+	width: 14px;
+	height: 14px;	
 	position: absolute;
 	background-image:url('../img/cruz.gif');
 	background-size: 100% 100%;
@@ -270,6 +270,14 @@ div[data-mielemento=n2] .punto4 ,div[data-mielemento=n3] .punto4
 	box-shadow:         0px 0px 14px 0px rgba(50, 154, 50, 0.84);
 	background-color:  rgba(50, 154, 50, 0.84);
 } 
+
+
+.puntos_conexion:hover{
+
+	background-image: url('../img/cruz2.gif');
+} 
+
+
 
      .punto_circle{
         background:#DBDCD6;
@@ -457,3 +465,56 @@ cursor: pointer;
 }
 
 
+/***** botnes ****/
+#bton_nueva_pagina,
+#bton_elimina_pagina
+{
+	padding: 5px 15px;
+	background-color: #43ac6a !important;
+	border-color: #368a55 !important;
+	color: white !important;
+}
+
+#bton_nueva_pagina>span,
+#bton_elimina_pagina>span
+{
+
+
+}
+
+
+#dialog_diagrama{
+	width: 100% !important;
+}
+
+
+#dialog_diagrama textarea{
+	margin: 0px !important;
+}
+
+.reveal-modal {
+    padding: 2;
+    max-width: 350px;
+
+}
+
+
+
+.descripcion_linea{
+	position: absolute;
+	color: #06821C;
+	background: rgba(35, 86, 149, 0.53);
+	color: white;
+	padding: 2px 5px;
+	z-index: 200;
+}
+
+
+.descripcion_linea:focus{
+	background-color:#e7e7e7; 
+	color: #36372F;
+}
+
+.descripcion_linea:hover{
+	cursor: default;
+}

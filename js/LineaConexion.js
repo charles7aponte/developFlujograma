@@ -38,10 +38,12 @@ function LineaConexion(){
 		,dibujar:function(){
 			
 			var _seft= this;
-			var $elemento = $("<svg class='linea_' id='uno' style='z-index:4;width:20px; height:20px;position:absolute; overflow: visible;'>");
-			_seft.$textoP = $("<p>gato</p>") ;
+			var $elemento = $("<svg class='linea_' data-puntos_punto_moviblefin='' "+
+								"data-puntos_movibleinicio='' style='z-index:4;width:20px; height:20px;position:absolute; overflow: visible;' "
+								+" data-label='' >");
+			_seft.$textoP = $("<div  contenteditable='true' class='descripcion_linea'></div>") ;
 
-			 _seft.$elementoDOM = $elemento;
+			
 			_seft.$pagina.append($elemento);
 			_seft.$pagina.append(_seft.$textoP);
 
@@ -49,7 +51,8 @@ function LineaConexion(){
 	      	_seft.banderaSeleccionado =false;
 	      	_seft.lineaRecta1= _seft.svgElemento.line('0%','0%','100%','100%');
 	      	_seft.lineaRecta= _seft.svgElemento.line('0%','0%','100%','100%');
-      		
+
+      		 _seft.$elementoDOM = $elemento;
             
 
                 _seft.lineaRecta.attr({
@@ -65,15 +68,104 @@ function LineaConexion(){
                 _seft.lineaRecta1.attr({
                       fill: "#FDFEFA",
                       stroke: "#7088DE",
-                      strokeWidth: 1
+                      strokeWidth: 5
                 });
+
+
 
 
 
             //eventos a la linea
            _seft.eventoClick();
+           _seft.actualizoPosicionTexto();
 
 		}// fin de la function->dibujar
+
+
+
+
+			// *************
+			// retorna sise puede eliminar o no 
+			// @return boolean true si se puede , o false si no .
+			//
+			, sePuedeEliminar:function(){
+				
+				if($(".punto_circle").css("display")=="none")
+				{
+					return false;
+				}
+				return true;
+
+			}// function -->sePuedeEliminar	
+
+
+			// ****************************
+			// eliminar el elemento
+			// **************************
+			,eliminarLinea:function(){
+
+				var _seft= this;
+
+				_seft.$elementoDOM.effect( "explode", {},100, function(e){
+					
+
+					$(".punto_circle").hide();
+
+					_seft.$$padre.lineaConexionSeleccionada=null;
+					_seft.$$padre.$lineaActual=null;
+
+					var posicion = _seft.$$padre.listaLineaConexion.indexOf(_seft);
+
+					if(posicion!=-1)
+					{
+						_seft.$$padre.listaLineaConexion.splice(posicion,1);
+						_seft.$elementoDOM.remove();
+
+
+					}
+					else{
+						console.error("no existe la linea en listado listaLineaConexion");
+					}
+
+				});
+
+			}
+
+
+
+		// ************************
+		// actulizo la posicion del texto
+		//
+		,actualizoPosicionTexto: function(){
+			var _seft=this;
+
+			var x =_seft.$elementoDOM.css("left");
+			var y =_seft.$elementoDOM.css("top");
+
+			x= parseFloat(x) + _seft.$elementoDOM.width()/2;
+			
+
+
+			y= parseFloat(y) + _seft.$elementoDOM.height()/2;
+			
+
+			_seft.$textoP.css({'left':x, 
+								'top':y});
+
+
+			var letrasLabel= _seft.$textoP.html()+"";
+
+			if(letrasLabel.length>0)
+			{
+				_seft.$textoP.show();				
+			}
+			else{
+				_seft.$textoP.hide();
+			}
+
+
+		}
+
 
 
 		/*
@@ -85,24 +177,59 @@ function LineaConexion(){
 
 		var _seft=this;
 
-          //_seft.$elementoDOM.on('mouseup',function (e) {
-		  //$(document).on('mouseup',function (e) {
-         _seft.svgElemento.click(function (e) {
+		   _seft.$elementoDOM.on('mousedown',function (e) {
+		   	e.stopPropagation();
+		   });
+
+
+
+		 _seft.$elementoDOM.on('dblclick',function(e){
+		 	console.log("dblclick");
+		 	_seft.actualizoPosicionTexto();
+		 	_seft.$textoP.show();
+		 	_seft.$textoP.focus();
+			
+		 	e.stopPropagation();
+		 	return false;
+		 });
+
+
+		 // la etiqueta
+		 _seft.$textoP.mousedown(function(e){
+
+
+		 	e.stopPropagation();
+	
+		 });
+
+
+		 _seft.$textoP.on('blur',function(e){
+
+		 	_seft.$elementoDOM.data('label', _seft.$textoP.html()); 
+		 	_seft.actualizoPosicionTexto();
+		 });
+
+
+
+         _seft.$elementoDOM.on('click',function (e) {
 
          	if(_seft.$$padre.estado!=2)
          		return true;
 
-		 ///console.log("click sobre la linea")
           		
           		_seft.$$padre.deseleccionaLineaConexion();
-
+          	
+          		
           		_seft.$$padre.seleccionaLineaConexion(_seft);
 
 	                _seft.banderaSeleccionado=true;
 	                _seft.cambiarColorAnimacion(false);
 	                $puntos.show();
+
+
 	             
-	             
+	             e.stopPropagation();
+	             //return false;
 	          });
 
 
@@ -145,17 +272,20 @@ function LineaConexion(){
 
             if(_seft.banderaSeleccionado)
             {
+
+            		
                _seft.lineaRecta1.attr({
                       strokeWidth: 5
                   });
 
               var valores= { stroke: "#000", strokeWidth:3 };
+
                 if(cambioValores)
                 {
-                  // valores= { stroke: "#4DD261", strokeWidth:3 };
+                   valores= { stroke: "#4DD261", strokeWidth:3 };
                 }
                 else{
-                   //valores= { stroke: "#414DD8", strokeWidth:3 };
+                   valores= { stroke: "#414DD8", strokeWidth:3 };
                 }
 
                   	_seft.lineaRecta.animate(valores, 600, function(){
@@ -179,19 +309,7 @@ function LineaConexion(){
           }// fin function ->cambiarColorAnimacion
 
 
-
-
-          // ********************
-          // actualiza la posicion del  texto elemento 
-          , actualizaPosicionTexto: function(){
-             	if(_seft.$textoP)
-             	{
-
-             		
-             	}
-
-
-          }
+          
 
 
 

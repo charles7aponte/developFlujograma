@@ -8,6 +8,9 @@ function DiagramaF1 (){
 			,$c3:null
 			,$c4:null
 
+			,estadoFocus:0// indica si esta en edicion de texto interno	0 para no tiene el foco y 1 para si
+	 	
+
 			,$elemento:null // elmeen JQuery
 			,listasSVG:[]
 
@@ -42,12 +45,84 @@ function DiagramaF1 (){
 
 
 
+
+
+
+
+
+
+
+
+
 			,eventoDeCruz:function($punto1){
 				
 				var _self = this;
 				
 				if(!$punto1)
-					return false;
+					return true;
+
+
+				_self.$$padre.creacionLineasMouse($punto1,"punto")
+
+				$punto1.on('mousedown',function(e){
+					
+					console.log("mousedown de punto");
+
+								var $punto = _self.$pagina.find(".punto_movibleinicio");
+								
+								var tipoPuntoCirculo = $punto1.data("punto");
+								//var lineaActual =_self.ext_getLineaActual();
+								var lineaActual =_self.$$padre.$lineaActual;
+
+
+								switch(tipoPuntoCirculo){
+									case "punto1": 
+										_self.linea1.$linea= lineaActual;
+										_self.linea1.$punto= $punto;
+										console.log(1)
+									
+									break;
+
+									case "punto2": 
+										_self.linea2.$linea= lineaActual;
+										_self.linea2.$punto= $punto;
+										console.log(2)
+									break;
+
+									case "punto3": 
+										_self.linea3.$linea= lineaActual;
+										_self.linea3.$punto= $punto;
+										console.log(3)
+									break;
+
+									case "punto4": 
+										_self.linea4.$linea= lineaActual;
+										_self.linea4.$punto= $punto;
+
+
+
+										console.log(4)
+									break;
+								}
+
+
+
+							$punto1.removeClass("puntos_conexion_resaltados");
+							console.log("drop1.. satisfaccion");
+					
+						e.stopPropagation();
+
+				});
+
+
+
+
+
+
+
+
+
+
 
 
 				//dar propiedades de over
@@ -116,27 +191,47 @@ function DiagramaF1 (){
 								
 
 								var tipoPuntoCirculo = $punto1.data("punto");
+								//var lineaActual =_self.ext_getLineaActual();
+								var lineaActual =_self.$$padre.$lineaActual;
 								
+
 								switch(tipoPuntoCirculo){
 									case "punto1": 
-										_self.linea1.$linea= null;
-										_self.linea1.$punto= null;
+										if(_self.linea1.$linea &&  _self.linea1.$linea[0]== _self.$$padre.$lineaActual[0]
+											&&  	_self.linea1.$punto[0]==$punto)
+										{
+											_self.linea1.$linea=null;
+											_self.linea1.$punto=null;
+
+										}
 									
 									break;
 
 									case "punto2": 
-										_self.linea2.$linea= null;
-										_self.linea2.$punto= null;
+										if(_self.linea2.$linea &&  _self.linea2.$linea[0]== _self.$$padre.$lineaActual[0]
+												&&  	_self.linea2.$punto[0]==$punto)
+											{
+											_self.linea2.$linea= null;
+											_self.linea2.$punto= null;
+											}
 									break;
 
 									case "punto3": 
-										_self.linea3.$linea= null;
-										_self.linea3.$punto= null;
+										if(_self.linea3.$linea && _self.linea3.$linea[0]== _self.$$padre.$lineaActual[0]
+												&&  	_self.linea3.$punto[0]==$punto)
+											{
+											_self.linea3.$linea= null;
+											_self.linea3.$punto= null;
+											}
 									break;
 
-									case "punto4": 
-										_self.linea4.$linea= null;
-										_self.linea4.$punto= null;
+									case "punto4":
+										if(_self.linea4.$linea &&  _self.linea4.$linea[0]== _self.$$padre.$lineaActual[0]
+												&&  	_self.linea4.$punto[0]==$punto)
+											{ 
+											_self.linea4.$linea= null;
+											_self.linea4.$punto= null;
+										}
 									break;
 								}
 
@@ -288,6 +383,86 @@ function DiagramaF1 (){
 			}// fin de la funcion -->setDiagrama
 
 
+
+
+
+
+
+
+			/// *************
+	 		// function --> 
+	 		,eventosTexto:function($t){
+	 			var _self= this;
+	 			_self.$text = $t;
+
+
+
+	 			_self.$text.on('focus',function(e){
+
+	 				_self.estadoFocus= 1;
+
+	 			});// fi
+
+
+
+	 			_self.$text.on('blur',function(e){
+
+	 				_self.estadoFocus= 0;
+
+	 			});// fi
+
+	 		}// fin de la fuciton ->eventosTexto
+
+
+
+
+
+
+	 		// elimina el elemenot 
+	 		// returna true o false si se puede eliminar si o no 
+	 		,sePuedeDelte:function(){
+
+	 			var _self =this;
+	 			if(_self.$$padre.estado==1 && _self.estadoFocus ==0 )
+	 			{
+	 				return true;
+	 			}
+
+	 			return false;
+
+	 			
+	 		}
+
+
+	 		// *************
+	 		// elmina el elemento
+	 		//
+	 		, eliminarElemento:function(){
+	 			var _self=this;
+	 			_self.$elemento.effect( "explode", {}, 600, function(e){
+
+	 			
+	 				_self.$elemento.remove();
+					var posicion =_self.$$padre.listaElementos.indexOf(_self);
+					if(posicion!=-1)
+					{
+
+						_self.$$padre.listaElementos.splice(posicion,1);
+						_self.$$padre.$elementoSeleccionado=null;
+
+					}
+					else{
+						console.error("la posicion en lista ");
+					}
+
+	 			
+
+	 			} );
+	 		}
+
+
+
+
 			/******************************
 			        ****convierto el nuevo elemento resize
 			        ********************/ 
@@ -298,7 +473,7 @@ function DiagramaF1 (){
 
 			  		_self.$elemento.resizable({
 			        // autoHide: true 
-			          handles: "bton_edicion,n, e, s, w, ne, se, sw, nw, all" 
+			          handles: "bton_edicion,bton_ver_personal,n, e, s, w, ne, se, sw, nw, all" 
 			          ,resize:function(event, ui)
 			           {
 			           	  _self.actualizaLineaAgrupada(_self.$c1, _self.linea1);

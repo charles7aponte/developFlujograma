@@ -8,16 +8,16 @@
       <link rel="stylesheet" href="css/jquery-ui.css" />
       <link rel="stylesheet" href="css/jquery-ui.structure.css" />
       <link rel="stylesheet" href="css/jquery-ui.theme.css" />
-      <link rel="stylesheet" href="css/spectrum.css" />
+      <!--<link rel="stylesheet" href="css/spectrum.css" />-->
 
-
-     
 
       <link rel="stylesheet" href="css/micss.css" />
       <link rel="stylesheet" href="css/font/foundation-icons.css" />
       
+      
       <script src="js/vendor/modernizr.js"></script>
       <script src="js/snap.svg.js"></script>
+      <link rel="stylesheet" href="css/pnotify.min.css" />
       
 
       
@@ -93,7 +93,7 @@
 
 
 
-     div[data-mielemento='n3'] p.descripcion_personaje{
+     div[data-mielemento='n3'] div.descripcion_personaje{
       height: 19%;
       width: 100%;
       position: absolute;
@@ -111,7 +111,7 @@
       text-align: center;
      } 
 
-     p.descripcion_personaje
+     div.descripcion_personaje
     {
     display: none;      
     }
@@ -192,6 +192,11 @@
       svg.linea_ line {
         pointer-events:auto;
       }
+
+      body[data-estado='2'] svg.linea_ line:hover {
+        cursor: pointer;
+      }
+
       .marco_elementos_m_iz li:hover{
            background: #B6B8AB;
           cursor: pointer;
@@ -236,6 +241,13 @@
        }
 
 
+       /*cursor*/
+
+       body[data-estado='2'] .paginas{
+          cursor: url('img/puntero1.cur') ,auto;
+       }
+
+
 
        .icon3{
 
@@ -259,7 +271,60 @@
 
 
   <body data-estado='1'>
+
+
+   
+    <div id="myModal_eliminacion" class="reveal-modal" data-reveal
+    style="overflow: hidden;
+      
+        border-radius: 2px;
+        border: 1px solid rgb(204, 204, 204);
+        box-shadow: rgba(0, 0, 0, 0.0980392) 0px 2px 4px;
+        color: rgb(68, 68, 68);
+        width: 310px;
+        height: 136px;
+        visibility: visible;
+        background-color: rgb(255, 255, 255);">
+     
+     
+
+      <div class="noty_bar noty_type_confirm" id="noty_51416258323610870"><div class="noty_message" style="font-size: 13px; line-height: 16px; text-align: center; padding: 10px; width: auto; position: relative;"><span class="noty_text">¿Esta seguro que desea eliminar?</span></div>
+      <div class="noty_buttons" style="text-align: center;padding: 5px;  border-top-width: 1px; border-top-style: solid; border-top-color: rgb(204, 204, 204); background-color: rgb(255, 255, 255);">
+
+      <button class="btn btn-primary" id="myModal_eliminacion_modbutton0" style="padding: 14px;margin-left: 0px;">Aceptar</button>
+      <button class="btn btn-danger" id="myModal_eliminacion_button1" style="padding: 14px;margin-left: 5px;">Cancelar</button></div>
+    </div>
+
+    </div>
     
+
+
+  <div id="myModal_eliminacion_pagina" class="reveal-modal" data-reveal
+      style="overflow: hidden;
+        
+          border-radius: 2px;
+          border: 1px solid rgb(204, 204, 204);
+          box-shadow: rgba(0, 0, 0, 0.0980392) 0px 2px 4px;
+          color: rgb(68, 68, 68);
+          width: 310px;
+          height: 145px;
+          visibility: visible;
+          background-color: rgb(255, 255, 255);">
+       
+       
+
+        <div class="noty_bar noty_type_confirm" id="noty_51416258323610870"><div class="noty_message" style="font-size: 13px; line-height: 16px; text-align: center; padding: 10px; width: auto; position: relative;"><span class="noty_text">¿Esta seguro que desea eliminar la página actual?</span></div>
+        <div class="noty_buttons" style="text-align: center;padding: 5px;  border-top-width: 1px; border-top-style: solid; border-top-color: rgb(204, 204, 204); background-color: rgb(255, 255, 255);">
+
+        <button class="btn btn-primary" id="myModal_eliminacion_pagina_button0" style="padding: 14px;margin-left: 0px;">Aceptar</button>
+        <button class="btn btn-danger" id="myModal_eliminacion_pagina_button1" style="padding: 14px;margin-left: 5px;">Cancelar</button></div>
+      </div>
+
+    </div>
+    
+
+
+
     <div id="dialog_confirmacion_pagina" title="Eliminar Página" style="display:none">
       <p>
         <span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;">
@@ -339,7 +404,7 @@
                   >
                 </a>
               </li>
-
+<!--
               <li>
                   <a href="#"  onclick="false" id="bton_option_pagina" 
                   class=" botonFondo [tiny small large] button [alert success secondary] [disabled]"
@@ -347,40 +412,40 @@
                   >
                      
                   </a>
-              </li>
+              </li>-->
         
           </ul>
-          <!--
+     
 
-          <ul class="button-group [radius round]">
-            <li><a href="#" class="[tiny small large] button [alert success secondary] [disabled]">Button 1</a></li>
-            <li><a href="#" class="[tiny small large] button [alert success secondary] [disabled]">Button 2</a></li>
-            <li><a href="#" class="[tiny small large] button [alert success secondary] [disabled]">Button 3</a></li>
-          </ul>
-        -->
+
+
+              <div class="small-4 large-4 columns" style="float:right" id="btone_derecho">
+                 <div class="button-bar" id="botones_panel_inferior">
+                    <ul class="button-group [radius round]">
+                      <li class="">
+                        <a href="#" onclick="false"  
+                        id="bton_nueva_pagina"
+                         class="miboton [tiny small large] button [alert success secondary] [disabled]">
+                        <span style="font-size:29px;" class="fi-page-add"></span>
+                        </a></li>
+                        
+                        <li><a href="#" 
+                          onclick="false"  
+                          id="bton_elimina_pagina"
+                          class="miboton [tinmibotony small large] button [alert success secondary] [disabled]">
+                          <span style="font-size:29px;" class="fi-page-delete">
+                            
+                          </span></a>
+                        </li>
+
+                  
+                    </ul>
+              
+                  </div>
+
+             </div>
         </div>
 
-
-        
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        <!--
-          <section class="right-small">
-            <a class="right-off-canvas-toggle menu-icon" href="#" aria-expanded="false"><span></span></a>
-          </section>
-        -->
         </nav>
 
 
@@ -428,53 +493,27 @@
             <li  class="has-tip" data-tooltip aria-haspopup="true"  title="Multidocumento">
               <svg  id="ele_menu_izq_conector8" class="elemente_menu_izq"  data-elemento="n8"
               data-mitipo="diagrama"></svg>
-
-   
             </li>
-            
-
-           
           </ul>
 
 
-         <div id="dialog_diagrama" title="Datos">
-            <div class="row">
-              <div class="row">
-                <label for=""> Descripcion</label>
-              </div>
-              <div class="row">
-                <textarea name="" id="dialogo_descripcion"  rows="3">
-                  
-                </textarea>
-              </div>
-            </div>
+         <div id="dialog_diagrama" title="Datos" style="width:100%">
+                    <label for="">Descripcion :</label>
+                    <textarea name="" id="dialogo_descripcion"  rows="3">
+                    </textarea>
+           
+                     <label for="">Registro :</label>
+                     <textarea name="" id="dialogo_registro" >
+                     </textarea>
+           
+                    <label for="">Observaciones :</label>
+                     <textarea name="" id="dialogo_observacion" >                      
+                    </textarea>
 
-          <div class="row">
-              <div class="row">
-                <label for="">Registro</label>
-              </div>
-              <div class="row">
-                <textarea name="" id="dialogo_registro" >
-                  
-                </textarea>
-              </div>
-            </div>
-
-
-
-          <div class="row">
-              <div class="row">
-                <label for="">Observaciones</label>
-              </div>
-              <div class="row">
-                <textarea name="" id="dialogo_observacion" >
-                  
-                </textarea>
-              </div>
-            </div>
-
-
-
+                    <label for="">Personal :</label>
+                     <textarea name="" id="dialogo_personal" >                      
+                    </textarea>
+                       
         </div>
 
         </div>
@@ -507,7 +546,7 @@ border-left: 1px solid rgb(212,218,218); " >
 
           <!--  inicio barra-->
            <!-- herramienta -->
-                   <ul id="herramientas_grupo_botones2" class=" button-group [radius round]" style="height: 40px">               
+                   <ul id="herramientas_grupo_botones2" class=" button-group [radius round]" style="height: 40px;display:none">               
                       <li>
                         
                         <div id="panel_editar_letras2"  
@@ -562,7 +601,7 @@ margin: 0px;"></td>
                       
 
                       <li>
-                        <a id="herramientas_grupo2" class="fi-arrows-in main icon2  mi_h4_ "  style="curso:move" title="" alt="">
+                        <a id="herramientas_grupo2" class="fi-arrows-in main icon2  mi_h4_ "  style="curso:move;display:none" title="" alt="">
                          
                         </a>
                       </li> 
@@ -726,41 +765,12 @@ margin: 0px;"></td>
         
 
          <!--- manejo de la pagiancion --> 
-         <div id="grupo_botones_pagina" class="row" style="display:none;background:#235695;margin-left: 9px;
+         <div id="grupo_botones_pagina" class="row" style="background:transparent;
+         margin-left: 9px;
          height: 35px;
          overflow: hidden;
          "> 
-             <div class="small-4 large-4 columns">
-                 <div class="button-bar" id="botones_panel_inferior">
-                    <ul class="button-group [radius round]">
-                      <li class="">
-                        <a href="#" onclick="false"  
-                        id="bton_nueva_pagina"
-                         class="miboton [tiny small large] button [alert success secondary] [disabled]">
-                        <span class="fi-page-add"></span>
-                        </a></li>
-                        
-                        <li><a href="#" 
-                          onclick="false"  
-                          id="bton_elimina_pagina"
-                          class="miboton [tinmibotony small large] button [alert success secondary] [disabled]"><span class="fi-page-delete">
-                            
-                          </span></a>
-                        </li>
-
-                  
-                    </ul>
-                    <!--
-
-                    <ul class="button-group [radius round]">
-                      <li><a href="#" class="[tiny small large] button [alert success secondary] [disabled]">Button 1</a></li>
-                      <li><a href="#" class="[tiny small large] button [alert success secondary] [disabled]">Button 2</a></li>
-                      <li><a href="#" class="[tiny small large] button [alert success secondary] [disabled]">Button 3</a></li>
-                    </ul>
-                  -->
-                  </div>
-
-             </div>
+             
 
             <div class="small-8 large-8 columns" style="overflow-y: scroll;
 height: 35px;">
@@ -794,7 +804,13 @@ height: 35px;">
 
     <script src="js/jquery-ui.js"></script>
     <script src="js/spectrum.js"></script>
-     <script src="js/LineaConexion.js"></script>
+    <script src="js/simulate.js"></script>
+
+
+    <script src="js/pnotify.min.js"></script>
+    <script src="js/notificaciones.js"></script>
+
+    <script src="js/LineaConexion.js"></script>
     <script src="js/diagramaF1.js"></script>
     <script src="js/Flujo.js"></script>
    
@@ -830,9 +846,9 @@ $("#dialog_configuracion_linea").hide();
 
 
 
-var tama_espacio_alto=67;
-var band_pagina=false;
-
+var tama_espacio_alto=100;
+var band_pagina=true;
+/*
     // boton de ver la paginas 
     $("#bton_option_pagina").click(function(e){
 
@@ -860,9 +876,11 @@ var band_pagina=false;
              if(band_pagina)
              {
               $("#bton_option_pagina").addClass("miActivo");
+
               }
               else{
                 $("#bton_option_pagina").removeClass("miActivo");
+               
               }
         });
      
@@ -871,6 +889,8 @@ var band_pagina=false;
 
     });
 
+
+*/
 
     $("#contenedor_principal_pag").width( $(window).width()-$("#menu_izquierdo").width()-15);
     $("#contenedor_principal_pag").height( $(window).height()-$("#barra_navegacion_1").height()-tama_espacio_alto);
@@ -887,6 +907,8 @@ var band_pagina=false;
          }
          else {
             $("#contenedor_principal_pag").width( $(window).width()-15);
+          
+              
             
          }
      });
@@ -905,9 +927,15 @@ var band_pagina=false;
        if(estadoMenuAbierto)
        {
          $("#contenedor_principal_pag").width( $(window).width()-$("#menu_izquierdo").width()-15);
+                    
+               $("#botones_panel_inferior").css({float:'left'});
+
        }
        else {
           $("#contenedor_principal_pag").width( $(window).width()-15);
+            $("#botones_panel_inferior").css({float:'right'});
+         
+
           
        }
 
@@ -928,6 +956,10 @@ var manejoFlujo = Flujo("");
   manejoFlujo.inicializarEventosPrincipales();
   manejoFlujo.eventosAllPaginaActual();
   manejoFlujo.actualizaHtmlPagina();
+  manejoFlujo.eventosFueraPagina();
+
+  manejoFlujo.eventosDeBtonModal();
+
 
   
 
