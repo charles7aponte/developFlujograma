@@ -39,7 +39,7 @@ function LineaConexion(){
 			
 			var _seft= this;
 			var $elemento = $("<svg class='linea_' data-puntos_punto_moviblefin='' "+
-								"data-puntos_movibleinicio='' style='z-index:4;width:20px; height:20px;position:absolute; overflow: visible;' "
+								"data-puntos_movibleinicio='' style='z-index:5;width:20px; height:20px;position:absolute; overflow: visible;' "
 								+" data-label='' >");
 			_seft.$textoP = $("<div  contenteditable='true' class='descripcion_linea'></div>") ;
 
@@ -111,6 +111,8 @@ function LineaConexion(){
 
 					$(".punto_circle").hide();
 
+
+
 					_seft.$$padre.lineaConexionSeleccionada=null;
 					_seft.$$padre.$lineaActual=null;
 
@@ -120,7 +122,7 @@ function LineaConexion(){
 					{
 						_seft.$$padre.listaLineaConexion.splice(posicion,1);
 						_seft.$elementoDOM.remove();
-
+						_seft.$textoP.remove();
 
 					}
 					else{
@@ -196,11 +198,18 @@ function LineaConexion(){
 
 		 // la etiqueta
 		 _seft.$textoP.mousedown(function(e){
-
-
 		 	e.stopPropagation();
 	
 		 });
+
+		 _seft.$textoP.keyup(function(e){
+		    if(e.keyCode == 46)
+				{
+					e.stopPropagation();
+				}
+			});
+
+
 
 
 		 _seft.$textoP.on('blur',function(e){

@@ -9,7 +9,7 @@ function DiagramaF1 (){
 			,$c4:null
 
 			,estadoFocus:0// indica si esta en edicion de texto interno	0 para no tiene el foco y 1 para si
-	 	
+	 		,alertaMensaje:null/// se maneja solo en parte visual .Objeto de la pseudo clase "MensajeDetalle" 
 
 			,$elemento:null // elmeen JQuery
 			,listasSVG:[]
@@ -416,10 +416,33 @@ function DiagramaF1 (){
 
 	 			});// fi
 
+
+
+
+
 	 		}// fin de la fuciton ->eventosTexto
 
 
+	 		/**********
+	 		***
+	 		*** actualiza ... .
+	 		***/
+	 		,eventosTipoClick:function(){
 
+	 			var _self=this;
+
+	 			_self.$elemento.on('click',function(e){
+
+	 				console.log("padre ... ");
+	 				
+
+	 				if(_self.$$padre.estado==3 && _self.alertaMensaje!=null)
+	 				{
+
+	 					_self.alertaMensaje.mostrar();
+	 				}
+	 			});
+	 		}// fin fucion 
 
 
 
@@ -444,6 +467,8 @@ function DiagramaF1 (){
 	 		//
 	 		, eliminarElemento:function(){
 	 			var _self=this;
+
+
 	 			_self.$elemento.effect( "explode", {}, 600, function(e){
 
 	 			
@@ -519,28 +544,33 @@ function DiagramaF1 (){
 
 
 
-
-
 		        //creacion del bton de edicion detallada
+		        var tipoDiagrama = _self.$elemento.data("mielemento");
+
 		        var $botonVerPersonal = _self.$elemento.find(".ui-resizable-bton_ver_personal");
 
-		        // maneja el aparecer la ventanan
-		        if($botonVerPersonal.length>0)
+		        if(tipoDiagrama=="n3")
 		        {
-		        	$botonVerPersonal.html("<a onclick='return false' class='fi-results-demographics' title='personal' alt='Personal'> </a>");
-		        	
-		        	$botonVerPersonal.click(function(){
-		        		var $padre =  $botonVerPersonal.parent();
-		        		_self.actualizaEstadoVerPersonal(true);
+			        // maneja el aparecer la ventana
+			        if($botonVerPersonal.length>0)
+			        {
+			        	$botonVerPersonal.html("<a onclick='return false' class='fi-results-demographics' title='personal' alt='Personal'> </a>");
+			        	
+			        	$botonVerPersonal.click(function(){
+			        		var $padre =  $botonVerPersonal.parent();
+			        		_self.actualizaEstadoVerPersonal(true);
 
-		        	});
+			        	});
 
 
-		        	//actualiza el ver personal solo parte visual ...
-	        		_self.actualizaEstadoVerPersonal(false);
+			        	//actualiza el ver personal solo parte visual ...
+		        		_self.actualizaEstadoVerPersonal(false);
+			        }
 
 		        }//fin del creacion del bton detallado
-
+		        else {
+		        	$botonVerPersonal.css({display:'none'})
+		        }
 
 
 			  }		
@@ -603,6 +633,9 @@ function DiagramaF1 (){
 			  	var _self= this;
 
 			  	_self.$elemento= $diagramaNuevo;
+
+
+			  	_self.eventosTipoClick();
 
 
 			  	//convierto el nuevo elemento draggable

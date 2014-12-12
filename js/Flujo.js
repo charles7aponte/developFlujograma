@@ -367,6 +367,7 @@ function Flujo (idDOM){
 			        // convierte el nuevo elemento de diagrama en draggable
 			        
 			        $$diagramaF1.elementoToDraggable($nuevoElemento);
+
 			        
 			        $$diagramaF1.listasSVG =listasSVG;
 			        $$diagramaF1.$text = $textResumen  ;
@@ -382,6 +383,7 @@ function Flujo (idDOM){
 												$punto3,
 												$punto4);
 			        $$diagramaF1.setDiagrama($nuevoElemento);
+
 
 
 
@@ -462,7 +464,7 @@ function Flujo (idDOM){
 			      // el doble click 
 			       $diagramaNuevo.dblclick(function(e){
 			       
-alert("si gato")
+
 			       	switch(_self.estado)
 			       	{
 
@@ -648,8 +650,9 @@ alert("si gato")
 
 				_self.$paginaActual.on('click',function(e){
 					
-					console.log(" click");
+					console.log(" click en pagina");
 					});
+
 
 
 		      	//_self.$paginaActual.mouseup(function(e){
@@ -713,6 +716,7 @@ alert("si gato")
 										_self.$lineaActual.hide();
 
 										_self.seleccionaLineaConexion(lineaSVG);
+
 										
 										_self.listaLineaConexion.push(lineaSVG);
 			
@@ -773,7 +777,7 @@ alert("si gato")
 
 							}*/
 
-							e.stopPropagation();
+							//e.stopPropagation();
 
 		      	});
 
@@ -1536,7 +1540,90 @@ alert("si gato")
           }// fin el funcion ->enbledDragDiagrama
 
 
-	 }
+
+
+
+
+          /******************************
+          **** habilitar el modo de solo lectura
+          **** 
+          *****************************/
+          ,modoOnlyRead:function(){
+
+	          	var _self=this;
+	          	// elmina cion de botones
+	          	$("#botones_panel_superior").hide();
+	          	//$("#bton_toogle_menu_iz").hide();
+	          	$(".left-small").hide();
+
+	            $("body").attr("data-estado","3");
+	            _self.estado=3;
+
+	            estadoMenuAbierto=true;
+	            miToogleMenuIzquierdo(null);
+
+	            _self.deseleccionaLineaConexion();
+
+
+	            //desactiva la edicion en div
+	            $(".descripcion_observada").attr("contenteditable",false);
+	            $(".descripcion_linea").attr("contenteditable",false);
+
+
+
+            	//generar los elementos 
+	            for (var i = 0; i<_self.listaElementos.length; i++) {
+	            	
+
+	            	if(_self.listaElementos[i] !=null && _self.listaElementos[i].alertaMensaje==null)
+		            	{
+							var diagramaF1 =  _self.listaElementos[i]
+							var mensajeDetalle = MensajeDetalle();
+			          		diagramaF1.alertaMensaje= mensajeDetalle;
+			          		//mensajeDetalle.$$padre=$(document);
+			          		mensajeDetalle.$diagrama= diagramaF1.$elemento;
+			          		mensajeDetalle.$diagrama.addClass("diagrama_modoread");
+
+			          		mensajeDetalle.dibujar();
+			          		mensajeDetalle.eventosEnlace();
+			          		mensajeDetalle.actualizarContenidos();
+
+		            	}
+
+
+	            }
+
+          }// fin funcion--> modoOnlyRead
+
+
+
+
+          /******************
+          ** verfic
+          **/
+          ,verficaciondeMensajeDetalle:function(){
+
+          	var _self=this;
+          	var diagramaF1= _self.getDiagramaF1();
+
+          	if(diagramaF1)
+          	{
+
+          		var mensajeDetalle = MensajeDetalle();
+          		diagramaF1.alertaMensaje= mensajeDetalle;
+          		//mensajeDetalle.$$padre=$(document);
+          		mensajeDetalle.$diagrama= diagramaF1.$elemento;
+          		mensajeDetalle.$diagrama.addClass("diagrama_modoread");
+
+          		mensajeDetalle.dibujar();
+          		mensajeDetalle.eventosEnlace();
+          		mensajeDetalle.actualizarContenidos();
+
+          	}
+
+          }// function -->verficaciondeMensajeDetalle
+
+	 };
 
 };
 
