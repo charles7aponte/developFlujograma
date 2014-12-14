@@ -198,7 +198,8 @@
         pointer-events:auto;
       }
 
-      body[data-estado='2'] svg.linea_ line:hover {
+      body[data-estado='2'] svg.linea_ line:hover,
+      body[data-estado='1'] svg.linea_ line:hover {
         cursor: pointer;
       }
 
@@ -547,20 +548,20 @@ overflow: auto;">
           </ul>
 
 
-         <div id="dialog_diagrama" title="Datos" style="width:100%">
-                    <label for="">Descripcion :</label>
-                    <textarea name="" id="dialogo_descripcion"  rows="3">
+         <div id="dialog_diagrama" title="" style="width:100%">
+                    <label for=""><b>Descripcion :</b></label>
+                    <textarea name="" id="dialogo_descripcion"  >
                     </textarea>
            
-                     <label for="">Registro :</label>
+                     <label for=""><b>Registro :</b></label>
                      <textarea name="" id="dialogo_registro" >
                      </textarea>
            
-                    <label for="">Observaciones :</label>
+                    <label for=""><b>Observaciones :</b></label>
                      <textarea name="" id="dialogo_observacion" >                      
                     </textarea>
 
-                    <label for="">Personal :</label>
+                    <label for=""><b>Personal :</b></label>
                      <textarea name="" id="dialogo_personal" >                      
                     </textarea>
                        

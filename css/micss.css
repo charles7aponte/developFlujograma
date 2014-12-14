@@ -130,6 +130,16 @@ div[data-mielemento] .ui-resizable-bton_edicion>a,
 div[data-mielemento] .ui-resizable-bton_ver_personal>a {
 	color: #F1F1EF;
 }
+
+
+/******** impide dejar visible algunso botones para un tipos espeficio *********/
+ div[data-mielemento="n1"] .ui-resizable-bton_edicion,
+ div[data-mielemento="n2"] .ui-resizable-bton_edicion,
+ div[data-mielemento="n5"] .ui-resizable-bton_edicion{
+	display: none !important;
+}
+
+
 div[data-mielemento] .ui-resizable-bton_edicion:hover,
 div[data-mielemento] .ui-resizable-bton_ver_personal:hover{
 
@@ -672,3 +682,51 @@ cursor: pointer;
   background: rgba(6, 83, 179,.6);
 }
 /***** fin del scroll ********/
+
+
+/*
+[contenteditable='true']:focus{
+	cursor:default;
+}*/
+
+/******* alteracion del dialog ****/
+.ui-dialog .ui-dialog-titlebar {
+	padding: 1px 5px;
+	text-align: center;
+	height: 16px;
+	font-size: 10px;
+}
+
+.ui-dialog .ui-dialog-titlebar-close
+{
+	padding: 1px;
+	height: 16px;
+	width: 12px;
+}
+
+.ui-widget-content {
+	border: 1px solid #FFFFFF;
+}
+
+
+#dialog_diagrama{
+	padding:1px 10px; 
+}
+
+.ui-dialog{
+	padding: 0px;
+}
+
+.ui-dialog .ui-dialog-buttonpane
+{
+	padding: 0px 5px;
+	margin: 0px;
+}
+
+
+.ui-dialog .ui-dialog-buttonpane button {
+margin: .5em .4em .5em 0;
+cursor: pointer;
+background: #235695;
+color:#C4C6BB;
+}

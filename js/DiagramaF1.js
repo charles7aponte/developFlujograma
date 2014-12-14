@@ -1,3 +1,46 @@
+$.fn.selectRange = function(start, end) {
+    if(!end) end = start;
+    return this.each(function() {
+        if (this.setSelectionRange) {
+           // this.focus();
+            this.setSelectionRange(start, end);
+        } else if (this.createTextRange) {
+            var range = this.createTextRange();
+            range.collapse(true);
+            range.moveEnd('character', end);
+            range.moveStart('character', start);
+            range.select();
+        }
+    });
+};
+
+
+$.fn.focusEnd = function() {
+     //$(this).focus();
+    var tmp = $('<span />').appendTo($(this)),
+        node = tmp.get(0),
+        range = null,
+        sel = null;
+
+    if (document.selection) {
+        range = document.body.createTextRange();
+        range.moveToElementText(node);
+        range.select();
+    } else if (window.getSelection) {
+        range = document.createRange();
+        range.selectNode(node);
+        sel = window.getSelection();
+        sel.removeAllRanges();
+        sel.addRange(range);
+    }
+    tmp.remove();
+    return this;
+}
+
+
+
+
+
 function DiagramaF1 (){
 
 	return{
@@ -393,6 +436,7 @@ function DiagramaF1 (){
 	 		// function --> 
 	 		,eventosTexto:function($t){
 	 			var _self= this;
+
 	 			_self.$text = $t;
 
 
@@ -400,24 +444,49 @@ function DiagramaF1 (){
 	 			_self.$text.on('focus',function(e){
 
 	 				_self.estadoFocus= 1;
+	 				console.log("gano el foco");
 
+	 				setTimeout(function(){
+	 					_self.$text.focusEnd();
+	 				},200);
+	 			
+					//return false;		
 	 			});// fi
 
 
 
 	 			_self.$text.on('mousedown',function(e){
+	 				console.log("mousedown text diagrama");
 
-	 				e.stopPropagation();
 	 			});
 
-	 			_self.$text.on('blur',function(e){
 
+	 			_self.$text.on('blur',function(e){
 	 				_self.estadoFocus= 0;
+	 				console.info("blur digrama -->"+_self.estadoFocus);
 
 	 			});// fi
 
 
+	 			_self.$text.on('keyup',function(e){
 
+	 				//ESC
+		      		if(e.keyCode==27)
+		      		{
+		      			_self.$text.blur();
+		      		}
+
+		      		console.info("sellamo un tecla desde focus edicon "+e.keyCode);	
+		      		e.stopPropagation();
+	 			});
+
+
+	 			_self.$text.on('click',function(e){
+	 				console.info("click de texto diag")
+	 				
+	 				//return false;
+	 			
+	 			});
 
 
 	 		}// fin de la fuciton ->eventosTexto
@@ -449,6 +518,8 @@ function DiagramaF1 (){
 	 		// elimina el elemenot 
 	 		// returna true o false si se puede eliminar si o no 
 	 		,sePuedeDelte:function(){
+
+
 
 	 			var _self =this;
 	 			if(_self.$$padre.estado==1 && _self.estadoFocus ==0 )

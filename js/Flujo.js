@@ -26,11 +26,22 @@ function Flujo (idDOM){
 	 		,inicializarEventosPrincipales:function(){
 	 			this.dibujarSVGMenuIz();// dibuja los elementos svg del menu izq
   				this.convertiMenuIzDragg();
+  				this.evitaSeleccionarTexto();
 	 			
 
 	 		}// fin --> inicializarEventosPrincipales
 
 
+
+	 		//*************************
+	 		// evita seleecciona el texto o emacarras
+	 		,evitaSeleccionarTexto:function(){
+
+	 			document.onselectstart = function()
+			     {
+			          return false;
+			     }
+	 		}//fin funciont -->evitaSeleccionarTexto
 
 
 
@@ -371,6 +382,8 @@ function Flujo (idDOM){
 			        
 			        $$diagramaF1.listasSVG =listasSVG;
 			        $$diagramaF1.$text = $textResumen  ;
+			        $$diagramaF1.eventosTexto($textResumen);
+
 
 			        $$diagramaF1.elemetoToResize($nuevoElemento);
 
@@ -908,6 +921,8 @@ function Flujo (idDOM){
 		      			_self.lineaConexionSeleccionada
 		      				.eliminarSeleccionado();
 
+		      			_self.lineaConexionSeleccionada=null;
+						_self.$lineaActual=null;
 
 		      		}
 
@@ -926,8 +941,42 @@ function Flujo (idDOM){
 		      	//
 		      $(document).keyup(function(e){
 
+		      		//ESC
+		      		if(e.keyCode==27)
+		      		{
+
+		      			//edicion de estado
+		      			if(_self.estado==2)
+		      			{
+
+			      			if(_self.ban_escribir==1 || _self.ban_escribir==2 )
+				      		{	if(_self.lineaConexionSeleccionada!=null)
+				      			{
+									_self.lineaConexionSeleccionada.eliminarLinea(); 
+									_self.ban_escribir=0;
+				      			}
+				      		}
+				      		else{
+				      			if(_self.lineaConexionSeleccionada!=null)
+				      			{
+				      				_self.deseleccionaLineaConexion();
+				      			}
+				      			else{
+
+				      				_self.cambioEstado(1);
+				      				console.log("regreso con ESC al estado 1");
+				      			}
 
 
+				      		}//fin if
+				      		console.log("estado -->"+_self.ban_escribir);	
+
+		      			}	
+		      		
+
+
+		      		}else
+		      		//SUPRIMIR
 				    if(e.keyCode == 46)
 				    {
 
@@ -1483,6 +1532,7 @@ function Flujo (idDOM){
 					$("#bton_estado2").removeClass("miActivo");
 					$(".punto_circle").hide();
 					$("body").attr("data-estado","1");
+					$(".descripcion_observada").attr("contenteditable",true);
 					_self.enbledDragDiagrama(true);
 
  				break;
@@ -1495,6 +1545,7 @@ function Flujo (idDOM){
 					  $("#bton_estado1").removeClass("miActivo");
 					  $("body").attr("data-estado","2");
 					  _self.enbledDragDiagrama(false);
+					  $(".descripcion_observada").attr("contenteditable",false);
 
  				break;
  			}
@@ -1620,8 +1671,29 @@ function Flujo (idDOM){
           		mensajeDetalle.actualizarContenidos();
 
           	}
-
           }// function -->verficaciondeMensajeDetalle
+
+
+
+          /************
+          **  creacr json
+          */
+          ,crearJSON:function(){
+          	
+          	var _self= this;
+          	var manejo="";
+
+
+          	for(var i=0; _self.listaElementos.length; i++ )
+          	{
+          		
+          	}
+
+          }// fin function --> crearJSON
+
+
+
+
 
 	 };
 

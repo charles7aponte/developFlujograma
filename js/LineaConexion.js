@@ -177,6 +177,9 @@ function LineaConexion(){
 
 
 
+
+
+
 		var _seft=this;
 
 		   _seft.$elementoDOM.on('mousedown',function (e) {
@@ -222,30 +225,69 @@ function LineaConexion(){
 
          _seft.$elementoDOM.on('click',function (e) {
 
-         	if(_seft.$$padre.estado!=2)
-         		return true;
 
-          		
-          		_seft.$$padre.deseleccionaLineaConexion();
-          	
-          		
-          		_seft.$$padre.seleccionaLineaConexion(_seft);
+         	console.info("--> mostraron los datos de la linea");
 
-	                _seft.banderaSeleccionado=true;
-	                _seft.cambiarColorAnimacion(false);
-	                $puntos.show();
+         	switch(_seft.$$padre.estado){
+
+         		case 1:
+         			_seft.$$padre.cambioEstado(2); 
+					_seft.seleccionaLineaObj(); 
 
 
-	             
-	             e.stopPropagation();
-	             //return false;
-	          });
+         		break;
+
+         		case 2:
+         			_seft.seleccionaLineaObj();             
+	             	e.stopPropagation();
+         		break;
+
+         	}
+	//return false;
+        });
 
 
+
+       
+         // evento teclado 
+        _seft.$elementoDOM.on('keyup',function(){
+
+        	console.info(e);
+
+        });
 
 
 
 		}// fin funcion->eventoClick
+
+
+
+
+
+
+  //
+         //****************
+         //selecciona la linea
+         //
+         ,seleccionaLineaObj:function(){
+
+         	var _seft = this;
+
+          		_seft.$$padre.deseleccionaLineaConexion();
+          		_seft.$$padre.seleccionaLineaConexion(_seft);
+
+                _seft.banderaSeleccionado=true;
+                _seft.cambiarColorAnimacion(false);
+                $puntos.show();
+
+
+
+         }// fin seleccionLinea
+
+
+
+
+
 
 
 		/****************
