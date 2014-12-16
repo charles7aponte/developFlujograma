@@ -36,7 +36,7 @@ function LineaConexion(){
 		/*	
 		//dibuja la linea de conexion..
 		*/	
-		,dibujar:function(datosObj){
+		,dibujar:function(id_nuevo){
 			
 			
 			var _seft= this;
@@ -73,9 +73,25 @@ function LineaConexion(){
                 });
 
 
-            //se ingresan elementos   
-           _seft.$$padre.contadorLineas++;
-           _seft.$elementoDOM.attr("id","id_linea_"+_seft.$$padre.contadorLineas);
+            //se ingresan elementos 
+
+            if(id_nuevo)
+            {
+              var partes= (id_nuevo+"").split("id_linea_");
+              var id_linea = parseInt(partes[1]);
+
+	              if(id_linea>_seft.$$padre.contadorLineas)
+	              {
+	              	_seft.$$padre.contadorLineas= id_linea;
+	              }
+
+	              _seft.$elementoDOM.attr("id","id_linea_"+id_linea);
+            }
+            else{
+
+		       _seft.$$padre.contadorLineas++;
+		       _seft.$elementoDOM.attr("id","id_linea_"+_seft.$$padre.contadorLineas);
+            }  
 
 
             //eventos a la linea
@@ -94,10 +110,10 @@ function LineaConexion(){
 			//
 			, sePuedeEliminar:function(){
 				
-				if($(".punto_circle").css("display")=="none")
+				/*if($(".punto_circle").css("display")=="none")
 				{
 					return false;
-				}
+				}*/
 				return true;
 
 			}// function -->sePuedeEliminar	
@@ -208,6 +224,7 @@ function LineaConexion(){
 		 _seft.$textoP.keyup(function(e){
 		    if(e.keyCode == 46)
 				{
+					console.log("lo detuve "+e.keyCode);
 					e.stopPropagation();
 				}
 			});

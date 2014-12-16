@@ -6,6 +6,7 @@ function Flujo (idDOM){
 	 		,listaPaginas:[ $("#contenedor_principal_pag_1")]
 	 		,estado:1/// qu se seleccion punte, lineas de conexion
 	 		,$text :null
+	 		,bandera_actualizacion:false // indica si se esta actualizando .... o no el flujogramma , true para una actualizacion o false para un nuevo flujograma
 
 	 		,$lineaActual:null // linea hecha
 	 		,listaLineaConexion:[]
@@ -15,6 +16,8 @@ function Flujo (idDOM){
 
 	 		,contadorLineas:0
 	 		,contadorPaginas:0
+
+	 		,nitNodo:null// id del nodo para actualizacion
 
 
 	 		,ban_escribir:0// bandera maneja las conexiones en orde
@@ -115,7 +118,7 @@ function Flujo (idDOM){
 
 			      // // llama del proceso   - ele_menu_izq_conector4
 			      var sEleConector5=   Snap("#ele_menu_izq_conector5")
-			       Snap.load("img/n5.svg", function(f){
+			       Snap.load("http://localhost/triki1/public/img/n5.svg", function(f){
 			       	
 			       	_self.elementoN5= f;
 			        var g= f.select("g");
@@ -127,7 +130,7 @@ function Flujo (idDOM){
 			   
 			      // decison    - ele_menu_izq_conector 6 
 			      var sEleConector6=   Snap("#ele_menu_izq_conector6")
-			       Snap.load("img/n6.svg", function(f){
+			       Snap.load("http://localhost/triki1/public/img/n6.svg", function(f){
 				       	_self.elementoN6= f;
 				        var g= f.select("g");
 				        g.attr({fill: "#bada55"});			        
@@ -138,7 +141,7 @@ function Flujo (idDOM){
 
 			      // documento    - ele_menu_izq_conector 7 
 			      var sEleConector7=   Snap("#ele_menu_izq_conector7");
-			      Snap.load("img/documente.svg", function(f){
+			      Snap.load("http://localhost/triki1/public/img/documente.svg", function(f){
 
 			      	_self.elementoN7= f;
 			        var g= f.select("g");
@@ -150,7 +153,7 @@ function Flujo (idDOM){
 
 			      // documento    - ele_menu_izq_conector 7 
 			      var sEleConector8=   Snap("#ele_menu_izq_conector8");
-			      Snap.load("img/muldocumento.svg", function(f){
+			      Snap.load("http://localhost/triki1/public/img/muldocumento.svg", function(f){
 
 			      	_self.elementoN8= f;
 			        var g= f.select("g");
@@ -322,7 +325,7 @@ function Flujo (idDOM){
 			       var tipoElemento =ui.draggable.data("elemento")+"";
 
 	
-			       _self.construccionElemento(tipoElemento);
+			       _self.construccionElemento($selft,tipoElemento);
 
 				    // listaElementos.push($nuevoElemento[0]);
 
@@ -334,16 +337,17 @@ function Flujo (idDOM){
 
 			  // *************
 			  // construccionElemento :...
-			  ,construccionElemento:function(tipoElemento,json)
+			  ,construccionElemento:function($selft,tipoElemento,json)
 			  {
 
+			  	var _self=this;
 
 			  	   var $nuevoElemento = $("<div ' data-mielemento='"+tipoElemento+"' "+
 			       	+" data-descripcion='' data-registro=''  data-observacion=''  "
 			         +" data-personal='' data-resumen=''  data-ver_personal='S' "
 			       //	+" data-colortexto='#000' data-background='transparent'   data-font-size='12'  "
 			      // 	+" data-text-align='left'  data-svg-fondo='#ffffff' "
-			       	+"  style='overflow:visible;cursor:pointer'>");
+			       	+"  style='overflow:visible;cursor:pointer; position:absolute;z-index:10'>");
 
 			       var $textResumen  = $("<div onfocus='return false' contentEditable='true' class='descripcion_observada'></div>" );
 			       var $textPersonaje  = $("<div class='descripcion_personaje'></div>" );
@@ -356,20 +360,26 @@ function Flujo (idDOM){
 			       var $punto3=$("<div class='puntos_conexion punto3' data-punto='punto3'>");
 			       var $punto4=$("<div class='puntos_conexion punto4' data-punto='punto4'>");
 			       
+			       var $montrarMensaje =$("<div class='bton_mensaje_mostrar' style='z-index:90;'><a onclick='return false' class='fi-credit-card' title='datos' alt='datos'> </a></div>");
+
+
+
   			        $nuevoElemento.append($nuevoSVG);
    			        $nuevoElemento.append($textResumen);
    			        $nuevoElemento.append($textPersonaje);
+   			        $nuevoElemento.append($montrarMensaje);
 
 
 			        
    			        if(json)
    			        {
-   			        	var pagina=$(json.id_pagina);
+   			        	var pagina=$("#"+json.id_pagina);
    			        	pagina.append($nuevoElemento);
+   			        	console.log(json.id_pagina);
    			        }
    			        else{
 
-			        	$selft.$paginaActual.append($nuevoElemento);
+			        	_self.$paginaActual.append($nuevoElemento);
 			        
    			        	
    			        }
@@ -385,12 +395,25 @@ function Flujo (idDOM){
 			        var listasSVG = _self.generarSVG(tipoElemento,$nuevoSVG[0]);/// -->seleccionar elementos para la funcion 
 
 			        //propiedades al elemento nuevo
-			        $nuevoElemento.css({
-			              position:'absolute'
-			            ,top: event.pageY-($nuevoElemento.height()/2)-$selft.offset().top+5
-			            ,left: event.pageX-($nuevoElemento.width()/2)-$selft.offset().left
-			            ,zIndex:10
-			        });
+			        if($selft)
+			        {
+
+				        $nuevoElemento.css({
+				              position:'absolute'
+				            ,top: event.pageY-($nuevoElemento.height()/2)-$selft.offset().top+5
+				            ,left: event.pageX-($nuevoElemento.width()/2)-$selft.offset().left
+				            ,zIndex:10
+				        });
+			        	
+			        }
+			        else {
+			        	$nuevoElemento.css({
+				              position:'absolute'
+				            ,top:10
+				            ,left:10
+				            ,zIndex:10
+				        });
+			        }
 
 
 
@@ -442,6 +465,10 @@ function Flujo (idDOM){
 						$$diagramaF1.$elemento.data('observacion',json.observacion);
 						$$diagramaF1.$elemento.data('personal',json.personal);
 						$$diagramaF1.$elemento.data('resumen',json.resumen);
+
+						$$diagramaF1.$elemento.find(".descripcion_observada").html(json.resumen);
+						$$diagramaF1.$elemento.find(".descripcion_personaje").html(json.personal);
+
 						$$diagramaF1.$elemento.data('ver_personal',json.ver_personal);
 
 						$$diagramaF1.$elemento.css({
@@ -449,8 +476,8 @@ function Flujo (idDOM){
 								left:json.left
 							});
 
-						$$diagramaF1.$elemento.width(json.width);
-						$$diagramaF1.$elemento.height(json.height);
+						$$diagramaF1.$elemento.width(parseInt(json.width));
+						$$diagramaF1.$elemento.height(parseInt(json.height));
 
 						$$diagramaF1.linea1= _self.construccionNuevosConexionesPuntos(json.linea1);
 						$$diagramaF1.linea2= _self.construccionNuevosConexionesPuntos(json.linea2);
@@ -475,19 +502,19 @@ function Flujo (idDOM){
 			  ,construccionNuevosConexionesPuntos:function(json)
 			  {
 
-			  	var $linea=null;
-				var $punto=null;
+			  	var linea=null;
+				var punto=null;
 
-			  	if(json && json.$linea!=null && json.$punto!=null)
+			  	if(json && json.linea!=null && json.punto!=null)
 			  		{
-			  			$linea=$(json.$linea);
-						$punto=$(json.$punto);
+			  			linea=$(json.linea);
+						punto=$(json.punto);
 
 			  		}
 
-			   return {	'$linea' : $linea , 
- 						'$punto' : $punto
- 					}; 						};	
+			   return {	'$linea' : linea , 
+ 						'$punto' : punto
+ 					}; 						
 
 			  }// fn funcion -->construccionNuevosConexionesPuntos
 
@@ -743,7 +770,49 @@ function Flujo (idDOM){
 
 
 
+		      // ******************************
+		      // *****************
+		      //
+		      ,construccionNuevoCuadroSeleccion:function(json){
 
+		      		var _self= this;
+		      		var $$cuadro = CuadroSeleccion();
+
+					_self.deseleccionCuadroSeleccion();
+
+					$$cuadro.$$padre= _self;
+		        	$$cuadro.$pagina =$(json.id_pagina);
+
+		        	$$cuadro.dibujar();
+		        	$$cuadro.posicionXY( json.left
+										,json.top);
+
+		        	$$cuadro.anchoAlto(json.width
+										,json.height);
+		      		
+
+					_self.listaCuadroSeleccion.push($$cuadro);
+					$$cuadro.deselecciona();
+
+
+		      }// construccion 
+
+
+
+
+		      // ******************
+		      //
+		      //
+		      ,construcionJSONNuevosCuadros:function(lista){
+
+
+		      	var _self=this;
+		      	for(var i=0; i< lista.length ;i++)
+		      	{
+		      		_self.construccionNuevoCuadroSeleccion(lista[i]);
+		      	}	
+
+		      }// fin -->construcionJSONNuevosCuadros
 
 
 		      ///creacion de cuadros 
@@ -922,10 +991,10 @@ function Flujo (idDOM){
 		      ,construccionNuevaElementos:function(listaJson){
 		      	 var _self=this;
 
-		      	 for(var i=0; i<listaJson.lengthM i++)
+		      	 for(var i=0; i<listaJson.length; i++)
 			      	 {
 			      	 	var json=listaJson[i];
-			      	 	_self.construccionElemento(json.mielemento, json);
+			      	 	_self.construccionElemento(null,json.mielemento, json);
 
 			      	 }
 
@@ -967,7 +1036,7 @@ function Flujo (idDOM){
 					lineaSVG.$$padre = _self;
 		      		lineaSVG.$pagina = $(JSON.id_pagina);
 
-		      		lineaSVG.dibujar();
+		      		lineaSVG.dibujar(JSON.id);
 
 					//_self.$lineaActual = lineaSVG.$elementoDOM;
 					//_self.lineaConexionSeleccionada=lineaSVG;
@@ -988,6 +1057,11 @@ function Flujo (idDOM){
 
 					lineaSVG.$elementoDOM.attr("data-puntos_punto_moviblefin", JSON.puntos_punto_moviblefin);
 					lineaSVG.$elementoDOM.attr("data-puntos_movibleinicio",   JSON.puntos_movibleinicio);  
+					
+
+					lineaSVG.$textoP.blur();
+
+					_self.deseleccionaLineaConexion();
 					console.log(lineaSVG.$elementoDOM.attr("data-puntos_movibleinicio"));
 
 		      	}
@@ -1221,6 +1295,8 @@ function Flujo (idDOM){
 						var arrayPuntoFin = _self.$lineaActual.attr("data-puntos_punto_moviblefin");
 						var arrayPuntoInicio = _self.$lineaActual.attr("data-puntos_movibleinicio");
 
+
+
  
 					
 						if(arrayPuntoFin!=null && 
@@ -1266,6 +1342,35 @@ function Flujo (idDOM){
 
 
 
+		      // *******************************
+		      // construccion de elementos 
+		      //
+		      ,construccionAllFromJsonJSON:function(strin){
+
+		      //var strin ="{'elementos':[{'mielemento':'n6','descripcion':'','registro':'','observacion':'','personal':'','resumen':'','ver_personal':'S','id_pagina':'contenedor_principal_pag_1','top':'45.8125px','left':'162px','width':'150','height':'150','linea1':{'$linea' : null , '$punto':null},'linea2':{'$linea' : null , '$punto':null},'linea3':{'$linea' : null , '$punto':null},'linea4':{'$linea' : '#id_linea_1' , '$punto':'.punto_movibleinicio'}},{'mielemento':'n3','descripcion':'','registro':'','observacion':'','personal':'','resumen':'','ver_personal':'N','id_pagina':'contenedor_principal_pag_1','top':'47.8125px','left':'455px','width':'150','height':'150','linea1':{'$linea' : null , '$punto':null},'linea2':{'$linea' : null , '$punto':null},'linea3':{'$linea' : null , '$punto':null},'linea4':{'$linea' : '#id_linea_1' , '$punto':'.punto_moviblefin'}},{'mielemento':'n6','descripcion':'','registro':'','observacion':'','personal':'','resumen':'','ver_personal':'S','id_pagina':'pagina_id_1','top':'69.8125px','left':'233px','width':'150','height':'150','linea1':{'$linea' : null , '$punto':null},'linea2':{'$linea' : '#id_linea_4' , '$punto':'.punto_moviblefin'},'linea3':{'$linea' : null , '$punto':null},'linea4':{'$linea' : '#id_linea_4' , '$punto':'.punto_movibleinicio'}},],'lineas':[{'id':'id_linea_1','id_pagina':'#contenedor_principal_pag_1','textoP':'','top':'38px','left':'245px','transform':'none','width':'290px','height':'2px','puntos_punto_moviblefin':'530;35','puntos_movibleinicio':'240;33'},{'id':'id_linea_2','id_pagina':'#contenedor_principal_pag_1','textoP':'','top':'53px','left':'569px','transform':'none','width':'25px','height':'16px','puntos_punto_moviblefin':'589;48','puntos_movibleinicio':'564;64'},{'id':'id_linea_4','id_pagina':'#pagina_id_1','textoP':'','top':'64px','left':'315px','transform':'matrix(1, 0, 0, 1, 0, 0)','width':'73px','height':'86px','puntos_punto_moviblefin':'383;145','puntos_movibleinicio':'310;59'},],'pagina':['contenedor_principal_pag_1','pagina_id_1','pagina_id_2',],'cuadros':[{'id_pagina':'#pagina_id_1','top':'49.8125px','left':'103px','width':'538px','height':'150px'},{'id_pagina':'#contenedor_principal_pag_1','top':'50.8125px','left':'759px','width':'68px','height':'95px'},{'id_pagina':'#pagina_id_2','top':'44.8125px','left':'318px','width':'90px','height':'81px'},]}";
+		      var gato;
+		      
+		      eval("gato="+strin);
+
+		     
+		      this.construccionJsonPagina(gato.pagina);
+		      this.construccionJsonNuevasLineas(gato.lineas);
+		      this.construccionNuevaElementos(gato.elementos);
+		      this.construcionJSONNuevosCuadros(gato.cuadros);
+
+		      _self.cambioEstado(1);
+
+//cuadros
+		      console.log(gato);
+
+		      }//fin function --->construccionAllFromJsonJSON()
+
+
+
+
+
+
+
 		      // *****************************
 		      // dar click por fuera del la pagina
 		      ,eventosFueraPagina: function(){
@@ -1276,6 +1381,8 @@ function Flujo (idDOM){
 		      	//evento eleminar 
 		      	//
 		      $(document).keyup(function(e){
+
+
 
 		      		//ESC
 		      		if(e.keyCode==27)
@@ -1341,6 +1448,7 @@ function Flujo (idDOM){
 
 				    		// edicion de lineas de conexion
 				    		case 2:
+
 				    			if(_self.lineaConexionSeleccionada &&
 				    				_self.lineaConexionSeleccionada.sePuedeEliminar())
 				    				{
@@ -1363,6 +1471,9 @@ function Flujo (idDOM){
 				}) ;
 
 		  }// fin de la function->eventosFueraPagina
+
+
+
 
 
 
@@ -1566,6 +1677,9 @@ function Flujo (idDOM){
 	             _self.$lineaActual.attr("data-puntos_punto_moviblefin",""+(xFin-5)+";"+(yFin-5)); 
 	             _self.$lineaActual.attr("data-puntos_movibleinicio",""+(xInicio-5)+";"+(yInicio-5)); 
 
+
+	             console.info("sleeccion puntos_movibleinicio  :: "+ _self.$lineaActual.attr("data-puntos_movibleinicio"));
+
 	              //manejo en el X
 	              if(xFin>xInicio)
 	              {
@@ -1652,8 +1766,8 @@ function Flujo (idDOM){
 		     ,crearPaginaNueva:function(datosObjPagina){
 		     	var _self=this;
 
-		     	var idPagina=0; _self.contadorPaginas++;
-		     	
+		     	var idPagina=0; 
+
 
 		     	if(datosObjPagina )
 		     	{
@@ -1663,7 +1777,7 @@ function Flujo (idDOM){
 		     			return ;
 		     		}	
 
-		     		var listaElemento = datosObjPagina.split("datosObjPagina");
+		     		var listaElemento = datosObjPagina.split("pagina_id_");
 		     		idPagina= parseInt(listaElemento[1]);
 
 		     		// guarda el maximo
@@ -1674,7 +1788,8 @@ function Flujo (idDOM){
 
 		     	}
 		     	else{
-		     		var idPagina=_self.contadorPaginas++;		     	
+		     		 _self.contadorPaginas++;
+		     		 idPagina=_self.contadorPaginas		     	
 		     	}
 
 
@@ -1915,6 +2030,8 @@ function Flujo (idDOM){
  	
 
 
+
+
  		/// function maneja el cambio de estado
  		//
  		,cambioEstado:function(estado){
@@ -1996,6 +2113,12 @@ function Flujo (idDOM){
           			_self.listaElementos[i].$elemento.draggable('disable');
           		}
 
+          		//quita los mensajes
+          		if(_self.listaElementos[i].alertaMensaje)
+          		{
+          			_self.listaElementos[i].alertaMensaje.$elemento.hide(); 
+          		}
+
 				          //deseleccciona el elemento 
 		          _self.listaElementos[i].$elemento.resizable( "option", { disabled: true } );
 		          _self.listaElementos[i].$elemento.removeClass( "elemento_seleccionado" );
@@ -2004,7 +2127,7 @@ function Flujo (idDOM){
           	}
 
 
-          	// ELEMENTO SELECCIONADO
+          	// ELEME SELECCIONADO
           	if(_self.$elementoSeleccionado!=null && _self.$elementoSeleccionado)
           	{
 
@@ -2018,16 +2141,10 @@ function Flujo (idDOM){
 
 
 
-
-
-          /******************************
-          **** habilitar el modo de solo lectura
-          **** 
-          *****************************/
-          ,modoOnlyRead:function(){
+          	,modoOnlyReadBasico:function(){
 
 	          	var _self=this;
-	          	// elmina cion de botones
+	          	// elmina cion de boton
 	          	$("#botones_panel_superior").hide();
 	          	//$("#bton_toogle_menu_iz").hide();
 	          	$(".left-small").hide();
@@ -2037,7 +2154,36 @@ function Flujo (idDOM){
 
 	            estadoMenuAbierto=true;
 	            miToogleMenuIzquierdo(null);
+	            	
+	            _self.deseleccionaLineaConexion();
 
+
+	            //desactiva la edicion en div
+	            $(".descripcion_observada").attr("contenteditable",false);
+	            $(".descripcion_linea").attr("contenteditable",false);
+
+          	}
+
+
+
+          /******************************
+          **** habilitar el modo de solo lectura
+          **** 
+          *****************************/
+          ,modoOnlyRead:function(){
+
+	          	var _self=this;
+	          	// elmina cion de boton
+	          /*	$("#botones_panel_superior").hide();
+	          	//$("#bton_toogle_menu_iz").hide();
+	          	$(".left-small").hide();
+
+	            $("body").attr("data-estado","3");
+	            _self.estado=3;
+
+	            estadoMenuAbierto=true;
+	            miToogleMenuIzquierdo(null);
+		*/
 	            _self.deseleccionaLineaConexion();
 
 
@@ -2068,6 +2214,9 @@ function Flujo (idDOM){
 
 
 	            }
+
+
+	            $("div[data-mielemento]").draggable("disable");
 
           }// fin funcion--> modoOnlyRead
 
@@ -2115,14 +2264,14 @@ function Flujo (idDOM){
 
          
 
-          	console.info(manejo);
+	          	console.info(manejo);
 
-          	var gato;
-          	eval("gato="+manejo);
-          	console.info(gato);
+	          	var gato;
+	          	eval("gato="+manejo);
+	          	console.info(gato);
 
 
-
+          		return manejo;
           }// fin function --> crearJSON
 
 
@@ -2218,18 +2367,19 @@ function Flujo (idDOM){
 
           		var id_pagina =  _self.listaLineaConexion[i].$pagina.attr("id");
 				var textoP = 	 _self.listaLineaConexion[i].$textoP.html();
+				var id =  $elemento.attr("id");
 				var top =  $elemento.css("top");
  				var left =  $elemento.css("left");
 				var transform =  $elemento.css("transform");
 				var width =  $elemento.css("width");
 				var height =  $elemento.css("height");
-				var puntos_punto_moviblefin =$elemento.data("puntos_punto_moviblefin");
-				var puntos_movibleinicio    =$elemento.data("puntos_movibleinicio");
+				var puntos_punto_moviblefin =$elemento.attr("data-puntos_punto_moviblefin");
+				var puntos_movibleinicio    =$elemento.attr("data-puntos_movibleinicio");
 
 
 
 				var json ="{";
-
+					json+= "'id'"+		 ":'"	+id+"',"	
 					json+= "'id_pagina'"+":'#"	+id_pagina+"',"	 
 					json+= "'textoP'"	+":'"	+textoP+"',"	 
 					json+= "'top'"		+":'"	+top+"',"	 
@@ -2331,13 +2481,15 @@ function Flujo (idDOM){
           // creacion de puntos de conexion
           //@param linea JSON .. {$linea : null , $punto:null}
           ,creaJSONStringPuntosConexion:function(linea){
-            var json ="{'$linea' : null , '$punto':null}"; 
+            var json ="{'linea' : null , 'punto':null}"; 
 
             	if(linea!=null && linea.$linea!=null && linea.$punto!=null )
             	{
             		// tipo de punto
             		var clasePunto="";
-            		if(linea.$punto.hasClass("punto_moviblefin "))
+            		
+
+            		if(linea.$punto.hasClass("punto_moviblefin"))
             		{
             			clasePunto=".punto_moviblefin";
             		}
@@ -2348,7 +2500,7 @@ function Flujo (idDOM){
 
 
             		var idLinea ="#"+linea.$linea.attr("id");
-            		json="{'$linea' : '"+idLinea+"' , '$punto':'"+clasePunto+"'}";
+            		json="{'linea' : '"+idLinea+"' , 'punto':'"+clasePunto+"'}";
 
             	}
 
@@ -2406,12 +2558,136 @@ function Flujo (idDOM){
           // leeer parametros limpios por get
           //
           ,leerGET:function(){
+
           	var parametros =window.location.pathname;
+          	var _self =this;
+          	var edicion =false;// si esta editando u observando .. true =>para habilitar la edicion o false para lo contrario
+          	parametros=parametros.split("/");	
 
 
+			var url_solicita="http://localhost/triki1/public/flujograma/cargar";
+
+          		
+          	if(parametros.length >1)
+          	{
+          		
+          		if( (parametros[parametros.length-2]+"").toLowerCase()=="edit-fluj"
+          			|| (parametros[parametros.length-2]+"").toLowerCase()=="view-fluj")
+	          		{
+	          			var id_nodo=	parametros[parametros.length-1]+"";
+	          			_self.nitNodo = id_nodo;
+
+	          				
+						switch((parametros[parametros.length-2]+""))
+						{
+							case "edit-fluj":
+									edicion=true;
+										
+							break;	
+
+							case "view-fluj":
+									edicion=false;
+									_self.modoOnlyReadBasico();	
+							break;		
+						}	
+
+						
+
+	          			$.ajax(
+						 	{
+							 	data:{
+	  									nid:id_nodo
+
+							 		  }
+							 	,url:url_solicita
+							 	,type:'POST'
+							 	,success:function(data){
+					    			
+					    			if(data)
+					    			{
+
+					    				_self.construccionAllFromJsonJSON(data.text);
+					    				if(edicion==false)
+					    				{
+					    					_self.modoOnlyRead();
+					    				
+					    				}
+					    				_self.bandera_actualizacion=true;
+					    			}//edicion
+					    			else{
+					    				alert("Vuelva a intentar cargarlo");
+					    			}
+					  			}
+					  			,error:function(data)
+					  			{
+					  				alert("Vuelva a intentar cargarlo");
+					  			}
+					  		});
+
+	          		}
+
+
+          	}	
+
+					 
 
           }// leerGET
 
+
+          // *************
+          //guara los dtos implementando.. ajx	
+          ,guardarDatosJson:function(){
+
+          		var _self=this;
+          		var ulr ="";
+          		var json= _self.crearJSON();
+          		var option={};
+
+          			//actualizando
+          		/*if(_self.bandera_actualizacion)
+          		{
+          			option={
+          				"nid":	_self.nitNodo,
+          				"text":json
+          			};
+
+          			 ulr ="http://localhost/triki1/public/flujograma/actualizar/json";
+          		}
+          		// guardando uno nuevo flujograma
+          		else{*/
+          			option={
+          				"nid":	_self.nitNodo,
+          				"text":json
+          			};
+
+          			ulr ="http://localhost/triki1/public/flujograma/guardar/json";
+          		//}
+
+
+      			$.ajax(
+					 	{
+						 	data:option
+						 	,url:ulr
+						 	,type:'POST'
+						 	,success:function(data){
+				    			if(data)
+				    			{
+				    			 console.log(data);
+				    			 alert("se ha almacenado");		
+				    			}//edicion
+				    			else{
+				    				alert("Vuelva a intentar cargarlo");
+				    			}
+				  			}
+				  			,error:function(data)
+				  			{
+				  				alert("Vuelva a intentar cargarlo");
+				  			}
+				  		});
+
+
+
+          }//fin funcion -->guardarDatosJson
 
 
 	 };

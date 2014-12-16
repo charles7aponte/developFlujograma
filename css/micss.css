@@ -147,7 +147,9 @@ div[data-mielemento] .ui-resizable-bton_ver_personal:hover{
 }
 
 div[data-mielemento] .ui-resizable-bton_edicion,
-div[data-mielemento] .ui-resizable-bton_ver_personal{
+div[data-mielemento] .ui-resizable-bton_ver_personal,
+div[data-mielemento] .bton_mensaje_mostrar
+{
 	opacity: 0.6;
 	line-height: 0.1;
 	height: 27px;
@@ -186,6 +188,23 @@ div[data-mielemento] .ui-resizable-bton_ver_personal{
 
 
 }
+
+.bton_mensaje_mostrar{
+	display: none;
+}
+
+
+body[data-estado='3'] div[data-mielemento] .bton_mensaje_mostrar{
+
+	display: block !important;
+}
+
+
+body[data-estado='3'] div[data-mielemento] .bton_mensaje_mostrar>a{
+
+	color:#E6E7E2 !important;
+}
+
 
 
 div[data-mielemento] .ui-resizable-bton_ver_personal{
@@ -299,17 +318,17 @@ div[data-mielemento=n2] .punto4 ,div[data-mielemento=n3] .punto4
 
 
      .punto_circle{
-        background:#DBDCD6;
-        border: 1px solid #B9B9B9;
-        z-index:8; 
-        position: absolute;
-        background-position: -626px -114px; 
-        width: 12px;
-        height: 12px;
-        border-radius: 10px;
-        cursor: url("cursor/icn_cursor_move.cur"),move !important;
+	        background:#DBDCD6;
+	        border: 1px solid #B9B9B9;
+	        z-index:11; 
+	        position: absolute;
+	        background-position: -626px -114px; 
+	        width: 12px;
+	        height: 12px;
+	        border-radius: 10px;
+	        cursor: url("cursor/icn_cursor_move.cur"),move !important;
        
-              }
+        }
 
 
 
@@ -629,12 +648,12 @@ cursor: pointer;
 
 
 
-.diagrama_modoread:hover{
+/*.diagrama_modoread:hover{
 	-webkit-box-shadow: 2px 2px 5px #235695;
 	-moz-box-shadow: 2px 2px 5px #235695;
 	box-shadow: 2px 2px 5px #235695;
 
-}
+}*/
 
 
 

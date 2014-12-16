@@ -483,8 +483,6 @@ function DiagramaF1 (){
 		      			_self.$text.blur();
 		      		}
 
-		      		console.info("sellamo un tecla desde focus edicon "+e.keyCode);	
-		      		e.stopPropagation();
 	 			});
 
 
@@ -509,7 +507,7 @@ function DiagramaF1 (){
 
 	 			_self.$elemento.on('click',function(e){
 
-	 				console.log("padre ... ");
+	 			
 	 				
 
 	 				if(_self.$$padre.estado==3 && _self.alertaMensaje!=null)
@@ -517,6 +515,18 @@ function DiagramaF1 (){
 
 	 					_self.alertaMensaje.mostrar();
 	 				}
+
+
+	 			});
+
+
+
+	 			_self.$elemento.on('mousedown',function(e){
+	 					console.log("dfsaf")
+	 					if(_self.$$padre.estado==2)
+	 					{
+	 						e.stopPropagation();
+	 					}
 	 			});
 	 		}// fin fucion 
 
@@ -546,12 +556,7 @@ function DiagramaF1 (){
 	 		, eliminarElemento:function(){
 	 			var _self=this;
 
-
-	 			_self.$elemento.effect( "explode", {}, 600, function(e){
-
-	 			
-	 				_self.$elemento.remove();
-					var posicion =_self.$$padre.listaElementos.indexOf(_self);
+	 			var posicion =_self.$$padre.listaElementos.indexOf(_self);
 					if(posicion!=-1)
 					{
 
@@ -563,7 +568,12 @@ function DiagramaF1 (){
 						console.error("la posicion en lista ");
 					}
 
+
+
+
+	 			_self.$elemento.effect( "explode", {}, 600, function(e){
 	 			
+	 				_self.$elemento.remove();
 
 	 			} );
 	 		}
