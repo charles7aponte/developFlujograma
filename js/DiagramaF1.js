@@ -41,6 +41,12 @@ $.fn.focusEnd = function() {
 
 
 
+
+
+
+
+
+
 function DiagramaF1 (){
 
 	return{
@@ -169,7 +175,8 @@ function DiagramaF1 (){
 
 
 				//dar propiedades de over
-					$punto1.droppable({
+					$punto1.droppable(
+						{
 						drop:function(event, ui) {
 							if(ui.draggable && ui.draggable.length>0)
 							{
@@ -237,10 +244,9 @@ function DiagramaF1 (){
 								//var lineaActual =_self.ext_getLineaActual();
 								var lineaActual =_self.$$padre.$lineaActual;
 								
-
 								switch(tipoPuntoCirculo){
 									case "punto1": 
-										if(_self.linea1.$linea &&  _self.linea1.$linea[0]== _self.$$padre.$lineaActual[0]
+										if(_self.linea1 && _self.linea1.$linea &&  _self.linea1.$linea[0]== _self.$$padre.$lineaActual[0]
 											&&  	_self.linea1.$punto[0]==$punto)
 										{
 											_self.linea1.$linea=null;
@@ -251,7 +257,7 @@ function DiagramaF1 (){
 									break;
 
 									case "punto2": 
-										if(_self.linea2.$linea &&  _self.linea2.$linea[0]== _self.$$padre.$lineaActual[0]
+										if(_self.linea2 && _self.linea2.$linea &&  _self.linea2.$linea[0]== _self.$$padre.$lineaActual[0]
 												&&  	_self.linea2.$punto[0]==$punto)
 											{
 											_self.linea2.$linea= null;
@@ -260,7 +266,7 @@ function DiagramaF1 (){
 									break;
 
 									case "punto3": 
-										if(_self.linea3.$linea && _self.linea3.$linea[0]== _self.$$padre.$lineaActual[0]
+										if(_self.linea3 && _self.linea3.$linea && _self.linea3.$linea[0]== _self.$$padre.$lineaActual[0]
 												&&  	_self.linea3.$punto[0]==$punto)
 											{
 											_self.linea3.$linea= null;
@@ -269,12 +275,13 @@ function DiagramaF1 (){
 									break;
 
 									case "punto4":
-										if(_self.linea4.$linea &&  _self.linea4.$linea[0]== _self.$$padre.$lineaActual[0]
-												&&  	_self.linea4.$punto[0]==$punto)
+										if(_self.linea4 &&  _self.linea4.$linea && _self.$$padre.$lineaActual  
+												&&  _self.linea4.$linea[0]== _self.$$padre.$lineaActual[0]
+												&&  _self.linea4.$punto[0]== $punto)
 											{ 
 											_self.linea4.$linea= null;
 											_self.linea4.$punto= null;
-										}
+											}
 									break;
 								}
 

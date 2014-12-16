@@ -10,8 +10,15 @@ function Flujo (idDOM){
 	 		,$lineaActual:null // linea hecha
 	 		,listaLineaConexion:[]
 	 		,listaElementos:[]
+	 		,listaCuadroSeleccion:[]
+	 		,cuadroSeleccionado:null
+
+	 		,contadorLineas:0
+	 		,contadorPaginas:0
+
 
 	 		,ban_escribir:0// bandera maneja las conexiones en orde
+	 		,ban_escCuadro:0 // bandera para creacion de cuadros 
 
 	 		,$elementoSeleccionado:null // elmento selecccionado actualmente
 	 		,elementoN5:null // elmeenot de conexion entre paginas .. este se carga
@@ -314,7 +321,24 @@ function Flujo (idDOM){
 
 			       var tipoElemento =ui.draggable.data("elemento")+"";
 
-			       var $nuevoElemento = $("<div ' data-mielemento='"+tipoElemento+"' "+
+	
+			       _self.construccionElemento(tipoElemento);
+
+				    // listaElementos.push($nuevoElemento[0]);
+
+			  }// fin - function dropElementoEvent
+
+
+
+
+
+			  // *************
+			  // construccionElemento :...
+			  ,construccionElemento:function(tipoElemento,json)
+			  {
+
+
+			  	   var $nuevoElemento = $("<div ' data-mielemento='"+tipoElemento+"' "+
 			       	+" data-descripcion='' data-registro=''  data-observacion=''  "
 			         +" data-personal='' data-resumen=''  data-ver_personal='S' "
 			       //	+" data-colortexto='#000' data-background='transparent'   data-font-size='12'  "
@@ -326,20 +350,31 @@ function Flujo (idDOM){
 			       var $nuevoSVG =  $("<svg width='100%' height='100%' style='width:100%;height:100%; overflow:visible'>");  
 			      
 
-			      console.log("este es valor ::: "+tipoElemento);
 
 			       var $punto1=$("<div class='puntos_conexion punto1' data-punto='punto1'>");
 			       var $punto2=$("<div class='puntos_conexion punto2' data-punto='punto2'>");
 			       var $punto3=$("<div class='puntos_conexion punto3' data-punto='punto3'>");
 			       var $punto4=$("<div class='puntos_conexion punto4' data-punto='punto4'>");
 			       
-			       $nuevoElemento.append($nuevoSVG);
-   			       $nuevoElemento.append($textResumen);
+  			        $nuevoElemento.append($nuevoSVG);
+   			        $nuevoElemento.append($textResumen);
    			        $nuevoElemento.append($textPersonaje);
 
 
 			        
-			        $selft.append($nuevoElemento);
+   			        if(json)
+   			        {
+   			        	var pagina=$(json.id_pagina);
+   			        	pagina.append($nuevoElemento);
+   			        }
+   			        else{
+
+			        	$selft.$paginaActual.append($nuevoElemento);
+			        
+   			        	
+   			        }
+
+
 			        $nuevoElemento.append($punto1);
 			        $nuevoElemento.append($punto2);
 			        $nuevoElemento.append($punto3);
@@ -349,14 +384,6 @@ function Flujo (idDOM){
 			        //$nuevoElemento.data("idpagina",manejadorPaginas.$paginaActual.attr("id"));
 			        var listasSVG = _self.generarSVG(tipoElemento,$nuevoSVG[0]);/// -->seleccionar elementos para la funcion 
 
-
-
-
-			       
-
-
-
-			        //	console.log(event.pageY-($nuevoElemento.height()/2)-$selft.offset().top)
 			        //propiedades al elemento nuevo
 			        $nuevoElemento.css({
 			              position:'absolute'
@@ -366,30 +393,37 @@ function Flujo (idDOM){
 			        });
 
 
-			        
-			        
-
-
 
 			        var $$diagramaF1 = DiagramaF1();
 			        $$diagramaF1.$$padre= _self;
 
 
+			        if(json)
+			        {
+				        $$diagramaF1.$pagina=  $(json.id_pagina);
+			        }
+			        else{
+			        	  $$diagramaF1.$pagina=_self.$paginaActual;
+			        }
+
+
+
 			        // convierte el nuevo elemento de diagrama en draggable
-			        
 			        $$diagramaF1.elementoToDraggable($nuevoElemento);
 
 			        
 			        $$diagramaF1.listasSVG =listasSVG;
 			        $$diagramaF1.$text = $textResumen  ;
+
+
+
+
 			        $$diagramaF1.eventosTexto($textResumen);
-
-
 			        $$diagramaF1.elemetoToResize($nuevoElemento);
 
 			        $$diagramaF1.ext_getLineaActual = _self.getLineaAcutal;
 
-			        $$diagramaF1.$pagina=_self.$paginaActual;
+			        
 			        $$diagramaF1.enlazarPuntoCruz(
 			        							$punto1,
 												$punto2,
@@ -399,18 +433,69 @@ function Flujo (idDOM){
 
 
 
+			        // eleementos de carga con Json
+			        if(json)
+			        {
+			        	$$diagramaF1.$elemento.data('mielemento',json.mielemento);
+						$$diagramaF1.$elemento.data('descripcion',json.descripcion);
+						$$diagramaF1.$elemento.data('registro',json.registro);
+						$$diagramaF1.$elemento.data('observacion',json.observacion);
+						$$diagramaF1.$elemento.data('personal',json.personal);
+						$$diagramaF1.$elemento.data('resumen',json.resumen);
+						$$diagramaF1.$elemento.data('ver_personal',json.ver_personal);
+
+						$$diagramaF1.$elemento.css({
+								top:json.top,
+								left:json.left
+							});
+
+						$$diagramaF1.$elemento.width(json.width);
+						$$diagramaF1.$elemento.height(json.height);
+
+						$$diagramaF1.linea1= _self.construccionNuevosConexionesPuntos(json.linea1);
+						$$diagramaF1.linea2= _self.construccionNuevosConexionesPuntos(json.linea2);
+						$$diagramaF1.linea3= _self.construccionNuevosConexionesPuntos(json.linea3);
+						$$diagramaF1.linea4= _self.construccionNuevosConexionesPuntos(json.linea4);
+			        }//
+
 
 			        //evento al dar click y sin soltar
 			        _self.elementoToMousedown($nuevoElemento);
 
 			        _self.listaElementos.push($$diagramaF1);
 
-				       // listaElementos.push($nuevoElemento[0]);
 
-			  }// fin - function dropElementoEvent
-
+			  }// fin funcion --> construccionElemento
 
 
+
+
+			  // ********************
+			  // 
+			  ,construccionNuevosConexionesPuntos:function(json)
+			  {
+
+			  	var $linea=null;
+				var $punto=null;
+
+			  	if(json && json.$linea!=null && json.$punto!=null)
+			  		{
+			  			$linea=$(json.$linea);
+						$punto=$(json.$punto);
+
+			  		}
+
+			   return {	'$linea' : $linea , 
+ 						'$punto' : $punto
+ 					}; 						};	
+
+			  }// fn funcion -->construccionNuevosConexionesPuntos
+
+
+
+			  // *************************
+			  // ****** 
+			  // 
 			  , getLineaAcutal:function(){
 
 			  	var _self=this;
@@ -433,6 +518,7 @@ function Flujo (idDOM){
 			  		//evento para seleccionar el eleemnto y activar la edicion del elemento seleccionado
 			        $diagramaNuevo.mousedown(function(e){
 			        
+
 				          $nuevoElemento_seleccionado =$(this);// nuevo elemento seleccionado
 
 
@@ -453,23 +539,7 @@ function Flujo (idDOM){
 				          _self.$elementoSeleccionado.resizable( "option", { disabled: false } );
 				          _self.$elementoSeleccionado.addClass( "elemento_seleccionado" );
 
-				          /*$herramientaBotones.css({
-				          	 top: _self.$elementoSeleccionado.position().top
-				          	,left: _self.$elementoSeleccionado.position().left
-				          })
-				          $herramientaBotones.show();
-
-				          	try{
-
-				             actualizarColorTexto(manejoFlujo.$elementoSeleccionado.data("colortexto"));
-							 actualizarColorFondo(manejoFlujo.$elementoSeleccionado.data("background"))
-							 actualizarAlinecionEnPanel();
-							 actualizarColorFOndoSVG(manejoFlujo.$elementoSeleccionado.data("svg-fondo"))
-				          	}
-				          	catch(e){}
-				          	*/
-
-				        // e.stopPropagation();
+				     
 			        });
 			      
 
@@ -486,6 +556,7 @@ function Flujo (idDOM){
 			       		break;
 
 
+			       		case 4:
 			       		case 2:
 			       			_self.cambioEstado(1);
 			       			$diagramaNuevo.find(".descripcion_observada").focus();
@@ -639,6 +710,24 @@ function Flujo (idDOM){
 
 
 
+			  // ***********
+			  // deselecciona el cuadro de seleccion
+			  // 
+			  , deseleccionCuadroSeleccion:function(){
+			  	var _self=this;
+			  	if(_self.cuadroSeleccionado)
+			  	{
+
+			  		_self.cuadroSeleccionado.deselecciona();
+			  		_self.cuadroSeleccionado=null;
+			  	}
+
+			  }// fin  function -->deseleccionCuadroSeleccion
+
+
+
+
+
 
 
 		      /*************************
@@ -648,11 +737,268 @@ function Flujo (idDOM){
 		      ,eventosMousePaginaActual:function(){
 		      
 		      	this.creacionLineasMouse(this.$paginaActual);
+		      	this.creacionCuadroSeleccion(this.$paginaActual);
+		      }
+
+
+
+
+
+
+
+		      ///creacion de cuadros 
+		      //
+		      ,creacionCuadroSeleccion:function($elementos)
+		      {
+
+
+		      	var _self= this;
+				var coordenadas1={x:null,y:null};
+
+
+
+
+
+		      	$elementos.on('mousemove',function(e){
+		      	
+		      		if(_self.estado!=4)
+					return;
+
+
+		      		if(_self.ban_escCuadro>0)
+		      		{
+		      			_self.ban_escCuadro++;
+		      			console.log("cuadro mousemove1");
+		      		}
+
+
+
+		      		if(_self.ban_escCuadro>10)
+		      		{
+		      			console.log("cuadro mousemove2");
+			        	
+			        	var direccionHorizontal="";
+			        	var direccionVertical="";
+			        	
+			      		var x2 = e.clientX - _self.$paginaActual.offset().left;
+			        	var y2 = e.clientY - _self.$paginaActual.offset().top;
+						var ancho = coordenadas1.x - x2;
+						var alto =  coordenadas1.y-y2;
+
+						var punto1x;
+						var punto1y;
+						var puntoSeleccionado="";
+
+
+						if(alto<0)
+						{
+							direccionVertical="abajo";
+							punto1y=coordenadas1.y;
+							puntoSeleccionado="s";
+						}
+						else if(alto>0)
+						{
+							direccionVertical="arriba";
+							punto1y=y2;
+							puntoSeleccionado="n";
+						}
+						else {
+							direccionVertical="none";
+						}
+
+
+
+						if(ancho<0)
+						{
+							direccionHorizontal="derecha";
+							punto1x= coordenadas1.x ;
+							puntoSeleccionado+="e";
+						}
+						else if(ancho>0)
+						{
+							direccionHorizontal="izquierda";
+							punto1x=x2;
+							puntoSeleccionado+="w";
+						}
+						else{
+							 direccionHorizontal="none";
+						}
+
+
+						
+
+
+						ancho= Math.abs(ancho);
+						alto = Math.abs(alto);
+
+						console.info(ancho+" "+alto);
+
+						if(ancho>5 &&  alto>5)
+						{
+							var $$cuadro = CuadroSeleccion();
+							_self.deseleccionCuadroSeleccion();
+
+							$$cuadro.$$padre= _self;
+				        	$$cuadro.$pagina =_self.$paginaActual;
+
+
+				        	console.log(punto1y);
+
+				        	$$cuadro.dibujar();
+				        	$$cuadro.posicionXY(punto1x
+												,punto1y);
+
+				        	$$cuadro.anchoAlto(ancho
+												,alto);
+				      		
+
+							 $$cuadro.$elemento.find(".ui-resizable-"+puntoSeleccionado).simulate("mousedown", e);
+							_self.listaCuadroSeleccion.push($$cuadro);
+							_self.cuadroSeleccionado=$$cuadro;
+
+						
+						}	
+
+						_self.ban_escCuadro=-1;
+
+		      		}
+						 		
+									
+		      	});	
+
+
+
+
+
+
+
+
+
+  				$elementos.on('mousedown',function(e){
+
+
+  					if(_self.estado!=4)
+					{
+						
+						_self.ban_escCuadro=0;
+						return;
+					}
+
+
+					if(_self.ban_escCuadro==0)
+					{
+
+		      			var x1 = e.clientX - _self.$paginaActual.offset().left;
+				        var y1 = e.clientY - _self.$paginaActual.offset().top-5;
+
+				        coordenadas1={
+  							x:x1,
+  							y:y1
+				        };
+
+					
+						_self.ban_escCuadro=1;
+						console.log("cuadro mousedown");
+					}
+				});//fin de cracion de mouse
+			
+
+
+		      	$elementos.on('mouseup',function(e){
+		      		_self.ban_escCuadro=0;
+		      		console.log("cuadro mouseup");
+		      	});
+
+				//
+
 
 		      }
 
 
 
+		      // *****************
+		      // consturccion de elementos
+		      //
+		      ,construccionNuevaElementos:function(listaJson){
+		      	 var _self=this;
+
+		      	 for(var i=0; i<listaJson.lengthM i++)
+			      	 {
+			      	 	var json=listaJson[i];
+			      	 	_self.construccionElemento(json.mielemento, json);
+
+			      	 }
+
+		      }//fin fucnion construccionNuevaElementos
+
+
+
+		      // ***************
+		      // consturccion ... JSON con la linea 
+		      //
+		      ,construccionJsonNuevasLineas:function(listaLineas){
+		      	var _self= this;
+		      		for(var i=0; i< listaLineas.length; i++)
+		      		{
+		      			_self.construccionNuevaLinea(listaLineas[i]);
+
+		      		}
+
+		      }// function -->construccionJsonNuevasLineas
+
+
+
+
+		      // ***************
+		      //
+		      //
+		      ,construccionNuevaLinea:function(JSON)
+		      {
+
+		      	if(JSON)
+		      	{
+		      		var _self=this;
+
+		      		_self.deseleccionaLineaConexion();
+
+
+ 					var lineaSVG = LineaConexion();
+		
+					lineaSVG.$$padre = _self;
+		      		lineaSVG.$pagina = $(JSON.id_pagina);
+
+		      		lineaSVG.dibujar();
+
+					//_self.$lineaActual = lineaSVG.$elementoDOM;
+					//_self.lineaConexionSeleccionada=lineaSVG;
+					_self.seleccionaLineaConexion(lineaSVG);
+					_self.listaLineaConexion.push(lineaSVG);
+
+
+					//elementos
+					lineaSVG.$textoP.html(JSON.textoP);
+					lineaSVG.$elementoDOM.data("label", JSON.textoP); 
+					lineaSVG.$elementoDOM.css(
+								{"top": JSON.top,
+								"left":JSON.left,
+								"transform":JSON.transform,
+								"width": JSON.width,
+								"height":JSON.height
+								});
+
+					lineaSVG.$elementoDOM.attr("data-puntos_punto_moviblefin", JSON.puntos_punto_moviblefin);
+					lineaSVG.$elementoDOM.attr("data-puntos_movibleinicio",   JSON.puntos_movibleinicio);  
+					console.log(lineaSVG.$elementoDOM.attr("data-puntos_movibleinicio"));
+
+		      	}
+		      	
+		      }// fin funcion -->construccionNuevaLinea
+
+
+
+
+		      // ******************
+		      // function -->creacionLineasMouse
 		      ,creacionLineasMouse:function($elementos){
 
 		      	var _self= this;
@@ -680,7 +1026,6 @@ function Flujo (idDOM){
 
 							var $elementoEvent= $(e.target);
 
-							//ban_escribir=0;
 							if(_self.ban_escribir!=0)
 								{
 					      		   	
@@ -693,7 +1038,6 @@ function Flujo (idDOM){
 							{
 								_self.deseleccionaLineaConexion();
 								
-								console.log("mousedown -->")
 
 								_self.ban_escribir=1;
 								var x = e.clientX - _self.$paginaActual.offset().left-7;
@@ -717,7 +1061,6 @@ function Flujo (idDOM){
 					 				var lineaSVG = LineaConexion();
 							
 										lineaSVG.$$padre = _self;
-
 							      		lineaSVG.$pagina = _self.$paginaActual;
 
 							      		lineaSVG.dibujar();
@@ -725,74 +1068,67 @@ function Flujo (idDOM){
 
 										_self.$lineaActual = lineaSVG.$elementoDOM;
 										_self.lineaConexionSeleccionada=lineaSVG;
-
 										_self.$lineaActual.hide();
 
 										_self.seleccionaLineaConexion(lineaSVG);
-
-										
 										_self.listaLineaConexion.push(lineaSVG);
 			
+
 						 		//	console.info("_mousedown");
 
 						 		setTimeout(function()
 						 			{
+						      	
+							 			_self.ban_escribir=2;
+							      	
 
-							
+							      		var x = e.clientX - _self.$paginaActual.offset().left-7;
+							        	var y = e.clientY - _self.$paginaActual.offset().top-5;
+								
+							        	_self.$paginaActual.find(".punto_movibleinicio").show();
+							 			_self.$paginaActual.find(".punto_moviblefin").show();
+
+							 			_self.$paginaActual.find(".punto_movibleinicio").css(
+						      				posicionesInicio
+						      				);	
+							 			
+							 			_self.$paginaActual.find(".punto_moviblefin").css({
+							      				top: y,
+									      		left: x
+									      		});	
+
+							 			
+
+							 				var coords = {
+										        clientX: e.clientX,
+										        clientY: e.clientY
+										    };
+
+										 _self.$paginaActual.find(".punto_moviblefin").simulate("mousedown", e);
 										
-						      	
-						 			_self.ban_escribir=2;
-						      	
-
-						      		var x = e.clientX - _self.$paginaActual.offset().left-7;
-						        	var y = e.clientY - _self.$paginaActual.offset().top-5;
-							
-						        	_self.$paginaActual.find(".punto_movibleinicio").show();
-						 			_self.$paginaActual.find(".punto_moviblefin").show();
-
-						 			_self.$paginaActual.find(".punto_movibleinicio").css(
-					      				posicionesInicio
-					      				);	
-						 			
-						 			_self.$paginaActual.find(".punto_moviblefin").css({
-						      				top: y,
-								      		left: x
-								      		});	
-
-						 			
-
-						 				var coords = {
-									        clientX: e.clientX,
-									        clientY: e.clientY
-									    };
-
-									 _self.$paginaActual.find(".punto_moviblefin").simulate("mousedown", e);
-									
-									// _self.$paginaActual.find(".punto_moviblefin").simulate("mousedown", coords);
-            						
-						 			_self.actualizacionBolasLinea(_self,_self.$lineaActual,e, null);
-						 			
-						 			_self.$lineaActual.show();
-						 			_self.$lineaActual.click();//actuliza la animacion
+										// _self.$paginaActual.find(".punto_moviblefin").simulate("mousedown", coords);
+	            						
+							 			_self.actualizacionBolasLinea(_self,_self.$lineaActual,e, null);
+							 			
+							 			_self.$lineaActual.show();
+							 			_self.$lineaActual.click();//actuliza la animacion
 
 
-						 			}
-						 				
-						 			,100);
+							 			}
+							 				
+							 			,100);
 
 
 								//e.stopPropagation();
 								//false;
 								
 							}
-							/*else{
-								//deselecciona el elemento
-
-							}*/
-
 							//e.stopPropagation();
 
 		      	});
+
+
+
 
 
 
@@ -972,7 +1308,7 @@ function Flujo (idDOM){
 				      		console.log("estado -->"+_self.ban_escribir);	
 
 		      			}	
-		      		
+
 
 
 		      		}else
@@ -1010,6 +1346,14 @@ function Flujo (idDOM){
 				    				{
 				    					_self.lineaConexionSeleccionada.eliminarLinea();
 				    				}	
+				    		break;
+
+				    		case 4:
+					    		if(_self.cuadroSeleccionado && _self.cuadroSeleccionado.sePuedeDelte())
+			      				{
+			      					_self.cuadroSeleccionado.eliminarElemento();
+			      				}
+			      			
 				    		break;
 
 				    	}
@@ -1278,12 +1622,65 @@ function Flujo (idDOM){
 
 
 
+
+
+		     // ***  *****  ***  *****  ******
+		     // construccion de paginas desde el json
+		     // @param jsonPagina 'pagina':['contenedor_principal_pag_1','pagina_id_0',]
+		     ,construccionJsonPagina:function(jsonPagina){
+		     	
+		     	var _self=this;
+		     	for(var i=0;i< jsonPagina.length; i++)
+		     	{
+		     		_self.crearPaginaNueva(jsonPagina[i]);
+
+		     	}
+
+		     }//fin funcion -->construccionJsonPagina
+
+
+
+
+
+ 	
+		    
+
+
 		     //********************
 		     // crear una nueva pagina 
 		     // *******************
-		     ,crearPaginaNueva:function(){
+		     ,crearPaginaNueva:function(datosObjPagina){
 		     	var _self=this;
-		     	var html ="  <div  class='paginas' >    "
+
+		     	var idPagina=0; _self.contadorPaginas++;
+		     	
+
+		     	if(datosObjPagina )
+		     	{
+		     		/// Pagina 1
+		     		if(datosObjPagina=="contenedor_principal_pag_1")
+		     		{
+		     			return ;
+		     		}	
+
+		     		var listaElemento = datosObjPagina.split("datosObjPagina");
+		     		idPagina= parseInt(listaElemento[1]);
+
+		     		// guarda el maximo
+		     		if(idPagina>_self.contadorPaginas)
+		     		{
+		     			_self.contadorPaginas=idPagina;
+		     		}
+
+		     	}
+		     	else{
+		     		var idPagina=_self.contadorPaginas++;		     	
+		     	}
+
+
+
+
+		     	var html ="  <div  class='paginas' id='pagina_id_"+idPagina+"' >    "
 				        +"       <div class='punto_moviblefin punto_circle' >  "
 				        +"         <img src='./img/conexion_p.gif'  class='imagen_punto_mobil'>   "
 				        +"       </div>  "
@@ -1444,6 +1841,8 @@ function Flujo (idDOM){
 		     }// function -->eliminarDiagramaF1 
 
 
+
+
 		   // ********************
 		   // buscar LIneaAconexion
 		   // 
@@ -1530,10 +1929,14 @@ function Flujo (idDOM){
  				case 1:
  					$("#bton_estado1").addClass("miActivo");
 					$("#bton_estado2").removeClass("miActivo");
+					$("#bton_estado4").removeClass("miActivo");
 					$(".punto_circle").hide();
 					$("body").attr("data-estado","1");
 					$(".descripcion_observada").attr("contenteditable",true);
 					_self.enbledDragDiagrama(true);
+					_self.deseleccionCuadroSeleccion();
+
+					$(".caudro_lineal").draggable("disable");
 
  				break;
 
@@ -1543,10 +1946,32 @@ function Flujo (idDOM){
  					_self.cerrarDialogEdicion();
  					  $("#bton_estado2").addClass("miActivo");
 					  $("#bton_estado1").removeClass("miActivo");
+					    $("#bton_estado4").removeClass("miActivo");
 					  $("body").attr("data-estado","2");
 					  _self.enbledDragDiagrama(false);
 					  $(".descripcion_observada").attr("contenteditable",false);
+					  _self.deseleccionCuadroSeleccion();
 
+					  $(".caudro_lineal").draggable("disable");
+
+ 				break;
+
+
+
+
+ 				case 4:
+
+ 					_self.cerrarDialogEdicion();
+ 					  $("#bton_estado4").addClass("miActivo");
+					  $("#bton_estado1").removeClass("miActivo");
+					  $("#bton_estado2").removeClass("miActivo");
+					  
+					  $("body").attr("data-estado","4");
+					  _self.enbledDragDiagrama(false);
+					  _self.deseleccionaLineaConexion();
+
+					  $(".descripcion_observada").attr("contenteditable",false);
+					  $(".caudro_lineal").draggable("enable");
  				break;
  			}
 
@@ -1681,17 +2106,311 @@ function Flujo (idDOM){
           ,crearJSON:function(){
           	
           	var _self= this;
-          	var manejo="";
+          	var manejo="{";
+          	 	manejo+="'elementos':"+ 	  _self.getJSONStringListaElementos();
+          	 	manejo+=",'lineas':"+ 	  	  _self.getJsonStringListaLineaConexion();
+          	 	manejo+=",'pagina':"+		  _self.getJSONStringPagina();
+          	 	manejo+=",'cuadros':"+		  _self.crearJSONCuadros();
+          	manejo+="}";
+
+         
+
+          	console.info(manejo);
+
+          	var gato;
+          	eval("gato="+manejo);
+          	console.info(gato);
 
 
-          	for(var i=0; _self.listaElementos.length; i++ )
-          	{
-          		
-          	}
 
           }// fin function --> crearJSON
 
 
+
+          // *******************
+          // ****  cuadros ... 
+          // **** 
+          ,crearJSONCuadros:function(){
+
+          	var _self= this;
+          	var salida="[";
+          	for(var i=0; i< _self.listaCuadroSeleccion.length ; i++)
+          	{
+
+          		var $elemento = _self.listaCuadroSeleccion[i].$elemento;
+          		var id_pagina ="#"+_self.listaCuadroSeleccion[i].$pagina.attr("id");
+				var top =   $elemento.css("top");
+				var left =  $elemento.css("left");
+				var width = $elemento.css("width");
+				var height =$elemento.css("height");
+
+				var json="{";
+
+					json+= "'id_pagina'" +":'"  +id_pagina+"',"
+					json+= "'top'" +":'"  		+top+"',"
+					json+= "'left'" +":'" 		+left+"',"
+					json+= "'width'" +":'"  	+width+"',"
+					json+= "'height'" +":'"  	+height+"'"
+
+				json+="},";
+				salida+=json; 
+          	}
+
+          	salida+="]";
+
+          	var ff;
+	       	eval("ff="+salida);
+	       	console.log(ff);
+
+			return salida;          
+          	
+          }// fin function --> crearJSONCuadros
+
+
+
+          // **********************
+          // ****** 
+          // ****** 
+          ,getJSONStringPagina:function(){
+          	
+          	var _self= this;
+          	var salida="[";
+
+
+          	for(var i= 0; i< _self.listaPaginas.length ; i++)
+          	{
+          		salida+="'"+_self.listaPaginas[i].attr("id")+"',";	
+          	}
+			
+			salida+="]";          	
+
+			
+
+          	var ff;
+          	console.log(salida);
+	       	eval("ff="+salida);
+	       	console.log(ff);
+
+			return salida;
+
+
+          }// fin  function -->getJSONStringPagina
+
+
+
+
+
+
+
+          // ********************
+          // lista de lineas 
+          // forma el string de lista json de lineas 
+          ,getJsonStringListaLineaConexion:function(){
+          	
+
+          	var _self= this;
+          	var  salida="[";
+
+          	for(i=0; i< _self.listaLineaConexion.length ; i++)
+          	{
+
+          		var $elemento =  _self.listaLineaConexion[i].$elementoDOM;
+
+          		var id_pagina =  _self.listaLineaConexion[i].$pagina.attr("id");
+				var textoP = 	 _self.listaLineaConexion[i].$textoP.html();
+				var top =  $elemento.css("top");
+ 				var left =  $elemento.css("left");
+				var transform =  $elemento.css("transform");
+				var width =  $elemento.css("width");
+				var height =  $elemento.css("height");
+				var puntos_punto_moviblefin =$elemento.data("puntos_punto_moviblefin");
+				var puntos_movibleinicio    =$elemento.data("puntos_movibleinicio");
+
+
+
+				var json ="{";
+
+					json+= "'id_pagina'"+":'#"	+id_pagina+"',"	 
+					json+= "'textoP'"	+":'"	+textoP+"',"	 
+					json+= "'top'"		+":'"	+top+"',"	 
+					json+= "'left'"		+":'"	+left+"',"	 
+					json+= "'transform'"+":'"	+transform+"',"	 
+					json+= "'width'"	+":'"	+width+"',"	 
+					json+= "'height'"	+":'"	+height+"',"
+					json+= "'puntos_punto_moviblefin'"	+":'"	+puntos_punto_moviblefin+"',"
+					json+= "'puntos_movibleinicio'"	+":'"		+puntos_movibleinicio+"'"
+						 
+
+					json +="}";
+
+				salida+=json+",";		
+
+
+          	}
+
+          	salida+="]";
+          	var gato;
+
+          	console.info(salida);
+          	
+          	eval("gato="+salida);
+          	console.log(gato);
+		
+
+
+			return salida;
+          }// fin function --> getJsonStringListaLineaConexion
+
+
+
+ 		  //****************
+          // string listaELEMtnoe
+          ,getJSONStringListaElementos:function(){
+
+          var salida="[";	
+
+          	for(var i=0;i<_self.listaElementos.length; i++ )
+          	{
+          		var $mielemento = _self.listaElementos[i].$elemento;
+          		var mielemento=	   _self.procesarString($mielemento.data('mielemento') );
+				var descripcion=   _self.procesarString($mielemento.data('descripcion') );
+				var registro=	   _self.procesarString($mielemento.data('registro') );
+				var observacion=   _self.procesarString($mielemento.data('observacion') );
+				var personal=	   _self.procesarString($mielemento.data('personal') );
+				var resumen=	   _self.procesarString($mielemento.data('resumen') );
+				var ver_personal=   _self.procesarString($mielemento.data('ver_personal') );
+
+				
+				var top = $mielemento.css("top");
+				var left= $mielemento.css("left");
+				var width=$mielemento.width();
+				var height=$mielemento.height()
+				var linea1=_self.creaJSONStringPuntosConexion(_self.listaElementos[i].linea1);
+				var linea2=_self.creaJSONStringPuntosConexion(_self.listaElementos[i].linea2);
+				var linea3=_self.creaJSONStringPuntosConexion(_self.listaElementos[i].linea3);
+				var linea4=_self.creaJSONStringPuntosConexion(_self.listaElementos[i].linea4);
+				var idPagina = _self.listaElementos[i].$pagina.attr("id");
+
+				var miJson="{";
+					miJson+="'mielemento'"+   ":'"  + mielemento+"'," 
+					miJson+="'descripcion'"+  ":'"  + descripcion+"'," 
+					miJson+="'registro'"+  	  ":'" + registro+"'," 
+					miJson+="'observacion'"+  ":'" + observacion+"'," 
+					miJson+="'personal'"+     ":'" + personal+"'," 
+					miJson+="'resumen'"+      ":'" + resumen+"'," 
+					miJson+="'ver_personal'"+ ":'" + ver_personal+"'," 
+					miJson+="'id_pagina'"	+ ":'" + idPagina+"'," 
+					miJson+="'top'"+		  ":'" + top+"'," 
+					miJson+="'left'"+ 		  ":'" + left+"'," 
+					miJson+="'width'"+ 		  ":'" + width+"'," 
+					miJson+="'height'"+ 	  ":'" + height+"'," 
+					miJson+="'linea1'"+ 	  ":" + linea1+","
+					miJson+="'linea2'"+ 	  ":" + linea2+"," 
+					miJson+="'linea3'"+ 	  ":" + linea3+"," 
+					miJson+="'linea4'"+ 	  ":" + linea4+""  
+				miJson+="}";
+
+				salida+=miJson+",";
+
+			}
+
+			salida+="]";
+		/*
+			var gato ;
+
+			console.log(salida);
+			eval ("gato="+salida);
+			console.info(gato);*/
+
+		return salida;
+          }// fin de la funcion 
+
+
+
+          // ******************
+          // creacion de puntos de conexion
+          //@param linea JSON .. {$linea : null , $punto:null}
+          ,creaJSONStringPuntosConexion:function(linea){
+            var json ="{'$linea' : null , '$punto':null}"; 
+
+            	if(linea!=null && linea.$linea!=null && linea.$punto!=null )
+            	{
+            		// tipo de punto
+            		var clasePunto="";
+            		if(linea.$punto.hasClass("punto_moviblefin "))
+            		{
+            			clasePunto=".punto_moviblefin";
+            		}
+            		else{
+            			clasePunto=".punto_movibleinicio";
+            		}
+
+
+
+            		var idLinea ="#"+linea.$linea.attr("id");
+            		json="{'$linea' : '"+idLinea+"' , '$punto':'"+clasePunto+"'}";
+
+            	}
+
+            return json;
+          }//
+
+
+
+
+          /// procesar palabra
+          // evita comillas dobles escapa las comiilas simples
+          , procesarString: function(mensaje)
+          {
+	       	var _self=this;
+
+	          if(mensaje)
+	           {
+
+	           mensaje=	_self.remplazarPalabras(mensaje,"'","{{#-8-~#}}");
+	           mensaje=_self.remplazarPalabras(mensaje,"{{#-8-~#}}","\\'");
+
+	           mensaje=	_self.remplazarPalabras(mensaje,"\"","{{#-8-~#}}");
+	           mensaje=_self.remplazarPalabras(mensaje,"{{#-8-~#}}","\\\"");
+
+	           }
+	           else{
+	           	mensaje="";
+	           }
+
+
+	           return mensaje;
+
+
+          }// fin funcion --> procesarString 
+
+
+
+          // funcion rempllazar letrass
+          //
+          ,remplazarPalabras:function(mensaje,palabraRemplazar, nuevaPalabra)
+          {
+
+          	if(mensaje)
+          	{
+				do{
+			    mensaje = mensaje.replace(palabraRemplazar,nuevaPalabra);
+
+				} while(mensaje.indexOf(palabraRemplazar) >= 0);
+          	}
+          	return mensaje;
+          }// fin funcion -->remplazarPalabras
+
+
+          // **************** 
+          // leeer parametros limpios por get
+          //
+          ,leerGET:function(){
+          	var parametros =window.location.pathname;
+
+
+
+          }// leerGET
 
 
 

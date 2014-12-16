@@ -32,21 +32,24 @@ function LineaConexion(){
 			
 		}
 
+
 		/*	
-		dibuja la linea de conexion..
+		//dibuja la linea de conexion..
 		*/	
-		,dibujar:function(){
+		,dibujar:function(datosObj){
+			
 			
 			var _seft= this;
+
+
+			
 			var $elemento = $("<svg class='linea_' data-puntos_punto_moviblefin='' "+
 								"data-puntos_movibleinicio='' style='z-index:5;width:20px; height:20px;position:absolute; overflow: visible;' "
 								+" data-label='' >");
 			_seft.$textoP = $("<div  contenteditable='true' class='descripcion_linea'></div>") ;
 
-			
 			_seft.$pagina.append($elemento);
 			_seft.$pagina.append(_seft.$textoP);
-
 			_seft.svgElemento = Snap($elemento[0]);
 	      	_seft.banderaSeleccionado =false;
 	      	_seft.lineaRecta1= _seft.svgElemento.line('0%','0%','100%','100%');
@@ -63,8 +66,6 @@ function LineaConexion(){
 
 
 
-
-
                 _seft.lineaRecta1.attr({
                       fill: "#FDFEFA",
                       stroke: "#7088DE",
@@ -72,12 +73,15 @@ function LineaConexion(){
                 });
 
 
-
+            //se ingresan elementos   
+           _seft.$$padre.contadorLineas++;
+           _seft.$elementoDOM.attr("id","id_linea_"+_seft.$$padre.contadorLineas);
 
 
             //eventos a la linea
            _seft.eventoClick();
            _seft.actualizoPosicionTexto();
+
 
 		}// fin de la function->dibujar
 
@@ -176,10 +180,6 @@ function LineaConexion(){
 		,eventoClick:function(){
 
 
-
-
-
-
 		var _seft=this;
 
 		   _seft.$elementoDOM.on('mousedown',function (e) {
@@ -226,16 +226,14 @@ function LineaConexion(){
          _seft.$elementoDOM.on('click',function (e) {
 
 
-         	console.info("--> mostraron los datos de la linea");
-
+        
          	switch(_seft.$$padre.estado){
 
+         		case 4:
          		case 1:
          			_seft.$$padre.cambioEstado(2); 
 					_seft.seleccionaLineaObj(); 
-
-
-         		break;
+				break;
 
          		case 2:
          			_seft.seleccionaLineaObj();             
@@ -278,7 +276,7 @@ function LineaConexion(){
 
                 _seft.banderaSeleccionado=true;
                 _seft.cambiarColorAnimacion(false);
-                $puntos.show();
+                _seft.$$padre.$paginaActual.find(".punto_circle").show();
 
 
 

@@ -199,7 +199,8 @@
       }
 
       body[data-estado='2'] svg.linea_ line:hover,
-      body[data-estado='1'] svg.linea_ line:hover {
+      body[data-estado='1'] svg.linea_ line:hover,
+      body[data-estado='4'] svg.linea_ line:hover {
         cursor: pointer;
       }
 
@@ -240,6 +241,15 @@
         }
 
 
+         body[data-estado='4']
+          div[data-mielemento]   .ui-resizable-handle,
+          body[data-estado='4']
+         .puntos_conexion 
+        {
+          display: none !important
+        }
+
+
       body[data-estado='2'] .puntos_conexion
       
        {
@@ -255,10 +265,14 @@
 
        /*cursor*/
 
-       body[data-estado='2'] .paginas{
+       body[data-estado='2'] .paginas
+       {
           cursor: url('img/puntero1.cur') ,auto;
        }
 
+      body[data-estado='4'] .paginas{
+          cursor: url('img/puntero2.cur') ,auto;
+       }
 
 
        .icon3{
@@ -441,7 +455,7 @@ overflow: auto;">
           </section>
 
 
-          <section class="middle tab-bar-section">
+          <section class="middle tab-bar-section" style="cursor:default">
         <div class="button-bar" id="botones_panel_superior">
           <ul class="button-group [radius round]">
             <li class="">
@@ -458,6 +472,16 @@ overflow: auto;">
                 <a href="#" onclick="false" id="bton_estado2" 
                 class="botonFondo [tiny small large] button [alert success secondary] [disabled]"
                 style="background-image:url('img/icon2.png') ;background-size: 71%;
+                  background-repeat: no-repeat;
+                  background-position: 50%;"
+                  >
+                </a>
+              </li>
+
+                 <li>
+                <a href="#" onclick="false" id="bton_estado4" 
+                class="botonFondo [tiny small large] button [alert success secondary] [disabled]"
+                style="background-image:url('img/icon4.png') ;background-size: 71%;
                   background-repeat: no-repeat;
                   background-position: 50%;"
                   >
@@ -870,6 +894,7 @@ height: 35px;">
 
     <script src="js/MensajeDetalle.js"></script>
     <script src="js/LineaConexion.js"></script>
+     <script src="js/CuadroSeleccion.js"></script>
     <script src="js/diagramaF1.js"></script>
     <script src="js/Flujo.js"></script>
    
@@ -1047,6 +1072,10 @@ $("#bton_estado2").click(function(e){
 
 
 
+$("#bton_estado4").click(function(e){
+  manejoFlujo.cambioEstado(4);
+
+});
 
 
 
