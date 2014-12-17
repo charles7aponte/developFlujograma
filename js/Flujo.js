@@ -118,7 +118,7 @@ function Flujo (idDOM){
 
 			      // // llama del proceso   - ele_menu_izq_conector4
 			      var sEleConector5=   Snap("#ele_menu_izq_conector5")
-			       Snap.load("http://localhost/triki1/public/img/n5.svg", function(f){
+			       Snap.load(URL__SERVIDOR+"/img/n5.svg", function(f){
 			       	
 			       	_self.elementoN5= f;
 			        var g= f.select("g");
@@ -130,7 +130,7 @@ function Flujo (idDOM){
 			   
 			      // decison    - ele_menu_izq_conector 6 
 			      var sEleConector6=   Snap("#ele_menu_izq_conector6")
-			       Snap.load("http://localhost/triki1/public/img/n6.svg", function(f){
+			       Snap.load(URL__SERVIDOR+"/img/n6.svg", function(f){
 				       	_self.elementoN6= f;
 				        var g= f.select("g");
 				        g.attr({fill: "#bada55"});			        
@@ -141,7 +141,7 @@ function Flujo (idDOM){
 
 			      // documento    - ele_menu_izq_conector 7 
 			      var sEleConector7=   Snap("#ele_menu_izq_conector7");
-			      Snap.load("http://localhost/triki1/public/img/documente.svg", function(f){
+			      Snap.load(URL__SERVIDOR+"/img/documente.svg", function(f){
 
 			      	_self.elementoN7= f;
 			        var g= f.select("g");
@@ -153,7 +153,7 @@ function Flujo (idDOM){
 
 			      // documento    - ele_menu_izq_conector 7 
 			      var sEleConector8=   Snap("#ele_menu_izq_conector8");
-			      Snap.load("http://localhost/triki1/public/img/muldocumento.svg", function(f){
+			      Snap.load(URL__SERVIDOR+"/img/muldocumento.svg", function(f){
 
 			      	_self.elementoN8= f;
 			        var g= f.select("g");
@@ -1348,10 +1348,17 @@ function Flujo (idDOM){
 		      ,construccionAllFromJsonJSON:function(strin){
 
 		      //var strin ="{'elementos':[{'mielemento':'n6','descripcion':'','registro':'','observacion':'','personal':'','resumen':'','ver_personal':'S','id_pagina':'contenedor_principal_pag_1','top':'45.8125px','left':'162px','width':'150','height':'150','linea1':{'$linea' : null , '$punto':null},'linea2':{'$linea' : null , '$punto':null},'linea3':{'$linea' : null , '$punto':null},'linea4':{'$linea' : '#id_linea_1' , '$punto':'.punto_movibleinicio'}},{'mielemento':'n3','descripcion':'','registro':'','observacion':'','personal':'','resumen':'','ver_personal':'N','id_pagina':'contenedor_principal_pag_1','top':'47.8125px','left':'455px','width':'150','height':'150','linea1':{'$linea' : null , '$punto':null},'linea2':{'$linea' : null , '$punto':null},'linea3':{'$linea' : null , '$punto':null},'linea4':{'$linea' : '#id_linea_1' , '$punto':'.punto_moviblefin'}},{'mielemento':'n6','descripcion':'','registro':'','observacion':'','personal':'','resumen':'','ver_personal':'S','id_pagina':'pagina_id_1','top':'69.8125px','left':'233px','width':'150','height':'150','linea1':{'$linea' : null , '$punto':null},'linea2':{'$linea' : '#id_linea_4' , '$punto':'.punto_moviblefin'},'linea3':{'$linea' : null , '$punto':null},'linea4':{'$linea' : '#id_linea_4' , '$punto':'.punto_movibleinicio'}},],'lineas':[{'id':'id_linea_1','id_pagina':'#contenedor_principal_pag_1','textoP':'','top':'38px','left':'245px','transform':'none','width':'290px','height':'2px','puntos_punto_moviblefin':'530;35','puntos_movibleinicio':'240;33'},{'id':'id_linea_2','id_pagina':'#contenedor_principal_pag_1','textoP':'','top':'53px','left':'569px','transform':'none','width':'25px','height':'16px','puntos_punto_moviblefin':'589;48','puntos_movibleinicio':'564;64'},{'id':'id_linea_4','id_pagina':'#pagina_id_1','textoP':'','top':'64px','left':'315px','transform':'matrix(1, 0, 0, 1, 0, 0)','width':'73px','height':'86px','puntos_punto_moviblefin':'383;145','puntos_movibleinicio':'310;59'},],'pagina':['contenedor_principal_pag_1','pagina_id_1','pagina_id_2',],'cuadros':[{'id_pagina':'#pagina_id_1','top':'49.8125px','left':'103px','width':'538px','height':'150px'},{'id_pagina':'#contenedor_principal_pag_1','top':'50.8125px','left':'759px','width':'68px','height':'95px'},{'id_pagina':'#pagina_id_2','top':'44.8125px','left':'318px','width':'90px','height':'81px'},]}";
+		     
 		      var gato;
-		      
+		     console.log(strin);
+		     // strin=_self.remplazarPalabras(manejo,"\\\\","");
+			//strin=_self.remplazarPalabras(manejo,"{{#-8-~#}}","\\'");
+
+
+
 		      eval("gato="+strin);
 
+		      console.log(gato);
 		     
 		      this.construccionJsonPagina(gato.pagina);
 		      this.construccionJsonNuevasLineas(gato.lineas);
@@ -1797,11 +1804,11 @@ function Flujo (idDOM){
 
 		     	var html ="  <div  class='paginas' id='pagina_id_"+idPagina+"' >    "
 				        +"       <div class='punto_moviblefin punto_circle' >  "
-				        +"         <img src='./img/conexion_p.gif'  class='imagen_punto_mobil'>   "
+				        +"         <img src='"+URL__SERVIDOR+"/img/conexion_p.gif'  class='imagen_punto_mobil'>   "
 				        +"       </div>  "
 				               
 				        +"        <div class='punto_movibleinicio punto_circle' >  "
-				        +"          <img src='./img/conexion_p.gif'  class='imagen_punto_mobil'>   "
+				        +"          <img src='"+URL__SERVIDOR+"/img/conexion_p.gif'  class='imagen_punto_mobil'>   "
 				        +"        </div>  "
 				        +"   </div>";
 
@@ -2139,8 +2146,8 @@ function Flujo (idDOM){
           }// fin el funcion ->enbledDragDiagrama
 
 
-
-
+          	// *****************
+          	// ******
           	,modoOnlyReadBasico:function(){
 
 	          	var _self=this;
@@ -2262,13 +2269,16 @@ function Flujo (idDOM){
           	 	manejo+=",'cuadros':"+		  _self.crearJSONCuadros();
           	manejo+="}";
 
-         
+         	
 
-	          	console.info(manejo);
+         	   //manejo=_self.remplazarPalabras(manejo,"'","{{#-8-~#}}");
+	           //manejo=_self.remplazarPalabras(manejo,"{{#-8-~#}}","\'");
 
+	          	//console.info(manejo);
+	          	/*
 	          	var gato;
 	          	eval("gato="+manejo);
-	          	console.info(gato);
+	          	console.info(gato);*/
 
 
           		return manejo;
@@ -2523,7 +2533,7 @@ function Flujo (idDOM){
 	           mensaje=_self.remplazarPalabras(mensaje,"{{#-8-~#}}","\\'");
 
 	           mensaje=	_self.remplazarPalabras(mensaje,"\"","{{#-8-~#}}");
-	           mensaje=_self.remplazarPalabras(mensaje,"{{#-8-~#}}","\\\"");
+	           mensaje=_self.remplazarPalabras(mensaje,"{{#-8-~#}}","\\'");
 
 	           }
 	           else{
@@ -2554,38 +2564,51 @@ function Flujo (idDOM){
           }// fin funcion -->remplazarPalabras
 
 
+
+          ,getGET:function(){
+			    var url= location.search.replace("?", "");
+			    var arrUrl = url.split("&");
+			    var urlObj={};   
+			    for(var i=0; i<arrUrl.length; i++){
+			        var x= arrUrl[i].split("=");
+			        urlObj[x[0]]=x[1]
+			    }
+			    return urlObj;
+			}
+
+
           // **************** 
           // leeer parametros limpios por get
           //
           ,leerGET:function(){
 
-          	var parametros =window.location.pathname;
           	var _self =this;
           	var edicion =false;// si esta editando u observando .. true =>para habilitar la edicion o false para lo contrario
-          	parametros=parametros.split("/");	
+         
+          	parametros =_self.getGET();
 
 
-			var url_solicita="http://localhost/triki1/public/flujograma/cargar";
+			var url_solicita=URLSOLICITUD;
 
           		
-          	if(parametros.length >1)
+          	if(parametros  && parametros.uid && parametros.action)
           	{
           		
-          		if( (parametros[parametros.length-2]+"").toLowerCase()=="edit-fluj"
-          			|| (parametros[parametros.length-2]+"").toLowerCase()=="view-fluj")
+          		if( (parametros.action+"").toLowerCase()=="edit"
+          			|| (parametros.action+"").toLowerCase()=="view")
 	          		{
-	          			var id_nodo=	parametros[parametros.length-1]+"";
+	          			var id_nodo=	parametros.uid+"";
 	          			_self.nitNodo = id_nodo;
 
 	          				
-						switch((parametros[parametros.length-2]+""))
+						switch((parametros.action+""))
 						{
-							case "edit-fluj":
+							case "edit":
 									edicion=true;
 										
 							break;	
 
-							case "view-fluj":
+							case "view":
 									edicion=false;
 									_self.modoOnlyReadBasico();	
 							break;		
@@ -2599,6 +2622,7 @@ function Flujo (idDOM){
 	  									nid:id_nodo
 
 							 		  }
+							 	,dataType :'json'	  
 							 	,url:url_solicita
 							 	,type:'POST'
 							 	,success:function(data){
@@ -2606,7 +2630,9 @@ function Flujo (idDOM){
 					    			if(data)
 					    			{
 
-					    				_self.construccionAllFromJsonJSON(data.text);
+					    				console.info(data.data);
+
+					    				_self.construccionAllFromJsonJSON(data.data);
 					    				if(edicion==false)
 					    				{
 					    					_self.modoOnlyRead();
@@ -2660,7 +2686,7 @@ function Flujo (idDOM){
           				"text":json
           			};
 
-          			ulr ="http://localhost/triki1/public/flujograma/guardar/json";
+          			ulr =URL_GUARDAR;
           		//}
 
 
@@ -2684,7 +2710,6 @@ function Flujo (idDOM){
 				  				alert("Vuelva a intentar cargarlo");
 				  			}
 				  		});
-
 
 
           }//fin funcion -->guardarDatosJson

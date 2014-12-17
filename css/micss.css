@@ -173,15 +173,15 @@ div[data-mielemento] .bton_mensaje_mostrar
 	position: absolute;
 
 			background-color: #284570;
-						background-image: -moz-linear-gradient(top, #5683b1, #235695);
-						background-image: -ms-linear-gradient(top, #5683b1, #235695);
-						background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#5683b1), to(#235695));
-						background-image: -webkit-linear-gradient(top, #5683b1, #235695);
-						background-image: -o-linear-gradient(top, #5683b1, #235695);
-						background-image: linear-gradient(top, #5683b1, #235695);
+						background-image: -moz-linear-gradient(top, #5683b1, #2d4e13);
+						background-image: -ms-linear-gradient(top, #5683b1, #2d4e13);
+						background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#5683b1), to(#2d4e13));
+						background-image: -webkit-linear-gradient(top, #5683b1, #2d4e13);
+						background-image: -o-linear-gradient(top, #5683b1, #2d4e13);
+						background-image: linear-gradient(top, #5683b1, #2d4e13);
 						background-repeat: repeat-x;
-						filter: progid:dximagetransform.microsoft.gradient(GradientType=0, StartColorStr='#5683B1', EndColorStr='#235695');
-						border-color: #235695 #235695 #003580;
+						filter: progid:dximagetransform.microsoft.gradient(GradientType=0, StartColorStr='#5683B1', EndColorStr='#2d4e13');
+						border-color: #2d4e13 #2d4e13 #003580;
 						border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
 						filter: progid:dximagetransform.microsoft.gradient(enabled=false);
 						color: #fff;
@@ -310,25 +310,10 @@ div[data-mielemento=n2] .punto4 ,div[data-mielemento=n3] .punto4
 } 
 
 
-.puntos_conexion:hover{
-
-	background-image: url('../img/cruz2.gif');
-} 
 
 
 
-     .punto_circle{
-	        background:#DBDCD6;
-	        border: 1px solid #B9B9B9;
-	        z-index:11; 
-	        position: absolute;
-	        background-position: -626px -114px; 
-	        width: 12px;
-	        height: 12px;
-	        border-radius: 10px;
-	        cursor: url("cursor/icn_cursor_move.cur"),move !important;
-       
-        }
+
 
 
 
@@ -368,7 +353,7 @@ div[data-mielemento=n2] .punto4 ,div[data-mielemento=n3] .punto4
 
 
 .active_icons{
-	background: #235695 !important;
+	background: #2d4e13 !important;
 	color: black;
 }
 
@@ -418,7 +403,7 @@ div[data-mielemento=n2] .punto4 ,div[data-mielemento=n3] .punto4
 
 
 .sub_boton{
-	background: #235695;
+	background: #2d4e13;
 }
 
 
@@ -649,9 +634,9 @@ cursor: pointer;
 
 
 /*.diagrama_modoread:hover{
-	-webkit-box-shadow: 2px 2px 5px #235695;
-	-moz-box-shadow: 2px 2px 5px #235695;
-	box-shadow: 2px 2px 5px #235695;
+	-webkit-box-shadow: 2px 2px 5px #2d4e13;
+	-moz-box-shadow: 2px 2px 5px #2d4e13;
+	box-shadow: 2px 2px 5px #2d4e13;
 
 }*/
 
@@ -746,7 +731,7 @@ cursor: pointer;
 .ui-dialog .ui-dialog-buttonpane button {
 margin: .5em .4em .5em 0;
 cursor: pointer;
-background: #235695;
+background: #2d4e13;
 color:#C4C6BB;
 }
 
@@ -773,7 +758,7 @@ z-index: 3;
 .caudro_lineal_top{
 	width: 100%;
 	height: 5px;
-	border-top: 1px dashed #235695;
+	border-top: 1px dashed #2d4e13;
 	position: absolute;
 	right: 0;
 	top: 0;
@@ -782,7 +767,7 @@ z-index: 3;
 
 
 .caudro_lineal_left{
-	border-left: 1px dashed #235695;
+	border-left: 1px dashed #2d4e13;
 	width: 5px;
 	height: 100%;
 	position: absolute;
@@ -793,7 +778,7 @@ z-index: 3;
 
 
 .caudro_lineal_right{
-	border-right: 1px dashed #235695;
+	border-right: 1px dashed #2d4e13;
 	width: 5px;
 	height: 100%;
 	position: absolute;
@@ -803,7 +788,7 @@ z-index: 3;
 }
 
 .caudro_lineal_bottom{
-	border-bottom: 1px dashed #235695;
+	border-bottom: 1px dashed #2d4e13;
 	width: 100%;
 	height: 5px;
 	position: absolute;
@@ -822,3 +807,5 @@ body[data-estado='4'] .caudro_lineal_bottom:hover{
 	background:#C5C9FE;
 	cursor: move;
 }
+
+

@@ -184,8 +184,6 @@ function LineaConexion(){
 			else{
 				_seft.$textoP.hide();
 			}
-
-
 		}
 
 
@@ -280,7 +278,7 @@ function LineaConexion(){
 
 
 
-  //
+  
          //****************
          //selecciona la linea
          //
