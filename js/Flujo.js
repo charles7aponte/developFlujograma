@@ -13,18 +13,33 @@ function Flujo (idDOM){
 	 		,listaElementos:[]
 	 		,listaCuadroSeleccion:[]
 	 		,cuadroSeleccionado:null
+	 		,listaLineasPartes:[]
+
+
+	 		, objCuadroAgrupacion:null /// el Object de objeto que se encarga de la agrupacion
+	 		, objLineaPartes:null /// el Object de objeto que se encarga de la agrupacion
+
 
 	 		,contadorLineas:0
+	 		,contadorLineasPartes:0
 	 		,contadorPaginas:0
 
 	 		,nitNodo:null// id del nodo para actualizacion
 
 
 	 		,ban_escribir:0// bandera maneja las conexiones en orde
+	 		,ban_crear_grupo:0// bandera maneja las conexiones en orde
+	 		,ban_crear_linea_partes:0// bandera maneja las conexiones en orde
+	 		
+	 		
 	 		,ban_escCuadro:0 // bandera para creacion de cuadros 
 
 	 		,$elementoSeleccionado:null // elmento selecccionado actualmente
-	 		,elementoN5:null // elmeenot de conexion entre paginas .. este se carga
+	 		,elementoN1:null // elmeenot de conexion entre paginas .. este se carga
+			,elementoN2:null // elmeenot de conexion entre paginas .. este se carga
+			,elementoN3:null // elmeenot de conexion entre paginas .. este se carga
+			,elementoN4:null // elmeenot de conexion entre paginas .. este se carga
+			,elementoN5:null // elmeenot de conexion entre paginas .. este se carga
 			,elementoN6:null // elmeenot de conexion entre paginas .. este se carga
 			,elementoN7:null // elmeenot de conexion entre paginas .. este se carga
 			,elementoN8:null // elmeenot de conexion entre paginas .. este se carga
@@ -63,58 +78,105 @@ function Flujo (idDOM){
 	 			
 	 			var _self= this;
 	 			// conector 1 en la misma pagina
-			      var sEleConector1= Snap("#ele_menu_izq_conector1");
+/*			      var sEleConector1= Snap("#ele_menu_izq_conector1");
 			      var sEleConector1_c= sEleConector1.circle(33,33,30);
 			      sEleConector1_c.attr({
 			          fill: "#FDFEFA",
 			          stroke: "#000",
-			          strokeWidth: 2
+			          strokeWidth: 1
+			      });
+*/
+
+
+				  var sEleConector1=   Snap("#ele_menu_izq_conector1")
+			       Snap.load(URL__SERVIDOR+"/img/n1.svg", function(f){
+			       	
+			       	_self.elementoN1= f;
+			        var g= f.select("g");
+			        g.attr({fill: "#bada55"});			        
+			        sEleConector1.append(f);
 			      });
 
 
+
+
 			      // terminador  - ele_menu_izq_conector2
-			      var sEleConector2= Snap("#ele_menu_izq_conector2");
+			      /*var sEleConector2= Snap("#ele_menu_izq_conector2");
 			      var sEleConector2_c= sEleConector2.rect(2,12,60,40,20,20);
 			      sEleConector2_c.attr({
 			          fill: "#FDFEFA",
 			          stroke: "#000",
-			          strokeWidth: 2
+			          strokeWidth: 1
+			      });*/
+
+				  var sEleConector2=   Snap("#ele_menu_izq_conector2")
+			       Snap.load(URL__SERVIDOR+"/img/n2.svg", function(f){
+			       	
+			       	_self.elementoN2= f;
+			        var g= f.select("g");
+			        g.attr({fill: "#bada55"});			        
+			        sEleConector2.append(f);
 			      });
 
 
 
+			      // // llama del proceso   - ele_menu_izq_conector4
+			      var sEleConector3=   Snap("#ele_menu_izq_conector3")
+			       Snap.load(URL__SERVIDOR+"/img/n3.svg", function(f){
+			       	
+			       	_self.elementoN3= f;
+			        var g= f.select("g");
+			        g.attr({fill: "#bada55"});			        
+			        sEleConector3.append(f);
+			      });
+
+
 			      // proceso (actividad)  - ele_menu_izq_conector3
-			      var sEleConector3= Snap("#ele_menu_izq_conector3");
+			     /* var sEleConector3= Snap("#ele_menu_izq_conector3");
 			      var sEleConector3_c= sEleConector3.rect(2,2,60,60);
 			      sEleConector3_c.attr({
 			          fill: "#FDFEFA",
 			          stroke: "#000",
-			          strokeWidth: 2
+			          strokeWidth: 1
 			      });
-
+*/
 
 			      // llama del proceso   - ele_menu_izq_conector4
+			      // // llama del proceso   - ele_menu_izq_conector4
+			      var sEleConector4=   Snap("#ele_menu_izq_conector4")
+			       Snap.load(URL__SERVIDOR+"/img/n4.svg", function(f){
+			       	
+			       	_self.elementoN4= f;
+			        var g= f.select("g");
+			        g.attr({fill: "#bada55"});			        
+			        sEleConector4.append(f);
+			      });
+
+			      
+/*
+
+//
 			      var sEleConector4= Snap("#ele_menu_izq_conector4");
 			      var sEleConector4_c= sEleConector4.rect(2,5,60,50);
 			      sEleConector4_c.attr({
 			          fill: "#FDFEFA",
 			          stroke: "#000",
-			          strokeWidth: 2
+			          strokeWidth: 1
 			      });
 			      var sEleConector4_c1= sEleConector4.rect(2,5,10,50);
 			      sEleConector4_c1.attr({
 			          fill: "#FDFEFA",
 			          stroke: "#000",
-			          strokeWidth: 2
+			          strokeWidth: 1
 			      });
 			      var sEleConector4_c2= sEleConector4.rect(52,5,10,50);
 			      sEleConector4_c2.attr({
 			         fill: "#FDFEFA",
 			          stroke: "#000",
-			          strokeWidth: 2
+			          strokeWidth: 1
 			      });
 
-
+*/
 
 			      // // llama del proceso   - ele_menu_izq_conector4
 			      var sEleConector5=   Snap("#ele_menu_izq_conector5")
@@ -137,7 +199,6 @@ function Flujo (idDOM){
 				        sEleConector6.append(f);
 			      });
 			   
-
 
 			      // documento    - ele_menu_izq_conector 7 
 			      var sEleConector7=   Snap("#ele_menu_izq_conector7");
@@ -175,20 +236,21 @@ function Flujo (idDOM){
 
 		         var ss= Snap(elemento);
 		         var op1={
-		              fill: "#FDFEFA",
+		              fill: "#feffff",
 		              stroke: "#000",
-		              strokeWidth: 2
+		            //  strokeWidth: "1",
+		              opacity: 0.8
 		            };
 		        var op2={
-		              fill: "#FDFEFA",
+		              fill: "#feffff",
 		              stroke: "#000",
-		              strokeWidth: 2
+		             // strokeWidth: 0.4
 		            };
 		        
 		        var op3={
-		              fill: "#FDFEFA",
+		              fill: "#feffff",
 		              stroke: "#000",
-		              strokeWidth: 2
+		              //strokeWidth: 0.4
 		            };    
 		         var sc1=null;
 
@@ -197,13 +259,22 @@ function Flujo (idDOM){
 
 		         switch(seleccion){
 		            case "n1":
-		            sc1= ss.circle('50%','50%','49%').attr(op1);
-		           	listasSVG.push(sc1);
+		            	 if( _self.elementoN1)
+			            	{
+			            		var n1Axiliar = _self.elementoN1.paper.clone();
+				            	listasSVG.push(n1Axiliar);
+				            	ss.append(n1Axiliar);		
+			            	}
 		            break;
 		            
 		            case "n2":
-		            sc1= ss.rect('1%','15%','99%','72%','30%','30%').attr(op1);
-		            listasSVG.push(sc1);
+			           if( _self.elementoN2)
+			            	{
+			            		var n2Axiliar = _self.elementoN2.paper.clone();
+				            	listasSVG.push(n2Axiliar);
+				            	ss.append(n2Axiliar);		
+			            	}
+
 		            break;
 		            
 		            case "n3":
@@ -212,12 +283,14 @@ function Flujo (idDOM){
 		            break;
 		            
 		            case "n4":
-		            sc1= ss.rect('1%','5%','99%','75%').attr(op1);
-		           	listasSVG.push(sc1);
-		            sc1= ss.rect('1%','5%','15%','75%').attr(op1);
-		            listasSVG.push(sc1);
-		            sc1= ss.rect('85%','5%','15%','75%').attr(op1);
-		            listasSVG.push(sc1);
+		           		if( _self.elementoN4)
+		            	{
+		            		var n4Axiliar = _self.elementoN4.paper.clone();
+			            	listasSVG.push(n4Axiliar);
+			            	ss.append(n4Axiliar);		
+		            	}
+
+
 		            break;
 		           
 		           
@@ -324,8 +397,7 @@ function Flujo (idDOM){
 
 			       var tipoElemento =ui.draggable.data("elemento")+"";
 
-	
-			       _self.construccionElemento($selft,tipoElemento);
+			       _self.construccionElemento(event,$selft,tipoElemento);
 
 				    // listaElementos.push($nuevoElemento[0]);
 
@@ -337,7 +409,7 @@ function Flujo (idDOM){
 
 			  // *************
 			  // construccionElemento :...
-			  ,construccionElemento:function($selft,tipoElemento,json)
+			  ,construccionElemento:function(event, $selft,tipoElemento,json)
 			  {
 
 			  	var _self=this;
@@ -398,20 +470,21 @@ function Flujo (idDOM){
 			        if($selft)
 			        {
 
+	
 				        $nuevoElemento.css({
-				              position:'absolute'
-				            ,top: event.pageY-($nuevoElemento.height()/2)-$selft.offset().top+5
-				            ,left: event.pageX-($nuevoElemento.width()/2)-$selft.offset().left
-				            ,zIndex:10
+				             'position':'absolute'
+				            ,'top': (event.pageY-($nuevoElemento.height()/2)-$selft.offset().top+5)
+				            ,'left': (event.pageX-($nuevoElemento.width()/2)-$selft.offset().left)
+				            ,'zIndex':10
 				        });
 			        	
 			        }
 			        else {
 			        	$nuevoElemento.css({
-				              position:'absolute'
-				            ,top:10
-				            ,left:10
-				            ,zIndex:10
+				              'position':'absolute'
+				            ,'top':10
+				            ,'left':10
+				            ,'zIndex':10
 				        });
 			        }
 
@@ -419,11 +492,19 @@ function Flujo (idDOM){
 
 			        var $$diagramaF1 = DiagramaF1();
 			        $$diagramaF1.$$padre= _self;
+			        $$diagramaF1.$elementoSVG =$nuevoSVG;
+
+
+
 
 
 			        if(json)
 			        {
-				        $$diagramaF1.$pagina=  $(json.id_pagina);
+				        
+			        	
+				        $$diagramaF1.$pagina=  $("#"+json.id_pagina);
+
+
 			        }
 			        else{
 			        	  $$diagramaF1.$pagina=_self.$paginaActual;
@@ -491,6 +572,11 @@ function Flujo (idDOM){
 
 			        _self.listaElementos.push($$diagramaF1);
 
+			        setTimeout(function(){
+
+				        //cercano los punteros de anclaje
+				        $$diagramaF1.actualizarPuntos();	
+			        },700);
 
 			  }// fin funcion --> construccionElemento
 
@@ -534,6 +620,25 @@ function Flujo (idDOM){
 			  }
 
 
+			  /// *******************
+			  /// deseleccionar elemento . o diagrama 
+			  ,deseleccionarElemento:function(){
+	
+				var _self=this;
+
+		  	    if(_self.$elementoSeleccionado)
+			      {
+		          //deseleccciona el elemento 
+		          _self.$elementoSeleccionado.resizable( "option", { disabled: true } );
+		          _self.$elementoSeleccionado.removeClass( "elemento_seleccionado" );
+		          _self.$elementoSeleccionado.removeClass('ui-state-disabled');
+			      }
+
+
+			  }// fin  function -->deseleccionarElemento
+
+
+
 			  // *********************
 			  // convierte el nuevo elemento de diagrama de flujo on el eventos cuando den click sobre el 
 			  //
@@ -557,6 +662,12 @@ function Flujo (idDOM){
 				          _self.$elementoSeleccionado.removeClass('ui-state-disabled');
 				          //_self.$elementoSeleccionado=null;                   
 
+							if(_self.$elementoSeleccionado[0]!= $nuevoElemento_seleccionado[0] )
+							{
+							//alert("deselccionar gato");
+							_self.cerrarDialogEdicion();
+
+							}
 
 				          }
 
@@ -572,11 +683,13 @@ function Flujo (idDOM){
 
 
 			      // el doble click 
-			       $diagramaNuevo.dblclick(function(e){
+			       $diagramaNuevo.click(function(e){
 			       
 
 			       	switch(_self.estado)
 			       	{
+
+
 
 			       		case 1:
 			       			$diagramaNuevo.find(".descripcion_observada").focus();
@@ -741,6 +854,8 @@ function Flujo (idDOM){
 			  // deselecciona el cuadro de seleccion
 			  // 
 			  , deseleccionCuadroSeleccion:function(){
+
+
 			  	var _self=this;
 			  	if(_self.cuadroSeleccionado)
 			  	{
@@ -764,6 +879,9 @@ function Flujo (idDOM){
 		      ,eventosMousePaginaActual:function(){
 		      
 		      	this.creacionLineasMouse(this.$paginaActual);
+		      	this.creacionGrupoSeleccion(this.$paginaActual);
+		      	this.creacionLineaPartes(this.$paginaActual);
+
 		      	this.creacionCuadroSeleccion(this.$paginaActual);
 		      }
 
@@ -842,7 +960,7 @@ function Flujo (idDOM){
 
 
 
-		      		if(_self.ban_escCuadro>10)
+		      		if(_self.ban_escCuadro>5)
 		      		{
 		      			console.log("cuadro mousemove2");
 			        	
@@ -911,8 +1029,7 @@ function Flujo (idDOM){
 				        	$$cuadro.$pagina =_self.$paginaActual;
 
 
-				        	console.log(punto1y);
-
+				        	
 				        	$$cuadro.dibujar();
 				        	$$cuadro.posicionXY(punto1x
 												,punto1y);
@@ -920,6 +1037,8 @@ function Flujo (idDOM){
 				        	$$cuadro.anchoAlto(ancho
 												,alto);
 				      		
+
+				        	console.error(puntoSeleccionado);
 
 							 $$cuadro.$elemento.find(".ui-resizable-"+puntoSeleccionado).simulate("mousedown", e);
 							_self.listaCuadroSeleccion.push($$cuadro);
@@ -994,7 +1113,7 @@ function Flujo (idDOM){
 		      	 for(var i=0; i<listaJson.length; i++)
 			      	 {
 			      	 	var json=listaJson[i];
-			      	 	_self.construccionElemento(null,json.mielemento, json);
+			      	 	_self.construccionElemento(null,null,json.mielemento, json);
 
 			      	 }
 
@@ -1071,6 +1190,566 @@ function Flujo (idDOM){
 
 
 
+
+
+
+
+
+
+
+		      // ******************
+		      // function -->creacionLineasMouse
+		    ,creacionGrupoSeleccion:function($elementos){
+
+		      	var _self= this;
+				var posicionesInicio={top:null, left:null};		      			
+
+		      	//$(".punto_circle").hide(); /// de prueba
+
+
+				_self.$paginaActual.on('click',function(e){
+					
+					console.log(" click en pagina");
+					});
+
+
+
+
+		      	//_self.$paginaActual.mouseup(function(e){
+				$elementos.on('mousedown',function(e){
+
+
+						// si  tiene click sobre un obj distonto a la pagina 
+					if($(e.target).hasClass("paginas")==false)
+					{
+
+
+						// evita q los componentes 
+						if($(e.target).hasClass("parte_seleccion")==false)
+						{
+
+							if(_self.objCuadroAgrupacion!=null)
+				 				{
+
+				 					_self.objCuadroAgrupacion.desagrupar();
+				 					console.log(".....................desagrupar");
+				 		
+				 				}
+
+
+						}
+
+						return true;
+					}	
+
+					
+					if(_self.estado!=1)
+						{
+							_self.ban_crear_grupo=0;
+							return true;
+						}
+
+							var $elementoEvent= $(e.target);
+
+							if(_self.ban_crear_grupo!=0)
+								{
+
+		      		 			
+					      		   	return true;
+					      		 }
+
+
+
+							if(!$elementoEvent.hasClass("punto_cuadrado"))
+							{
+								//_self.deseleccionaLineaConexion();
+
+								_self.ban_crear_grupo=1;
+								
+								var x = e.clientX - _self.$paginaActual.offset().left-7;
+					        	var y = e.clientY - _self.$paginaActual.offset().top-5;
+						        	posicionesInicio={
+						        		left:x,
+						        		top:y
+						        	}
+								 		
+							 		_self.$paginaActual.find(".punto_c_movibleinicio").css(
+					      				posicionesInicio
+					      				);	
+					 				_self.$paginaActual.find(".punto_c_movibleinicio").show();
+
+
+										if(_self.objCuadroAgrupacion!=null)
+							 				{
+
+							 					_self.objCuadroAgrupacion.desagrupar();
+							 					
+							 		
+							 				}
+
+										//_self.deseleccionaLineaConexion();
+										_self.objCuadroAgrupacion= CuadradoAgrupacion();
+										_self.objCuadroAgrupacion.$$pagina=_self.$paginaActual;
+										_self.objCuadroAgrupacion.$$padre= _self;
+
+										_self.objCuadroAgrupacion.dibujar();
+
+										_self.objCuadroAgrupacion.$elementoInicioAgrupacion.hide();
+
+
+
+						
+			
+
+
+								//e.stopPropagation();
+								//false;
+								
+							}
+							//e.stopPropagation();
+
+		      	});
+
+
+
+				$elementos.mouseout(function(e){
+					//console.error("salio");
+				});
+
+
+
+
+				//evento de mover
+				$elementos.mousemove(function(e){
+ 					
+ 					//console.log(" "+e.clientX+" --" +e.clientY);
+				   if(_self.estado!=1)
+	      		   {
+	      		   	_self.ban_crear_grupo=0;
+	      		   	return true;
+	      		   }
+						
+
+	      		   if(_self.ban_crear_grupo>=1 && _self.ban_crear_grupo<10)
+	      		   {
+	      		   		_self.ban_crear_grupo++;
+	      		   }
+	      		   else if(_self.ban_crear_grupo>=10)
+	      		   {
+
+
+
+	      		   		var x = e.clientX - _self.$paginaActual.offset().left-7;
+			        	var y = e.clientY - _self.$paginaActual.offset().top-5;
+				
+			        	_self.$paginaActual.find(".punto_c_movibleinicio").show();
+			 			_self.$paginaActual.find(".punto_c_moviblefin").show();
+
+			 			_self.$paginaActual.find(".punto_c_movibleinicio").css(
+		      				posicionesInicio
+		      				);	
+			 			
+			 			_self.$paginaActual.find(".punto_c_moviblefin").css({
+			      				top: y,
+					      		left: x
+					      		});	
+
+			 			
+
+			 				var coords = {
+						        clientX: e.clientX,
+						        clientY: e.clientY
+						    };
+
+						// _self.$paginaActual.find(".punto_c_moviblefin").simulate("mousedown", e);
+						
+					 		
+						if(_self.objCuadroAgrupacion &&  
+							_self.ban_crear_grupo==0
+							)
+							{
+								//eliminar..
+								_self.objCuadroAgrupacion.agrupar();
+								_self.$paginaActual.find(".punto_cuadrado").hide();
+								_self.$paginaActual.find(".elementos_seleccionado").removeClass("elementos_seleccionado");
+
+							}
+					
+						else {
+								_self.objCuadroAgrupacion.$elementoInicioAgrupacion.show();
+								_self.actualizacionPuntosAgrupacion(_self,_self.objCuadroAgrupacion,e, null);
+					
+								_self.$paginaActual.find(".punto_c_moviblefin").simulate("mousedown", coords);
+            			
+						}	
+
+						//_self.ban_crear_grupo=0;
+
+
+	      		   }
+
+
+
+				});
+
+
+
+				// evento de manejo soltar	
+		      	$(document).on('mouseup',function(e){
+
+		      		console.log("mouse up -->"+_self.ban_crear_grupo);
+		      		   if(_self.estado!=1)
+		      		   {
+		      		   	_self.ban_crear_grupo=0;
+		      		   	return true;
+		      		   }
+						
+		      		
+		      		 	/*if(_self.ban_crear_grupo==1)
+		      		 	{
+		      		 		_self.ban_crear_grupo=2;
+		      		 	}
+		      		 	// segunda vez que se suelta la segunda esfera
+		      		 	else if(_self.ban_crear_grupo==2)
+		      		 	*/	 if(_self.ban_crear_grupo>=1)
+		      		 	{
+		      		 		console.log("mouse up 2");
+
+		      		 		// se evalua si es muy pequeño 
+		      		 		/*if(_self.$lineaActual && _self.$lineaActual.width()<=12
+		      		 			&& _self.$lineaActual.height()<=12)
+		      		 		{
+		      		 			$(".punto_circle").hide();
+		      		 			_self.$lineaActual.hide();
+		      		 			_self.lineaConexionSeleccionada.eliminarLinea();
+		      		 			
+		      		 			console.log("se elimio la linea..");
+		      		 		}*/
+		      		 		//alert("eliminar");
+
+		      		 		_self.objCuadroAgrupacion.agrupar();
+
+
+		      		 		_self.ban_crear_grupo=0;
+		      		 	}
+		      		 	else{
+		      		 		_self.ban_crear_grupo=0;
+		      		 	}
+		      		 	//console.log("un elemento . up.");
+		      			//console.log(e);
+		      			
+		      	});
+
+
+		      }//FIN  de la funcion ..
+
+
+
+
+
+
+
+
+		      // ******************
+		      // function -->creacionLineasMouse
+		    ,creacionLineaPartes:function($elementos){
+
+		      	var _self= this;
+				var posicionesInicio={top:null, left:null};		      			
+
+		      	//$(".punto_circle").hide(); /// de prueba
+
+
+				_self.$paginaActual.on('click',function(e){
+					
+					console.log(" click en pagina creacionLineaPartes");
+					});
+
+
+
+
+		      	//_self.$paginaActual.mouseup(function(e){
+				$elementos.on('mousedown',function(e){
+
+
+						// si  tiene click sobre un obj distonto a la pagina 
+					if($(e.target).hasClass("paginas")==false && $(e.target).hasClass("puntos_conexion")==false)
+					{
+
+						// evita q los componentes 
+						if($(e.target).hasClass("puntos_conexion")==false)
+						{
+
+							return true;
+
+						}
+					}	
+
+					
+					if(_self.estado!=10)
+						{
+							_self.ban_crear_linea_partes=0;
+							return true;
+						}
+
+							var $elementoEvent= $(e.target);
+
+							if(_self.ban_crear_linea_partes!=0)
+								{
+
+		      		 			
+					      		   	return true;
+					      		 }
+
+
+
+							if(!$elementoEvent.hasClass("punto_cuadrado"))
+							{
+								//_self.deseleccionaLineaConexion();
+
+								_self.ban_crear_linea_partes=1;
+
+								//if(_self.objLineaPartes==null)
+								{
+									
+								
+									
+
+								
+									var x = e.clientX - _self.$paginaActual.offset().left-7;
+						        	var y = e.clientY - _self.$paginaActual.offset().top-5;
+							        	posicionesInicio={
+						        		left:x,
+						        		top:y
+						        	}
+								 		
+							 		_self.$paginaActual.find(".linea_partes_punto_movible1").css(
+					      				posicionesInicio
+					      				);	
+					 				_self.$paginaActual.find(".linea_partes_punto_movible3").show();
+
+
+										if(_self.objCuadroAgrupacion!=null)
+							 				{
+
+							 					_self.objCuadroAgrupacion.desagrupar();
+							 					
+							 		
+							 				}
+
+										_self.objLineaPartes = LineaPartes();
+										_self.objLineaPartes.$pagina=_self.$paginaActual;
+										_self.objLineaPartes.$$padre= _self;
+
+										_self.objLineaPartes.dibujar();
+
+										_self.listaLineasPartes.push(_self.objLineaPartes);
+
+
+
+										/*console.info(_self.eventoDeDisparoAlCrearLineaConexion);
+										if(_self.eventoDeDisparoAlCrearLineaConexion)
+										{
+										_self.eventoDeDisparoAlCrearLineaConexion();
+										_self.eventoDeDisparoAlCrearLineaConexion=null;	
+										}*/
+
+
+
+									/*	_self.objCuadroAgrupacion= CuadradoAgrupacion();
+										_self.objCuadroAgrupacion.$$pagina=_self.$paginaActual;
+										_self.objCuadroAgrupacion.$$padre= _self;
+
+										_self.objCuadroAgrupacion.dibujar();
+
+										_self.objCuadroAgrupacion.$elementoInicioAgrupacion.hide();
+
+
+										*/
+						
+			
+
+
+
+								//e.stopPropagation();
+								//false;
+								} 
+							}
+							//e.stopPropagation();
+
+		      	});
+
+
+
+				$elementos.mouseout(function(e){
+					//console.error("salio");
+				});
+
+
+
+
+				//evento de mover
+				$elementos.mousemove(function(e){
+ 					
+ 					//console.log(" "+e.clientX+" --" +e.clientY);
+				   if(_self.estado!=10)
+	      		   {
+	      		   	_self.ban_crear_linea_partes=0;
+	      		   	return true;
+	      		   }
+						
+
+	      		   if(_self.ban_crear_linea_partes>=1 && _self.ban_crear_linea_partes<10)
+	      		   {
+	      		   		_self.ban_crear_linea_partes++;
+	      		   }
+	      		   else if(_self.ban_crear_linea_partes>=10)
+	      		   {
+
+
+	      		   	if(_self.objLineaPartes!=null)
+	 				{
+	
+
+					}
+
+	      		   	
+
+	      		   		var x = e.clientX - _self.$paginaActual.offset().left-7;
+			        	var y = e.clientY - _self.$paginaActual.offset().top-7;
+				
+			        	_self.$paginaActual.find(".linea_partes_punto_movible1").show();
+			 			_self.$paginaActual.find(".linea_partes_punto_movible3").show();
+
+			 			_self.$paginaActual.find(".linea_partes_punto_movible1").css(
+		      				posicionesInicio
+		      				);	
+			 			
+			 			_self.$paginaActual.find(".linea_partes_punto_movible3").css({
+			      				top: y,
+					      		left: x
+					      		});	
+
+			 			
+
+			 				var coords = {
+						        clientX: e.clientX,
+						        clientY: e.clientY
+						    };
+
+						// _self.$paginaActual.find(".punto_c_moviblefin").simulate("mousedown", e);
+						
+					 		
+						if(_self.objLineaPartes &&  
+							_self.ban_crear_linea_partes==0
+							)
+							{
+								//eliminar..
+								//_self.objCuadroAgrupacion.agrupar();
+								_self.$paginaActual.find(".punto_cuadrado").hide();
+								_self.$paginaActual.find(".elementos_seleccionado").removeClass("elementos_seleccionado");
+
+							}
+					
+						else {
+								//_self.objCuadroAgrupacion.$elementoInicioAgrupacion.show();
+								_self.actualizacionPuntosLineasPartes(_self, _self.objLineaPartes ,e, null);
+					
+								_self.$paginaActual.find(".linea_partes_punto_movible3").simulate("mousedown", coords);
+            			
+						}	
+
+						//_self.ban_crear_grupo=0;
+
+						
+	      		   }
+
+
+
+				});
+
+
+
+				// evento de manejo soltar	
+		      	$(document).on('mouseup',function(e){
+
+		      		//console.log("mouse up -->"+_self.ban_crear_linea_partes);
+		      		   if(_self.estado!=1)
+		      		   {
+		      		   	_self.ban_crear_linea_partes=0;
+		      		   	return true;
+		      		   }
+						
+						if(_self.ban_crear_linea_partes>=1)
+		      		 	{
+		      		 		console.log("mouse up 2");
+
+		      		 		//_self.objCuadroAgrupacion.agrupar();
+
+		      		 		_self.ban_crear_linea_partes=0;
+		      		 	}
+		      		 	else{
+		      		 		_self.ban_crear_linea_partes=0;
+		      		 	}
+		      			
+		      	});
+
+
+		      }//FIN  de la funcion ..
+
+
+
+
+
+		      // centra de modo  horizontal elo elementos agrupados
+		      //
+		      ,centarHorizontalElementosAgrupados:function(){
+		      	var _self=this;
+
+		      	if(_self.estado==1 && _self.objCuadroAgrupacion)
+		      	{
+		      		_self.objCuadroAgrupacion.centrarModoHorizontal();
+
+		      	}
+
+
+		      }// fin --> function centarHorizontalElementosAgrupados
+
+
+
+
+
+
+		      // centra de modo  vertical elo elementos agrupados
+		      //
+		      ,centarVerticalElementosAgrupados:function(){
+		      	var _self=this;
+
+		      	if(_self.estado==1 && _self.objCuadroAgrupacion)
+		      	{
+		      		_self.objCuadroAgrupacion.centrarModoVertical();
+
+		      	}
+
+
+		      }// fin --> function centarHorizontalElementosAgrupados
+
+
+
+		      // sera un null, por defecto . 
+		      // en caso de tratar de ingresar un elemento y este se cree ... 
+		      // se lanzar 
+		      // se activa en eventoDeCruz .. . en pseudoclase DiagramaF1.. se carga
+		      // y se ejecuta cuando se cre alguna linea
+		      ,eventoDeDisparoAlCrearLineaConexion:null
+
+
+
+
+
+
+
+
 		      // ******************
 		      // function -->creacionLineasMouse
 		      ,creacionLineasMouse:function($elementos){
@@ -1091,12 +1770,42 @@ function Flujo (idDOM){
 		      	//_self.$paginaActual.mouseup(function(e){
 				$elementos.on('mousedown',function(e){
 
-				
+					// si  tiene click sobre un obj distonto a la pagina 
+					if($(e.target).hasClass("paginas")==false)
+					{
+
+						// evita q los componentes 
+						if($(e.target).hasClass("puntos_conexion")==false)
+						{
+
+							return true;
+
+						}
+					}	
+					else {
+
+						
+							if(_self.lineaConexionSeleccionada!=null && _self.lineaConexionSeleccionada.banderaSeleccionado)
+				 				{
+
+				 					_self.cambioEstado(1);
+				 					_self.deseleccionaLineaConexion();
+				 				}
+
+					}
+
+
+					///valida segun el estado 
 					if(_self.estado!=2)
 						{
 							_self.ban_escribir=0;
 							return true;
 						}
+				
+
+
+
+
 
 							var $elementoEvent= $(e.target);
 
@@ -1148,50 +1857,6 @@ function Flujo (idDOM){
 										_self.listaLineaConexion.push(lineaSVG);
 			
 
-						 		//	console.info("_mousedown");
-
-						 		setTimeout(function()
-						 			{
-						      	
-							 			_self.ban_escribir=2;
-							      	
-
-							      		var x = e.clientX - _self.$paginaActual.offset().left-7;
-							        	var y = e.clientY - _self.$paginaActual.offset().top-5;
-								
-							        	_self.$paginaActual.find(".punto_movibleinicio").show();
-							 			_self.$paginaActual.find(".punto_moviblefin").show();
-
-							 			_self.$paginaActual.find(".punto_movibleinicio").css(
-						      				posicionesInicio
-						      				);	
-							 			
-							 			_self.$paginaActual.find(".punto_moviblefin").css({
-							      				top: y,
-									      		left: x
-									      		});	
-
-							 			
-
-							 				var coords = {
-										        clientX: e.clientX,
-										        clientY: e.clientY
-										    };
-
-										 _self.$paginaActual.find(".punto_moviblefin").simulate("mousedown", e);
-										
-										// _self.$paginaActual.find(".punto_moviblefin").simulate("mousedown", coords);
-	            						
-							 			_self.actualizacionBolasLinea(_self,_self.$lineaActual,e, null);
-							 			
-							 			_self.$lineaActual.show();
-							 			_self.$lineaActual.click();//actuliza la animacion
-
-
-							 			}
-							 				
-							 			,100);
-
 
 								//e.stopPropagation();
 								//false;
@@ -1206,55 +1871,119 @@ function Flujo (idDOM){
 
 
 
-				//evento de mover
-				$elementos.mousemove(function(e){
+			
 
+
+
+
+
+			//evento de mover
+				$elementos.mousemove(function(e){
  					
-						//e.stopPropagation();
+ 					//console.log(" "+e.clientX+" --" +e.clientY);
+				   if(_self.estado!=2)
+	      		   {
+	      		   	_self.ban_escribir=0;
+	      		   	return true;
+	      		   }
+						
+
+	      		   if(_self.ban_escribir>=1 && _self.ban_escribir<10)
+	      		   {
+	      		   		_self.ban_escribir++;
+	      		   }
+	      		   else if(_self.ban_escribir>=10)
+	      		   {
+
+
+	  					var x = e.clientX - _self.$paginaActual.offset().left-7;
+			        	var y = e.clientY - _self.$paginaActual.offset().top-7;
+
+			        	_self.$paginaActual.find(".punto_movibleinicio").show();
+			 			_self.$paginaActual.find(".punto_moviblefin").show();
+
+			 			_self.$paginaActual.find(".punto_movibleinicio").css(
+		      				posicionesInicio
+		      				);	
+			 			
+			 			_self.$paginaActual.find(".punto_moviblefin").css({
+			      				top: y,
+					      		left: x
+					      		});	
+
+			 			
+
+			 				var coords = {
+						        clientX: e.clientX,
+						        clientY: e.clientY
+						    };
+
+				
+
+
+ 		
+					
+							 _self.$paginaActual.find(".punto_moviblefin").simulate("mousedown", e);
+						
+				 			_self.actualizacionBolasLinea(_self,_self.$lineaActual,e, null);
+				 			
+				 			_self.$lineaActual.show();
+				 			_self.$lineaActual.click();//actuliza la animacion
+		
+
+						//_self.ban_crear_grupo=0;
+
+						
+	      		   }
 
 				});
 
 
 
-				// evento de manejo soltar	
-		      	$elementos.on('mouseup',function(e){
+			// evento de manejo soltar	
+		      	$(document).on('mouseup',function(e){
 
-		      		console.log("mouse up -->"+_self.ban_escribir);
+
+	  					var x = e.clientX - _self.$paginaActual.offset().left-7;
+			        	var y = e.clientY - _self.$paginaActual.offset().top-7;
+
+
+		      		//console.log("mouse up -->"+_self.ban_crear_linea_partes);
 		      		   if(_self.estado!=2)
 		      		   {
 		      		   	_self.ban_escribir=0;
 		      		   	return true;
 		      		   }
 						
-		      		
-		      		 	if(_self.ban_escribir==1)
-		      		 	{
-		      		 		_self.ban_escribir=2;
-		      		 	}
-		      		 	// segunda vez que se suelta la segunda esfera
-		      		 	else if(_self.ban_escribir==2)
+						if(_self.ban_escribir>=1)
 		      		 	{
 		      		 		console.log("mouse up 2");
 
-		      		 		// se evalua si es muy pequeño 
-		      		 		if(_self.$lineaActual && _self.$lineaActual.width()<=12
-		      		 			&& _self.$lineaActual.height()<=12)
-		      		 		{
-		      		 			$(".punto_circle").hide();
+		      		 		if(_self.lineaConexionSeleccionada &&  
+							 _self.lineaConexionSeleccionada.$elementoDOM && 
+
+							Math.abs(posicionesInicio.left - x)<10 &&
+							Math.abs(posicionesInicio.top - y)<10
+							)
+							{
+								//eliminar..
+								
 		      		 			_self.$lineaActual.hide();
 		      		 			_self.lineaConexionSeleccionada.eliminarLinea();
+		      		 			$(".punto_circle").hide();
 		      		 			
-		      		 			console.log("se elimio la linea..");
-		      		 		}
+
+							}
 		      		 		_self.ban_escribir=0;
 		      		 	}
 		      		 	else{
 		      		 		_self.ban_escribir=0;
 		      		 	}
-		      		 	//console.log("un elemento . up.");
-		      			//console.log(e);
 		      			
 		      	});
+
+
+
 
 
 		      }//FIN  de la funcion ..
@@ -1468,7 +2197,21 @@ function Flujo (idDOM){
 			      				{
 			      					_self.cuadroSeleccionado.eliminarElemento();
 			      				}
+
+
 			      			
+				    		break;
+
+
+
+				    		case 10:
+
+					    		if(_self.objLineaPartes && _self.objLineaPartes.seleccionado)
+					    		{
+					    				_self.objLineaPartes.eliminarLinea();
+
+					    		}
+
 				    		break;
 
 				    	}
@@ -1618,6 +2361,58 @@ function Flujo (idDOM){
 
 
 
+
+
+
+		      // *******************
+		      // dar movientos a los puntos movibles
+		      ,eventosPuntoCuadradoMoble:function(){
+		      	var _self= this;
+
+		      
+
+		      	var $puntos = $(".punto_c_moviblefin ,.punto_c_movibleinicio");
+  		      //	var ancho=_self.$lineaActual.width();
+	           // var alto= _self.$lineaActual.height();
+
+
+
+		      	$puntos.draggable({
+			            cursor:"move"
+			           // ,revert:"invalid"
+			            //,scroll:true
+			           // ,iframeFix: true
+			            ,containment: "parent"
+			            ,delay:1
+			            ,opacity: 0.6
+			            //,"zIndex": 100
+			            ,drag:function( event, ui ){
+			            		if(_self.objCuadroAgrupacion==null)
+		      						return;
+			            	 _self.actualizacionPuntosAgrupacion(_self,_self.objCuadroAgrupacion,event, ui);
+			            }
+			            ,stop:function( event, ui ){
+			            		if(_self.objCuadroAgrupacion==null)
+		      						return;
+
+
+			            	_self.actualizacionPuntosAgrupacion(_self,_self.objCuadroAgrupacion,event, ui);
+
+			            	//_self.objCuadroAgrupacion.$elementoInicioAgrupacion.show();
+			            }
+			            //,revert:""
+			            ,scroll: false  
+			          });
+			              
+		      }// fin funcion movientos movibles
+
+
+
+
+
+
+
+
 		      // *******************
 		      // dar movientos a los puntos movibles
 		      ,eventosPuntoMoble:function(){
@@ -1651,6 +2446,64 @@ function Flujo (idDOM){
 
 
 			            	_self.actualizacionBolasLinea(_self,_self.$lineaActual,event, ui);
+			            }
+			            //,revert:""
+			            ,scroll: false  
+			          });
+			              
+		      }// fin funcion movientos movibles
+
+
+
+
+ 				// *******************
+		      // dar movientos a los puntos movibles perteniciente a linea por partes
+		      ,eventosPuntoMobleLineaPartes:function(){
+		      	var _self= this;
+
+		      
+
+		      	var $puntos = $(".linea_partes_punto_movible2,.linea_partes_punto_movible1, .linea_partes_punto_movible3");
+  		      //	var ancho=_self.$lineaActual.width();
+	           // var alto= _self.$lineaActual.height();
+
+
+	        
+		      	$puntos.draggable({
+			            cursor:"move"
+			           // ,revert:"invalid"
+			            //,scroll:true
+			           // ,iframeFix: true
+			            ,containment: "parent"
+			            ,delay:1
+			            ,opacity: 0.6
+			            //,"zIndex": 100
+			            ,drag:function( event, ui ){
+			            		if(_self.objLineaPartes==null)
+		      						return;
+		      					if($(ui.helper).hasClass("linea_partes_punto_movible2"))
+		      					{
+
+			            			return  _self.actualizacionPuntosLineasPartes(_self,_self.objLineaPartes,event, ui);
+  						
+		      					}
+		      					else{
+		      						_self.actualizacionPuntosLineasPartes(_self,_self.objLineaPartes,event, ui);
+  								}
+			            }
+			            ,stop:function( event, ui ){
+			            	if(_self.objLineaPartes==null)
+		      						return;
+		           			if($(ui.helper).hasClass("linea_partes_punto_movible2"))
+	      					{
+
+		            			return  _self.actualizacionPuntosLineasPartes(_self,_self.objLineaPartes,event, ui);
+						
+	      					}
+	      					else{
+	      						_self.actualizacionPuntosLineasPartes(_self,_self.objLineaPartes,event, ui);
+								}
+
 			            }
 			            //,revert:""
 			            ,scroll: false  
@@ -1745,6 +2598,153 @@ function Flujo (idDOM){
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+  // **************************
+		      // funcion --> actualizacionBolasLinea() 
+		      // 
+		     , actualizacionPuntosAgrupacion:function(_self,mi_objCuadroAgrupacion,event, ui ){
+
+
+	             var xFin = parseInt( _self.$paginaActual.find(".punto_c_moviblefin").css("left"))+5;
+	             var xInicio = parseInt( _self.$paginaActual.find(".punto_c_movibleinicio").css("left"))+5;	
+	             var mileft=0; 
+	             var miAncho=0;
+	             var escalaX=1;
+	             
+	             var yFin = parseInt( _self.$paginaActual.find(".punto_c_moviblefin").css("top"))+5;
+	             var yInicio = parseInt( _self.$paginaActual.find(".punto_c_movibleinicio").css("top"))+5;	
+	             var mitop=0; 
+	             var miAlto=0;
+	             
+	             var escalaY=1; 
+
+	              //manejo en el X
+	              if(xFin>xInicio)
+	              {
+		              	mileft=xInicio;
+		              	miAncho =xFin- xInicio;
+		              	escalaX=1;
+	              }
+	              else {
+
+		              	mileft=xFin;
+		              	miAncho = xInicio-xFin;
+		              	escalaX=-1;
+	              }
+
+
+
+	              // manejo en el Y
+	              if(yFin>yInicio)
+	              {
+	              	mitop = yInicio;
+	              	miAlto = yFin - yInicio;
+	              	escalaY=1;
+	              }
+	              else {
+
+	              	mitop=yFin;
+	              	miAlto = yInicio-yFin;
+	              	escalaY=-1;
+	              }
+
+
+	              var mitransform='matrix('+escalaX+', 0, 0, '+escalaY+', 0, 0)';
+		           //  console.log(" "+mileft +"-> " +miAncho);
+		           if(miAncho<2)
+		           		miAncho=2;
+
+		           if(miAlto<2)
+		           		miAlto =2;
+		           	
+
+	              
+	             if(mi_objCuadroAgrupacion &&  mi_objCuadroAgrupacion.$elementoInicioAgrupacion)
+	              {
+	              	mi_objCuadroAgrupacion.$elementoInicioAgrupacion.css(
+	              			{left: mileft, 
+	              			 width: miAncho,
+	              			 transform: mitransform , 
+	              			 top:mitop ,
+	              			 height:miAlto});
+
+	              	//resalta los elemnentos seleccaiondos
+	              	mi_objCuadroAgrupacion.actualizaSeleccinados();
+
+	              	
+	              }
+	             
+
+		     }// fin --> actualizacionBolasLinea()
+
+
+
+
+
+
+
+  // **************************
+		      // funcion --> actualizacionBolasLinea() 
+		      // 
+		     , actualizacionPuntosLineasPartes:function(_self, mi_objLineaPartes, event, ui ){
+ 
+
+
+	             var x3 = parseInt( _self.$paginaActual.find(".linea_partes_punto_movible3").css("left"))+5;
+	             var x1 = parseInt( _self.$paginaActual.find(".linea_partes_punto_movible1").css("left"))+5;
+	             var x2 = parseInt( _self.$paginaActual.find(".linea_partes_punto_movible2").css("left"))+5;
+	          
+
+	             var y1 = parseInt( _self.$paginaActual.find(".linea_partes_punto_movible1").css("top"))+5;	
+				 var y2 = parseInt( _self.$paginaActual.find(".linea_partes_punto_movible2").css("top"))+5;	
+	             var y3 = parseInt( _self.$paginaActual.find(".linea_partes_punto_movible3").css("top"))+5;	
+	             	             
+	             // el  top . el mas bajo en y
+	            var mitop=Math.min(y1,y2,y3);
+	            var miAlto=Math.max(y1,y2,y3);
+	            	miAlto= Math.abs(miAlto-mitop);
+		         
+
+
+	            var mileft=Math.min(x1,x2,x3);
+	            var miAncho=Math.max(x1,x2,x3);
+	            	miAncho= Math.abs(miAncho-mileft);  	
+
+	              
+	             if(mi_objLineaPartes &&  mi_objLineaPartes.$elemento )
+	              {
+	              	mi_objLineaPartes.$elemento.css(
+	              			{left: mileft, 
+	              			 width: miAncho,
+	              			 top:mitop ,
+	              			 height:miAlto});
+
+	              	//resalta los elemnentos seleccaiondos
+	              	 return mi_objLineaPartes.actualizarPoscionCentralizado();
+
+	              	
+	              }
+	             
+	             return true;
+
+		     }// fin --> actualizacionBolasLinea()
+
+
+
+
+
+
 		     // ***  *****  ***  *****  ******
 		     // construccion de paginas desde el json
 		     // @param jsonPagina 'pagina':['contenedor_principal_pag_1','pagina_id_0',]
@@ -1803,13 +2803,33 @@ function Flujo (idDOM){
 
 
 		     	var html ="  <div  class='paginas' id='pagina_id_"+idPagina+"' >    "
-				        +"       <div class='punto_moviblefin punto_circle' >  "
+				        +"       <div class='punto_moviblefin punto_circle parte_seleccion' >  "
 				        +"         <img src='"+URL__SERVIDOR+"/img/conexion_p.gif'  class='imagen_punto_mobil'>   "
 				        +"       </div>  "
 				               
-				        +"        <div class='punto_movibleinicio punto_circle' >  "
+				        +"        <div class='punto_movibleinicio punto_circle parte_seleccion' >  "
 				        +"          <img src='"+URL__SERVIDOR+"/img/conexion_p.gif'  class='imagen_punto_mobil'>   "
 				        +"        </div>  "
+
+				        +"     <div class='punto_c_moviblefin punto_cuadrado parte_seleccion' style='display:none' > "
+			            +"      <img src='"+URL__SERVIDOR+"/img/conexion_p.gif'  class='imagen_punto_mobil'>  "
+			            +"    </div> "
+
+			               
+			            +"     <div class='punto_c_movibleinicio punto_cuadrado parte_seleccion'    style='display:none'> "
+			            +"       <img src='"+URL__SERVIDOR+"/img/conexion_p.gif'  class='imagen_punto_mobil'>  "
+			            +"     </div> "
+
+			            +"      <div class='parte_seleccion seleccionados_grupos mover_grupos' "
+			            +"           style='top:100px; left:400px;display:none'         > "          
+			            +"         <div  class='parte_seleccion' style='position:absolute; z-index:1000;width:100%; cursor:move; "
+			                     
+
+			            +"         height:100%;'></div> "
+			            +"      </div>  "
+
+
+
 				        +"   </div>";
 
 				 $pagina = $(html);
@@ -1834,6 +2854,10 @@ function Flujo (idDOM){
 		     // 
 		     ,eventosAllPaginaActual:function(){
 		     	this.eventosPuntoMoble();	
+		     	this.eventosPuntoCuadradoMoble();	
+		     	this.eventosPuntoMobleLineaPartes();
+
+		     	this.cargarElementosAgrupacion();
 		     	this.convertirPaginaToDrop();
 				this.eventosMousePaginaActual();
 				this.eventosPuntoMoble();
@@ -2054,6 +3078,7 @@ function Flujo (idDOM){
  					$("#bton_estado1").addClass("miActivo");
 					$("#bton_estado2").removeClass("miActivo");
 					$("#bton_estado4").removeClass("miActivo");
+					$("#bton_estado10").removeClass("miActivo");
 					$(".punto_circle").hide();
 					$("body").attr("data-estado","1");
 					$(".descripcion_observada").attr("contenteditable",true);
@@ -2071,6 +3096,7 @@ function Flujo (idDOM){
  					  $("#bton_estado2").addClass("miActivo");
 					  $("#bton_estado1").removeClass("miActivo");
 					    $("#bton_estado4").removeClass("miActivo");
+					    $("#bton_estado10").removeClass("miActivo");
 					  $("body").attr("data-estado","2");
 					  _self.enbledDragDiagrama(false);
 					  $(".descripcion_observada").attr("contenteditable",false);
@@ -2089,6 +3115,7 @@ function Flujo (idDOM){
  					  $("#bton_estado4").addClass("miActivo");
 					  $("#bton_estado1").removeClass("miActivo");
 					  $("#bton_estado2").removeClass("miActivo");
+					  $("#bton_estado10").removeClass("miActivo");
 					  
 					  $("body").attr("data-estado","4");
 					  _self.enbledDragDiagrama(false);
@@ -2097,6 +3124,25 @@ function Flujo (idDOM){
 					  $(".descripcion_observada").attr("contenteditable",false);
 					  $(".caudro_lineal").draggable("enable");
  				break;
+
+
+
+ 				case 10:
+
+ 					_self.cerrarDialogEdicion();
+ 					  $("#bton_estado4").removeClass("miActivo");
+					  $("#bton_estado1").removeClass("miActivo");
+					  $("#bton_estado2").removeClass("miActivo");
+					  $("#bton_estado10").addClass("miActivo");
+					  
+					  $("body").attr("data-estado","10");
+					  _self.enbledDragDiagrama(false);
+					  _self.deseleccionaLineaConexion();
+
+ 				break;
+
+
+
  			}
 
 
@@ -2134,10 +3180,11 @@ function Flujo (idDOM){
           	}
 
 
+
+
           	// ELEME SELECCIONADO
           	if(_self.$elementoSeleccionado!=null && _self.$elementoSeleccionado)
           	{
-
 
 				_self.$elementoSeleccionado.resizable( "option", { disabled: false } );
 				_self.$elementoSeleccionado.addClass( "elemento_seleccionado" );
@@ -2187,10 +3234,13 @@ function Flujo (idDOM){
 
 	            $("body").attr("data-estado","3");
 	            _self.estado=3;
-
+			
 	            estadoMenuAbierto=true;
 	            miToogleMenuIzquierdo(null);
-		*/
+			*/
+	           $("body").attr("data-estado","3");
+	            _self.estado=3;
+
 	            _self.deseleccionaLineaConexion();
 
 
@@ -2297,6 +3347,10 @@ function Flujo (idDOM){
           	{
 
           		var $elemento = _self.listaCuadroSeleccion[i].$elemento;
+
+          	
+
+
           		var id_pagina ="#"+_self.listaCuadroSeleccion[i].$pagina.attr("id");
 				var top =   $elemento.css("top");
 				var left =  $elemento.css("left");
@@ -2586,11 +3640,17 @@ function Flujo (idDOM){
           	var edicion =false;// si esta editando u observando .. true =>para habilitar la edicion o false para lo contrario
          
           	parametros =_self.getGET();
-
+ 
 
 			var url_solicita=URLSOLICITUD;
 
-          		
+			if(parametros && parametros.retorno)
+			{
+				$("#bton_regresar").attr("href",URL__SERVIDOR1+"/"+parametros.retorno);
+				
+      		}
+
+
           	if(parametros  && parametros.uid && parametros.action)
           	{
           		
@@ -2630,11 +3690,12 @@ function Flujo (idDOM){
 					    			if(data)
 					    			{
 
-					    				console.info(data.data);
+					    				//console.info(data.data);
 
 					    				_self.construccionAllFromJsonJSON(data.data);
 					    				if(edicion==false)
 					    				{
+
 					    					_self.modoOnlyRead();
 					    				
 					    				}
@@ -2715,7 +3776,119 @@ function Flujo (idDOM){
           }//fin funcion -->guardarDatosJson
 
 
+
+
+
+
+	///retonr los elementos de  $Q Jquery , que representa los diagramas actuales .y cuadros s
+	   , getDiagramasPaginaActual:function(){
+
+	   	 return this.$paginaActual.find("div[data-mielemento] , div.caudro_lineal");
+	   } 
+
+
+
+	   // indica si dos div ha coliscionad 
+	   // indica si esta contenida dentor del segundo div en parametros .. .sin tener encuenta el DOM solo si esta encima
+	   //
+         ,estaDentroSegundo:function ($div1, $dvi2) {
+		      var x1 = $div1.offset().left;
+		      var y1 = $div1.offset().top;
+		      var h1 = $div1.height();
+		      var w1 = $div1.width();
+		      
+		      var b1 = y1 + h1;
+		      var r1 = x1 + w1;
+		      var x2 = $dvi2.offset().left;
+		      var y2 = $dvi2.offset().top;
+		      var h2 = $dvi2.height();
+		      var w2 = $dvi2.width();
+		      
+		      var b2 = y2 + h2;
+		      var r2 = x2 + w2;
+ 
+			 // console.log(x1+" "+y1+"->"+h1+"-"+w1+" -- "+b1+" -"+r1);
+			//  console.log(x2+" "+y2+"->"+h2+"-"+w2+" -- "+b2+" -"+r2);
+		      if (x1>x2 && y1>y2 && b1<b2 && r1<r2) 
+		      	return true;
+		      
+		      return false;
+		    }// function --> collision 
+
+
+
+		    ///
+		    // actualizacion del los elementos de agurpacion 
+		    , cargarElementosAgrupacion:function(){
+
+		    	var _self= this;
+
+		    	$agrupador = _self.$paginaActual.find(".seleccionados_grupos");
+
+		    	$agrupador.draggable();
+
+				$agrupador.resizable({
+				        // autoHide: true 
+				          handles: "bton_edicion,bton_ver_personal,n, e, s, w, ne, se, sw, nw, all" 
+				          ,resize:function(event, ui)
+				           {           	  
+
+				              
+				           }
+
+				          ,stop:function( event, ui )
+				          {
+				          	// 
+				          } 
+					});
+
+
+				setTimeout(function(){
+					$agrupador.find("div").addClass("parte_seleccion");
+				},500);
+
+		    }// function -->cargarElementosAgrupacion
+
+
+
+
+		    // mostrar css activo 
+		    //
+		,mostrarAlineacionElementosAgrupados:function(activo){
+			if(activo)
+			{
+
+				$("#bton_centrar_horizontal").removeClass("miActivo");
+				$("#bton_centrar_vertical").removeClass("miActivo");
+			}
+			else{
+				$("#bton_centrar_horizontal").addClass("miActivo");
+				$("#bton_centrar_vertical").addClass("miActivo");
+				
+			}
+		}// fin function ---> mostrarAlineacionElementosAgrupados		    
+			
+
+
+		// GET  linea actual Partes
+		,getLineaActualPartes:function(){
+			var _self=this;
+			return _self.objLineaPartes;
+		}//	
+
 	 };
 
 };
+
+
+
+
+
+
+
+
+
+
+
+
 

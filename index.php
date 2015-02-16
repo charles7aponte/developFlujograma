@@ -1,23 +1,39 @@
 <!doctype html>
 <html class="no-js" lang="en">
     <head>
+      <script>
+       /* var URL_GUARDAR="http://localhost/triki1/public/flujograma/guardar/json";
+        var URLSOLICITUD="http://localhost/triki1/public/flujograma/cargar"; 
+        var URL__SERVIDOR = "http://localhost/triki1/public/";*/
+
+        var URL__SERVIDOR1 = "http://localhost/git/developFlujograma/";
+        var URL__SERVIDOR = URL__SERVIDOR1+"";
+        var URL_GUARDAR= URL__SERVIDOR+"/servicios/guardar.php";
+        var URLSOLICITUD= URL__SERVIDOR+"/servicios/cargar.php"; 
+       
+    </script>
+  
+  
+<?php 
+  $URL_SERVIDOR="http://localhost/git/developFlujograma/";
+?>
+
       <meta charset="utf-8" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <title></title>
-      <link rel="stylesheet" href="css/foundation.css" />
-      <link rel="stylesheet" href="css/jquery-ui.css" />
-      <link rel="stylesheet" href="css/jquery-ui.structure.css" />
-      <link rel="stylesheet" href="css/jquery-ui.theme.css" />
+      <link rel="stylesheet" href="<?php echo $URL_SERVIDOR.'/'?>css/foundation.css" />
+      <link rel="stylesheet" href="<?php echo $URL_SERVIDOR.'/'?>css/jquery-ui.css" />
+      <link rel="stylesheet" href="<?php echo $URL_SERVIDOR.'/'?>css/jquery-ui.structure.css" />
+      <link rel="stylesheet" href="<?php echo $URL_SERVIDOR.'/'?>css/jquery-ui.theme.css" />
       <!--<link rel="stylesheet" href="css/spectrum.css" />-->
 
 
-      <link rel="stylesheet" href="css/micss.css" />
-      <link rel="stylesheet" href="css/font/foundation-icons.css" />
+      <link rel="stylesheet" href="<?php echo $URL_SERVIDOR.'/'?>css/micss.css" />
+      <link rel="stylesheet" href="<?php echo $URL_SERVIDOR.'/'?>css/font/foundation-icons.css" />
       
       
-      <script src="js/vendor/modernizr.js"></script>
-      <script src="js/snap.svg.js"></script>
-      <link rel="stylesheet" href="css/pnotify.min.css" />
+      <script src="<?php echo $URL_SERVIDOR.'/'?>js/vendor/modernizr.js"></script>
+      <script src="<?php echo $URL_SERVIDOR.'/'?>js/snap.svg.js"></script>
       
 
       
@@ -28,6 +44,7 @@
     <style>
 
 
+
     .paginas{
       width:5000px; height:5000px;position:relative; 
        cursor:default;
@@ -36,6 +53,69 @@
        background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAT0lEQVQ4T2N8/fr/fwYiADfPP4avX5gIqmQEGSgqyshISOW373//c3EyE1Q3aiDukBwNQ5xhQ/1kAwpsQomaFHnqu3A06+EM/9GcQr+cAgBGqZrSrFyxegAAAABJRU5ErkJggg==); background-color: rgb(255, 255, 255);
 
     }
+
+
+
+
+     .punto_circle{
+          background:#DBDCD6;
+          border: 1px solid #B9B9B9;
+          z-index:11; 
+          position: absolute;
+          background-position: -626px -114px; 
+          width: 12px;
+          height: 12px;
+          border-radius: 10px;
+          cursor: url("<?php echo $URL_SERVIDOR.'/'?>css/cursor/icn_cursor_move.cur"),move !important;
+       
+        }
+
+
+  
+     .linea_partes_punto_circle{
+          background:#DBDCD6;
+          border: 1px solid #B9B9B9;
+          z-index:11; 
+          position: absolute;
+          background-position: -626px -114px; 
+          width: 12px;
+          height: 12px;
+          border-radius: 10px;
+         
+       
+        }
+
+
+        .linea_partes_punto_movible3, .linea_partes_punto_movible1{
+           cursor: url("<?php echo $URL_SERVIDOR.'/'?>css/cursor/icn_cursor_move.cur"),move !important;
+        }
+
+        .linea_partes line{
+          cursor: pointer;
+           pointer-events: auto;
+        }
+
+        svg.linea_partes {
+        pointer-events: none;
+        }
+
+
+
+
+
+     .punto_cuadrado{
+          background:#DBDCD6;
+          border: 1px solid #B9B9B9;
+          z-index:11; 
+          position: absolute;
+          background-position: -626px -114px; 
+          width: 12px;
+          height: 12px;
+         /* border-radius: 10px;*/
+          cursor: url("<?php echo $URL_SERVIDOR.'/'?>css/cursor/icn_cursor_move.cur"),move !important;
+       
+        }
+
 
 
   .imagen_punto_mobil{
@@ -60,7 +140,7 @@
      #botones_panel_superior a {
       background-color: #e7e7e7;
       border-color: #b9b9b9;
-      color: #235695;
+      color: #2d4e13;
     }
 
 
@@ -99,14 +179,14 @@
 
 
      div[data-mielemento='n3'] div.descripcion_personaje{
-      height: 19%;
+      height: 20%;
       width: 100%;
       position: absolute;
       top: 80%;
       line-height: 0.9;
       font-size: small;
       padding: 2px 5px;
-      background: #235695;
+      background: #2d4e13;
       margin-left: 0px;
       margin-right: 5px;
       overflow: hidden;
@@ -129,7 +209,7 @@
     }
 
   .tab-bar{
-    background: #235695;
+    background: #2d4e13;
   }
 
 
@@ -167,14 +247,14 @@
 
 
 
-    #dialog_diagrama label{
-      color:#235695;
-    }
+  #dialog_diagrama label{
+      color:#2d4e13;
+   }
 
 
-.ui-button-text{
-  font-size: 12px;
-}
+  .ui-button-text{
+    font-size: 12px;
+  }
 
 
 
@@ -224,7 +304,7 @@
       body[data-estado='1']
        .puntos_conexion
        {
-        opacity: 0 !important;
+       opacity: 0 !important;
         z-index: 1 !important;
        }
         
@@ -246,32 +326,36 @@
           body[data-estado='4']
          .puntos_conexion 
         {
-          display: none !important
+         opacity:  0 !important
         }
+
+
+
+
 
 
       body[data-estado='2'] .puntos_conexion
       
        {
-        display:block !important;
+        opacity:1 !important;
        }
 
         
         body[data-estado='3'] .puntos_conexion,
         body[data-estado='3'] .ui-resizable-handle
         {
-          display: none !important;
+         opacity: 0 !important;
         }
 
        /*cursor*/
 
        body[data-estado='2'] .paginas
        {
-          cursor: url('img/puntero1.cur') ,auto;
+          cursor: url('<?php echo $URL_SERVIDOR.'/'?>img/puntero1.cur') ,auto;
        }
 
       body[data-estado='4'] .paginas{
-          cursor: url('img/puntero2.cur') ,auto;
+          cursor: url('<?php echo $URL_SERVIDOR.'/'?>img/puntero2.cur') ,auto;
        }
 
 
@@ -292,6 +376,16 @@
         opacity: 0.3;
        }
 
+
+
+
+       .puntos_conexion:hover{
+
+        background-image: url('<?php echo $URL_SERVIDOR.'/'?>/img/cruz2.gif');
+      } 
+
+
+
     </style>
   
 
@@ -299,53 +393,6 @@
   <body data-estado='1'>
 
 
-<!--
-<div class="gritter-notice-wrapper" data-foco="S">
- 
-      <div class="gritter-top"> 
-        <img src="img/bton1.png" style="cursor:pointer" class="gritter_cerrar" >     
-      </div>
-      
-      <div style="max-height: 469px;
-overflow: auto;">
-        <div class="gritter-item">
-             
-               <span class="gritter-title">This is a regular notice!</span><br>
-               <span class="contenido_p">This will fade out after a certain amount of time. Vivamus eget tincidunt velit. Cum sociis natoque penatibus et <a href="#" style="color:#ccc">magnis dis parturient</a> montes, nascetur ridiculus mus.
-              </span>
-              
-        </div>
-        
-         <div class="gritter-item">
-             
-               <span class="gritter-title">This is a regular notice!</span><br>
-               <span class="contenido_p">This will fade out after a certain amount of time. Vivamus eget tincidunt velit. Cum sociis natoque penatibus et <a href="#" style="color:#ccc">magnis dis parturient</a> montes, nascetur ridiculus mus.
-              </span>
-              
-        </div>
-
-
-         <div class="gritter-item">
-             
-               <span class="gritter-title">This is a regular notice!</span><br>
-               <span class="contenido_p">This will fade out after a certain amount of time. Vivamus eget tincidunt velit. Cum sociis natoque penatibus et <a href="#" style="color:#ccc">magnis dis parturient</a> montes, nascetur ridiculus mus.
-              </span>
-              
-        </div>
-
-
-         <div class="gritter-item">
-             
-               <span class="gritter-title">This is a regular notice!</span><br>
-               <span class="contenido_p">This will fade out after a certain amount of time. Vivamus eget tincidunt velit. Cum sociis natoque penatibus et <a href="#" style="color:#ccc">magnis dis parturient</a> montes, nascetur ridiculus mus.
-              </span>
-          </div>    
-      
-      </div>
-
-        <div class="gritter-bottom"></div>
-  </div>
--->
    
     <div id="myModal_eliminacion" class="reveal-modal" data-reveal
     style="overflow: hidden;
@@ -461,27 +508,77 @@ overflow: auto;">
             <li class="">
               <a href="#" id="bton_estado1" onclick="false" 
               class="botonFondo miActivo [tiny small large] button [alert success secondary] [disabled]"
-              style="background-image:url('img/icon1.png'); background-size: 71%;
+              style="background-image:url(<?php echo $URL_SERVIDOR.'/'?>img/icon1.png); background-size: 71%;
                 background-repeat: no-repeat;
                 background-position: 50%;"    
               >
               
               </a></li>
-              
+            
               <li>
                 <a href="#" onclick="false" id="bton_estado2" 
                 class="botonFondo [tiny small large] button [alert success secondary] [disabled]"
-                style="background-image:url('img/icon2.png') ;background-size: 71%;
+                style="background-image:url(<?php echo $URL_SERVIDOR.'/'?>img/icon2.png) ;background-size: 71%;
                   background-repeat: no-repeat;
                   background-position: 50%;"
                   >
                 </a>
               </li>
 
-                 <li>
+
+           <li>
+                <a href="#" onclick="false" id="bton_estado10" 
+                class="botonFondo [tiny small large] button [alert success secondary] [disabled]"
+                style="background-image:url(<?php echo $URL_SERVIDOR.'/'?>img/icon2.png) ;background-size: 71%;
+                  background-repeat: no-repeat;
+                  background-position: 50%;"
+                  >
+                </a>
+              </li>
+              <li>
                 <a href="#" onclick="false" id="bton_estado4" 
                 class="botonFondo [tiny small large] button [alert success secondary] [disabled]"
-                style="background-image:url('img/icon4.png') ;background-size: 71%;
+                style="background-image:url(<?php echo $URL_SERVIDOR.'/'?>img/icon4.png) ;background-size: 71%;
+                  background-repeat: no-repeat;
+                  background-position: 50%;"
+                  >
+                </a>
+              </li>
+
+
+
+
+
+         
+
+
+              <li>
+                <a href="#" onclick="false" id="bton_Guardar" alt="guardar"
+                class="botonFondo [tiny small large] button [alert success secondary] [disabled]"
+                style="background-image:url(<?php echo $URL_SERVIDOR.'/'?>img/icon_save.png) ;background-size: 71%;
+                  background-repeat: no-repeat;
+                  background-position: 50%;"
+                  >
+                </a>
+              </li>
+
+
+                <li>
+                <a href="#" onclick="false" id="bton_centrar_horizontal" alt="alinear centro"
+                class="miActivo botonFondo [tiny small large] button [alert success secondary] [disabled]"
+                style="background-image:url(<?php echo $URL_SERVIDOR.'/'?>img/icon_centrar_horizonta.png) ;background-size: 71%;
+                  background-repeat: no-repeat;
+                  background-position: 50%;"
+                  >
+                </a>
+              </li>
+
+
+
+                <li>
+                <a href="#" onclick="false" id="bton_centrar_vertical" alt="guardar"
+                class=" miActivo botonFondo [tiny small large] button [alert success secondary] [disabled]"
+                style="background-image:url(<?php echo $URL_SERVIDOR.'/'?>img/icon_centrar_vertical.png) ;background-size: 71%;
                   background-repeat: no-repeat;
                   background-position: 50%;"
                   >
@@ -513,6 +610,24 @@ overflow: auto;">
                           </span></a>
                         </li>
 
+
+             
+                        <li>
+                        </li>
+
+
+
+                        <li>
+                          <a href="#" 
+                          alt="regresar"
+                          onclick="false" 
+                          style="padding:2px 10px; margin:0px 0px 1px 42px;" 
+                          id="bton_regresar"
+                          class="miboton [tinmibotony small large] button [alert success secondary] [disabled]">
+                          <span style="font-size:29px;" class="fi-x">
+                            
+                          </span></a>
+                        </li>
                   
                     </ul>
               
@@ -832,13 +947,51 @@ margin: 0px;"></td>
                         
           <!-- inicio pagina -->
           <div  id="contenedor_principal_pag_1" class="paginas" >  
-               <div class="punto_moviblefin punto_circle" >
-                 <img src="./img/conexion_p.gif"  class="imagen_punto_mobil"> 
+               <div class="punto_moviblefin punto_circle parte_seleccion" >
+                 <img src="<?php echo $URL_SERVIDOR.'/'?>/img/conexion_p.gif"  class="imagen_punto_mobil"> 
                </div>
+
                
-                <div class="punto_movibleinicio punto_circle" >
-                  <img src="./img/conexion_p.gif"  class="imagen_punto_mobil"> 
+                <div class="punto_movibleinicio punto_circle  parte_seleccion" >
+                  <img src="<?php echo $URL_SERVIDOR.'/'?>/img/conexion_p.gif"  class="imagen_punto_mobil"> 
                 </div>
+
+
+
+                <div class="punto_c_moviblefin punto_cuadrado parte_seleccion" style="display:none" >
+                 <img src="<?php echo $URL_SERVIDOR.'/'?>/img/conexion_p.gif"  class="imagen_punto_mobil"> 
+               </div>
+
+               
+                <div class="punto_c_movibleinicio punto_cuadrado parte_seleccion"    style="display:none">
+                  <img src="<?php echo $URL_SERVIDOR.'/'?>/img/conexion_p.gif"  class="imagen_punto_mobil"> 
+                </div>
+
+                <div class="parte_seleccion seleccionados_grupos mover_grupos"
+                      style="top:100px; left:400px;display:none"                  >
+                    <div  class="parte_seleccion" style="position:absolute; z-index:1000;width:100%; cursor:move;
+                      height:100%;"></div>
+                 </div> 
+
+
+
+
+              <!-- manejo de la lineas por partes -->
+              <div class="linea_partes_punto_movible1 linea_partes_punto_circle" style="top:10px;left:10px;" >
+                 <img src="<?php echo $URL_SERVIDOR.'/'?>/img/conexion_p.gif"  class="imagen_punto_mobil"> 
+               </div>
+
+               
+                <div class="linea_partes_punto_movible2  linea_partes_punto_circle"  style="top:20px;left:20px;">
+                  <img src="<?php echo $URL_SERVIDOR.'/'?>/img/conexion_p.gif"  class="imagen_punto_mobil"> 
+                </div>
+              
+
+                <div class="linea_partes_punto_movible3  linea_partes_punto_circle"  style="top:30px;left:30px;">
+                  <img src="<?php echo $URL_SERVIDOR.'/'?>/img/conexion_p.gif"  class="imagen_punto_mobil"> 
+                </div>
+
+
            </div>
             <!-- fin pagina -->
           
@@ -880,23 +1033,24 @@ height: 35px;">
 
 
 
-    <script src="js/vendor/jquery.js"></script>
-    <script src="js/foundation.min.js"></script>
+    <script src="<?php echo $URL_SERVIDOR.'/'?>js/vendor/jquery.js"></script>
+    <script src="<?php echo $URL_SERVIDOR.'/'?>js/foundation.min.js"></script>
 
 
-    <script src="js/jquery-ui.js"></script>
-    <script src="js/spectrum.js"></script>
-    <script src="js/simulate.js"></script>
+    <script src="<?php echo $URL_SERVIDOR.'/'?>js/jquery-ui.js"></script>
+   <!-- <script src="js/spectrum.js"></script>-->
+    <script src="<?php echo $URL_SERVIDOR.'/'?>js/simulate.js"></script>
 
+    <script src="<?php echo $URL_SERVIDOR.'/'?>js/jquery.hittest.js"></script>
+    <script src="<?php echo $URL_SERVIDOR.'/'?>js/MensajeDetalle.js"></script>
+    <script src="<?php echo $URL_SERVIDOR.'/'?>js/LineaConexion.js"></script>
+    <script src="<?php echo $URL_SERVIDOR.'/'?>js/LineaPartes.js"></script>
 
-    <script src="js/pnotify.min.js"></script>
-    <script src="js/notificaciones.js"></script>
-
-    <script src="js/MensajeDetalle.js"></script>
-    <script src="js/LineaConexion.js"></script>
-     <script src="js/CuadroSeleccion.js"></script>
-    <script src="js/diagramaF1.js"></script>
-    <script src="js/Flujo.js"></script>
+    <script src="<?php echo $URL_SERVIDOR.'/'?>js/CuadroSeleccion.js"></script>
+    <script src="<?php echo $URL_SERVIDOR.'/'?>js/CuadroAgrupacion.js"></script>
+    
+    <script src="<?php echo $URL_SERVIDOR.'/'?>js/DiagramaF1.js"></script>
+    <script src="<?php echo $URL_SERVIDOR.'/'?>js/Flujo.js"></script>
    
 
 
@@ -904,512 +1058,5 @@ height: 35px;">
 
   </body>
 
-
-    <script>
-      $(document).foundation();
-
-
-
-  
-
-
-
-
-$( "#dialog_diagrama" ).hide();
-
-$("#dialog_configuracion_linea").hide();
-
-      $('.off-canvas-wrap').foundation('offcanvas', 'show', 'move-right');
-    
-      var $puntos = $(".punto_moviblefin ,.punto_movibleinicio");
-
-
-
-
-
-
-
-
-var tama_espacio_alto=100;
-var band_pagina=true;
-/*
-    // boton de ver la paginas 
-    $("#bton_option_pagina").click(function(e){
-
-      if(band_pagina)
-      {
-        tama_espacio_alto=67;
-        $("#grupo_botones_pagina").css({display:'none'});
-
-      }
-    else{
-      tama_espacio_alto=100;
-        $("#grupo_botones_pagina").css({display:'block'});
-
-    }
-
-
-      $("#contenedor_principal_pag").animate({
-        height: $(window).height()-$("#barra_navegacion_1").height()-tama_espacio_alto
-        }
-        ,500,function(){
-
-
-
-             band_pagina= !band_pagina;
-             if(band_pagina)
-             {
-              $("#bton_option_pagina").addClass("miActivo");
-
-              }
-              else{
-                $("#bton_option_pagina").removeClass("miActivo");
-               
-              }
-        });
-     
-
-
-
-    });
-
-
-*/
-
-    $("#contenedor_principal_pag").width( $(window).width()-$("#menu_izquierdo").width()-15);
-    $("#contenedor_principal_pag").height( $(window).height()-$("#barra_navegacion_1").height()-tama_espacio_alto);
-     
-
-     // *********************
-     // resize -->  
-     $(window).resize(function(){
-      $("#contenedor_principal_pag").height( $(window).height()-$("#barra_navegacion_1").height()-tama_espacio_alto);
-
-        if(estadoMenuAbierto)
-         {
-           $("#contenedor_principal_pag").width( $(window).width()-$("#menu_izquierdo").width()-15);
-         }
-         else {
-            $("#contenedor_principal_pag").width( $(window).width()-15);
-          
-              
-            
-         }
-     });
-
-
-     var estadoMenuAbierto=true; // true esta abierto el menui izquierdo , o false esta cerrado el menu izquierdo
-
-     //*******************
-     // toogle de menu izquierdo
-     // **********************
-     function miToogleMenuIzquierdo(e){
-
-      estadoMenuAbierto=!estadoMenuAbierto;
-      $('.off-canvas-wrap').foundation('offcanvas', 'toggle', 'move-right'); 
-
-       if(estadoMenuAbierto)
-       {
-         $("#contenedor_principal_pag").width( $(window).width()-$("#menu_izquierdo").width()-15);
-                    
-               $("#botones_panel_inferior").css({float:'left'});
-
-       }
-       else {
-          $("#contenedor_principal_pag").width( $(window).width()-15);
-            $("#botones_panel_inferior").css({float:'right'});
-         
-
-          
-       }
-
-
-      return false;
-
-     }
-
-     $("#bton_toogle_menu_iz").click(function(e){
-        miToogleMenuIzquierdo(e)
-     });
-
-      
-
-
-
-var manejoFlujo = Flujo("");
-  manejoFlujo.inicializarEventosPrincipales();
-  manejoFlujo.eventosAllPaginaActual();
-  manejoFlujo.actualizaHtmlPagina();
-  manejoFlujo.eventosFueraPagina();
-
-  manejoFlujo.eventosDeBtonModal();
-
-
-  
-
-  $("#bton_nueva_pagina").click(function(e){
-      manejoFlujo.crearPaginaNueva();
-  });
-
-
-$("#bton_elimina_pagina").click(function(e){
-
-  manejoFlujo.eliminarPaginaActual();
-});
-  
-
-
-$("#bton_estado1").click(function(e){
-  manejoFlujo.cambioEstado(1);
-  manejoFlujo.deseleccionarTodosLineas();
-});
-
-
-$("#bton_estado2").click(function(e){
-  manejoFlujo.cambioEstado(2);
-
-});
-
-
-
-$("#bton_estado4").click(function(e){
-  manejoFlujo.cambioEstado(4);
-
-});
-
-
-
-
-  
-
-/**************************************
-caja de herramientas 
-*/
-$herramientaBotones=$("#herramientas_grupo_botones");
-$herramientaBotones.draggable({
-    handle:"#herramientas_grupo",
-    drag:function(){
-      //$("#panel_tipo_color").spectrum("hide");
-    }
-    ,scroll:false
-  
-  });
-
-
-$herramientaBotones.hide();
-
-
-/// eventos del la barra movible
-$("#subgrupo_botones_boton_capa").hide();
-$("#boton_delete_grupo").click(function(e){
-
-  manejoFlujo.eliminarDiagramaF1();
-});
-
-
-$("#boton_color_grupo").click(function(e){
-  manejoFlujo.mostrarDialogoEdicion();
-
-  }); 
-
-
-
-$("#boton_capa").click(function(){
-  $("#panel_editar_letras").toggle();  
- 
-  $( "#spinner" ).val(manejoFlujo.$elementoSeleccionado.data("font-size"));
-  actualizarColorTexto(manejoFlujo.$elementoSeleccionado.data("colortexto"));
-  actualizarColorFondo(manejoFlujo.$elementoSeleccionado.data("background"));
-  actualizarColorFOndoSVG(manejoFlujo.$elementoSeleccionado.data("svg-fondo"));
-  actualizarAlinecionEnPanel();
-  
-      
-})
-
-
-
-
-
-function actualizarColorTexto (color){
-
-  color=$("#panel_tipo_color").spectrum({
-        color: color 
-        ,showInitial: true    
-        ,chooseText: "Aceptar"
-        ,cancelText: "Cancelar"
-        ,showButtons: false
-        ,change: function(color) {
-          color.toHexString("#eaeaea"); // #ff0000
-          
-      }
-
-      ,move: function(color) {
-          color.toHexString(); // #ff0000
-    
-          if(manejoFlujo.$elementoSeleccionado)
-          {
-
-    
-             manejoFlujo.$elementoSeleccionado.css("color",color.toHexString());
-             manejoFlujo.$elementoSeleccionado.find("p.descripcion_observada").css("color",color.toHexString());
-             manejoFlujo.$elementoSeleccionado.data("colortexto",color.toHexString());          
-        
-
-           
-
-          }//fin de la valicion para text are
-        
-
-
-      }
-    });
-
-}
-
-
-
-
-
-function actualizarColorFOndoSVG (scolor){
-
-    $("#panel_tipo_fondo").spectrum({
-        color: ""+scolor 
-        ,showInitial: true    
-        ,chooseText: "Aceptar"
-        ,cancelText: "Cancelar"
-        ,showButtons: false
-        ,change: function(color) {
-          color.toHexString(); // #ff0000
-          
-      }
-
-      ,move: function(color) {
-          color.toHexString(); // #ff0000
-    
-          if(manejoFlujo.$elementoSeleccionado)
-          {
-
-    
-             manejoFlujo.$elementoSeleccionado.data("svg-fondo",color.toHexString());          
-             var  diagram = manejoFlujo.getDiagramaF1();
-             if(diagram!=null)
-             {
-
-                 diagram.cambiarColorDeFondo(color.toHexString()+"");
-             }
-
-
-          }//fin de la valicion para text are
-        
-
-
-      }
-    });
-
-}
-
-
-
-
-
-var ll=null;
-
-/// cambiar de fondo del color
-function actualizarColorFondo (scolor){
-
-  colorFondo=$("#panel_fondo_color").spectrum({
-        color: scolor 
-        ,showInitial: true    
-        ,chooseText: "Aceptar"
-        ,cancelText: "Cancelar"
-        ,showButtons: false
-        ,allowEmpty: true
-        ,change: function(color) {
-          //color.toHexString(); // #ff0000
-          //console.log("--->" + color.toHexString())
-
-          
-      }
-
-      ,move: function(color) {
-
-        ll=color;
-        var valorcolor="transparent";
-
-        try{
-             if(color!=null && color.toName!=null && color.toName())
-             {
-              valorcolor="transparent";
-             }
-             else{
-                 valorcolor = "#"+color.toHex(); // #ff0000
-             }
-          } 
-          catch(e){
-              valorcolor="transparent";
-            
-          }
-          
-    
-          if(manejoFlujo.$elementoSeleccionado)
-          {
-
-    
-            // manejoFlujo.$elementoSeleccionado.css("color",valorcolor);
-             manejoFlujo.$elementoSeleccionado.find("p.descripcion_observada").css("background",valorcolor);
-             manejoFlujo.$elementoSeleccionado.data("background",valorcolor);          
-        
-          }//fin de la valicion para text are
-        
-      }
-    });
-
-}
-
-
-
-///alineacion de letra
-$("#panel_letras_center, #panel_letras_left,#panel_letras_right").click(function(){
-  //solo es para tipo texto
-  if(manejoFlujo.$elementoSeleccionado){
-    var $elem =$(this);
-    var activo=$elem.data("activo")+"";
-    var propiedad=$elem.data("propiedad")+"";
-  
-    //desactiva
-    $("#panel_letras_center, #panel_letras_left, #panel_letras_right").removeClass("active_letra"); 
-      
-    $(this).addClass('active_letra');
-
-   // manejoFlujo.$elementoSeleccionado.css(propiedad,activo);
-    manejoFlujo.$elementoSeleccionado.find("p.descripcion_observada").css(propiedad,activo);
-    manejoFlujo.$elementoSeleccionado.data("text-align",activo);
-
-  }//validacion de si aplica 
-  
-});
-
-
-
-function actualizarAlinecionEnPanel (){
-  
-  var alineacion = manejoFlujo.$elementoSeleccionado.data("text-align");
-  $("#panel_letras_center, #panel_letras_left, #panel_letras_right").removeClass("active_letra"); 
-
-  switch(alineacion){
-    case "left":
-    case "LEFT":
-      $("#panel_letras_left").addClass("active_letra");
-    break;
-
-    case "center":
-    case "CENTER":
-      $("#panel_letras_center").addClass("active_letra");
-    break;
-
-
-    case "right":
-    case "RIGHT":
-      $("#panel_letras_right").addClass("active_letra");
-    break;
-
-  }
-
-}
-
-
-
-
-
-
-  //evita la porpgacion
-  $herramientaBotones.mousedown(function(e){
-     e.stopPropagation();
-      //return false;
-  });
-
-
-
-  // geneaicon de spinner
-  $( "#spinner" ).spinner({
-     min:1
-    ,numberFormat: "n" 
-    
-    ,change:function(event, ui){
-      cambiarTamLetra();    
-
-    }
-
-    ,spin: function(event, ui){
-      cambiarTamLetra();
-    } 
-  });
-
-  $( "#spinner" ).blur(function(){
-    cambiarTamLetra();
-  });
-
-
-
-
-  //canua ek tanali de  l letra
-  function cambiarTamLetra(){
-   var valor= $( "#spinner" ).spinner("value");
-
-        if(!/[123456789][0-9]*/.test(valor))
-        {
-          valor=1;
-          $( "#spinner" ).spinner("value",1);
-        }
-
-
-        if(manejoFlujo.$elementoSeleccionado)
-        {
-          
-          manejoFlujo.$elementoSeleccionado.css("font-size",valor+"px");
-          manejoFlujo.$elementoSeleccionado.find("p.descripcion_observada").css("font-size",valor+"px"); 
-
-        }
-
-        manejoFlujo.$elementoSeleccionado.data("font-size",valor);
-}
-
-
-
-
-
-//color 
-var color=null;
-actualizarColorTexto("#fff");
-var colorFondo=null;
-actualizarColorFondo("#fff");
-actualizarColorFOndoSVG("#000000");
-
-
-
-
-
-
-///*************************************
-// HERRAMIENTAS 2
-// *******************
-/*caja de herramientas  2
-*/
-$herramientaBotones2=$("#herramientas_grupo_botones2");
-$herramientaBotones2.draggable({
-    handle:"#herramientas_grupo2",
-    drag:function(){
-      //$("#panel_tipo_color").spectrum("hide");
-    }
-    ,scroll:false
-  
-  });
-
-
-
-$("#boton_color_grupo2").click(function(){
-  manejoFlujo.mostrarDialogoLinea();
-})
-
-    </script>
+ <script src="<?php echo $URL_SERVIDOR.'/'?>js/datos.js"></script>
 </html>

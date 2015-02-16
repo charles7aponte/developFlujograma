@@ -137,6 +137,25 @@ var manejoFlujo = Flujo("");
 
  manejoFlujo.leerGET();   
 
+
+
+//btones y eventos de agrupacion
+//
+
+$("#bton_centrar_horizontal").click(function(){
+
+  manejoFlujo.centarHorizontalElementosAgrupados();
+
+});
+
+
+
+$("#bton_centrar_vertical").click(function(){
+
+  manejoFlujo.centarVerticalElementosAgrupados();
+  
+});
+
   
 
   $("#bton_nueva_pagina").click(function(e){
@@ -154,6 +173,13 @@ $("#bton_elimina_pagina").click(function(e){
 $("#bton_estado1").click(function(e){
   manejoFlujo.cambioEstado(1);
   manejoFlujo.deseleccionarTodosLineas();
+});
+
+
+
+$("#bton_estado10").click(function(e){
+  manejoFlujo.cambioEstado(10);
+ // manejoFlujo.deseleccionarTodosLineas();
 });
 
 

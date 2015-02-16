@@ -123,7 +123,9 @@ para de los cuadritos
 	position: absolute;
 	background-image:url('../img/cruz.gif');
 	background-size: 100% 100%;
-	
+	-webkit-transform: translate(-50%, -50%);
+	-moz-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
 }
 
 div[data-mielemento] .ui-resizable-bton_edicion>a, 
@@ -275,7 +277,7 @@ div[data-mielemento=n2] .punto2,div[data-mielemento=n3] .punto2
 ,div[data-mielemento=n8] .punto2
 {
 	top: 50%;
-	right: -15px;
+	right: -20px;
 }
 
 
@@ -295,6 +297,7 @@ div[data-mielemento=n2] .punto4 ,div[data-mielemento=n3] .punto4
 {
 	top: -15px;
 	left: 50%;
+
 }
 
 
@@ -513,11 +516,14 @@ cursor: pointer;
 
 #dialog_diagrama textarea{
 	margin: 0px !important;
+	font-size: 13px;
+
 }
 
 .reveal-modal {
     padding: 2;
     max-width: 350px;
+
 
 }
 
@@ -697,15 +703,18 @@ cursor: pointer;
 .ui-dialog .ui-dialog-titlebar {
 	padding: 1px 5px;
 	text-align: center;
-	height: 16px;
+	height: 20px;
 	font-size: 10px;
 }
 
 .ui-dialog .ui-dialog-titlebar-close
 {
 	padding: 1px;
-	height: 16px;
 	width: 12px;
+
+	margin-top: -5px;
+	height: 10px;
+	margin-right: 1px;
 }
 
 .ui-widget-content {
@@ -719,6 +728,7 @@ cursor: pointer;
 
 .ui-dialog{
 	padding: 0px;
+	background: rgb(200, 197, 197);
 }
 
 .ui-dialog .ui-dialog-buttonpane
@@ -736,6 +746,13 @@ color:#C4C6BB;
 }
 
 
+.ui-dialog 
+	{
+		width: 166px;
+		margin: auto;
+		float:none;
+	}
+
 
 
 
@@ -746,7 +763,7 @@ color:#C4C6BB;
 .caudro_lineal{
 border-color: black;
 border-width: 2px;
-background: #E8E9E4;
+background: #FFFFFF;
 width: 100px;
 height: 100px;
 position: absolute;
@@ -809,3 +826,54 @@ body[data-estado='4'] .caudro_lineal_bottom:hover{
 }
 
 
+
+body[data-estado='4'] .caudro_lineal:hover{
+	
+	cursor: move;
+}
+
+
+
+
+
+.ui-dialog-titlebar{
+	background: rgb(45, 78, 19);
+}
+
+
+
+.mover_grupos{
+
+	padding: 0;
+	border: 1px solid #3cf;
+
+	margin: 0;
+	width: 100px;
+	height: 100px;
+	position: absolute;
+	z-index: 100;
+
+}
+
+
+.elementos_seleccionado path, .elementos_seleccionado rect ,.elementos_seleccionado ellipse{
+
+	background: rgb(71, 160, 1);
+	box-shadow: 2px 2px 10px #518CA6;
+	fill: rgba(66, 90, 47, 0.59) !important;
+}
+
+
+/* agrupador de elementos seleccionados*/
+.agrupador_inicial_seleccionados{
+
+	padding: 0;
+	border: 1px solid #6AAE34;
+	margin: 0;
+	width: 100px;
+	height: 100px;
+	position: absolute;
+	z-index: 100;
+
+
+}

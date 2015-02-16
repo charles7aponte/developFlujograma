@@ -11,7 +11,7 @@ function CuadroSeleccion (){
 		//
 		,dibujar : function(){
 			var _seft= this;
-			_seft.$elemento= $("<div class='caudro_lineal'>");
+			_seft.$elemento= $("<div class='caudro_lineal' >");
 
 			var $top =   $("<div class='caudro_lineal_top'>");
 			var $left =  $("<div class='caudro_lineal_left'>");
@@ -37,6 +37,8 @@ function CuadroSeleccion (){
 		}// fin fucnion dibujar
 
 
+
+
 		// ****************
 		// evento draggable
 		//
@@ -54,7 +56,7 @@ function CuadroSeleccion (){
 	            ,delay:1
 	            ,opacity: 0.6
 	            ,"zIndex": 100
-	            ,handle:".caudro_lineal_top ,.caudro_lineal_left,.caudro_lineal_right, .caudro_lineal_bottom"
+	            //,handle:".caudro_lineal_top ,.caudro_lineal_left,.caudro_lineal_right, .caudro_lineal_bottom"
 	       		
 	       		  ,start:function(event, ui)
 			           {
@@ -79,6 +81,9 @@ function CuadroSeleccion (){
 
 
 
+
+
+
 		////*****************
 		// colocar la poisicon 
 		,posicionXY:function(left,top)
@@ -91,6 +96,8 @@ function CuadroSeleccion (){
 			});
 
 		}// fin fucnion posicionXY
+
+
 
 
 
@@ -114,6 +121,9 @@ function CuadroSeleccion (){
 
 
 		}//fin funcion -> deselecciona
+
+
+
 
 
 

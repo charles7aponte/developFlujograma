@@ -2,12 +2,13 @@ function LineaConexion(){
 
 	return {
 		$pagina:null
+		,tipo:"linea"
 		//, functExFlujo_deseleccion:function(){}
 		//, functExFlujo_lineaConexionSeleccionada:function(tipo_LineaConexion){}// se enlaza con el principal para indicar el elemento o linea seleccionada
 		,svgElemento:null
 		, $elementoDOM:null
 
-		,banderaSeleccionado:false
+		,banderaSeleccionado:true
 		,lineaRecta1:null
 		,lineaRecta:null
 
@@ -31,6 +32,8 @@ function LineaConexion(){
 			 }
 			
 		}
+
+
 
 
 		/*	
@@ -104,6 +107,8 @@ function LineaConexion(){
 
 
 
+
+
 			// *************
 			// retorna sise puede eliminar o no 
 			// @return boolean true si se puede , o false si no .
@@ -117,6 +122,9 @@ function LineaConexion(){
 				return true;
 
 			}// function -->sePuedeEliminar	
+
+
+
 
 
 			// ****************************
@@ -155,6 +163,9 @@ function LineaConexion(){
 
 
 
+
+
+
 		// ************************
 		// actulizo la posicion del texto
 		//
@@ -185,6 +196,8 @@ function LineaConexion(){
 				_seft.$textoP.hide();
 			}
 		}
+
+
 
 
 
@@ -245,6 +258,7 @@ function LineaConexion(){
          	switch(_seft.$$padre.estado){
 
          		case 4:
+         		case 10:
          		case 1:
          			_seft.$$padre.cambioEstado(2); 
 					_seft.seleccionaLineaObj(); 
@@ -373,7 +387,7 @@ function LineaConexion(){
           }// fin function ->cambiarColorAnimacion
 
 
-          
+
 
 
 

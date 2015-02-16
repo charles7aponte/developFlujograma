@@ -47,6 +47,7 @@ $.fn.focusEnd = function() {
 
 
 
+
 function DiagramaF1 (){
 
 	return{
@@ -61,13 +62,14 @@ function DiagramaF1 (){
 	 		,alertaMensaje:null/// se maneja solo en parte visual .Objeto de la pseudo clase "MensajeDetalle" 
 
 			,$elemento:null // elmeen JQuery
+			,$elementoSVG:null /// svg principal // los tamaños 100% 100%
 			,listasSVG:[]
 
 			//lineas conexion
-			,linea1:{$linea : null , $punto:null}
-			,linea2:{$linea : null , $punto:null}
-			,linea3:{$linea : null , $punto:null}
-			,linea4:{$linea : null , $punto:null}
+			,linea1:{$linea : null , $punto:null, tipo:null}
+			,linea2:{$linea : null , $punto:null, tipo:null}
+			,linea3:{$linea : null , $punto:null, tipo:null}
+			,linea4:{$linea : null , $punto:null, tipo:null}
 
 
 
@@ -93,6 +95,122 @@ function DiagramaF1 (){
 
 
 
+			// ..............
+			// actualizar puntos ... 
+			,actualizarPuntos:function(){
+				
+				var _self=this;
+				var svgInterno =  _self.$elementoSVG.find("svg");
+				if(svgInterno.length<1)
+				{
+					svgInterno =  _self.$elementoSVG.find("rect");
+				}
+
+
+				_self.$c1.css("left","-20px");
+				_self.$c2.css("right","-10px");
+				_self.$c3.css("bottom","-10px");
+				_self.$c4.css("top","-10px");
+
+
+
+				_self.moverUnPunto("de",_self.$c1 ,svgInterno);
+				_self.moverUnPunto("iz",_self.$c2 , svgInterno);
+				_self.moverUnPunto("ar",_self.$c3 , svgInterno);
+				_self.moverUnPunto("ab",_self.$c4 , svgInterno);
+
+
+			}// function -->actualizarPuntos
+
+			
+
+			// actualiza un punto hasta encontra el el eleemnto svg  o maximo 1000
+			,moverUnPunto:function(direccion,$puntoDIV,$elementoSVG){
+
+				var siguiente=true;
+				var _self= this;
+				var ni=0;
+
+
+				for(ni=0; ni< 1000 && siguiente ;ni++)
+				{
+
+					var s=_self.collision($puntoDIV,$elementoSVG);
+					
+					console.log(s);
+					if(s)
+					{
+						siguiente= false;
+						break;
+					}		
+					else {			
+					_self.moverConector(direccion,$puntoDIV);
+					}
+				}
+
+
+			}// function -->moverUnPunto
+
+
+
+
+			// hace que los conectores toque el elementos
+			,moverConector:function(direccion,$puntoDIV){
+
+				var  delta=2;
+				var valorAuxiliar=0;
+				switch(direccion)
+				{
+					case "ab":// de arriba hacia abajo
+						 valorAuxiliar= parseInt($puntoDIV.css("top"));
+						 if(isNaN(valorAuxiliar))
+						 	{
+						 	valorAuxiliar=0;	
+						 	}
+
+						 valorAuxiliar +=delta; 
+						 $puntoDIV.css("top",valorAuxiliar+"px")
+					break;
+
+					case "ar":// de abajo hacia arriba
+						 valorAuxiliar= parseInt($puntoDIV.css("bottom"));
+						  if(isNaN(valorAuxiliar))
+						 	{
+						 	valorAuxiliar=0;	
+						 	}
+						 valorAuxiliar +=delta; 
+						 $puntoDIV.css("bottom",valorAuxiliar+"px")
+					break;
+
+
+
+					case "de":// de izq a derecha
+					 valorAuxiliar= parseInt($puntoDIV.css("left"));
+					  if(isNaN(valorAuxiliar))
+						 	{
+						 	valorAuxiliar=0;	
+						 	}
+					 valorAuxiliar +=delta; 
+					 $puntoDIV.css("left",valorAuxiliar+"px")
+					break;
+
+
+					case "iz":// de izq a derecha
+						 valorAuxiliar= parseInt($puntoDIV.css("right"));
+						  if(isNaN(valorAuxiliar))
+							 	{
+							 	valorAuxiliar=0;	
+							 	}
+						 valorAuxiliar +=delta; 
+						 $puntoDIV.css("right",valorAuxiliar+"px")
+					break;
+
+
+				}
+
+				
+
+			}
 
 
 
@@ -111,23 +229,50 @@ function DiagramaF1 (){
 					return true;
 
 
-				_self.$$padre.creacionLineasMouse($punto1,"punto")
+				_self.$$padre.creacionLineasMouse($punto1,"punto");
+				_self.$$padre.creacionLineaPartes($punto1);
 
 				$punto1.on('mousedown',function(e){
 					
-					console.log("mousedown de punto");
 
-								var $punto = _self.$pagina.find(".punto_movibleinicio");
+				//	_self.$$padre.eventoDeDisparoAlCrearLineaConexion = function(){
+
+
+
+						var mitipo=null;
+						var lineaActual =null;
+
+								var $punto = null;
+								if(_self.estado ==2)
+								{
+									$punto = _self.$pagina.find(".punto_movibleinicio");
+									mitipo="linea";
+									lineaActual= _self.ext_getLineaActual();
+									
+								}
+								else {
+									$punto = _self.$pagina.find(".linea_partes_punto_movible1");
+									mitipo ="linea_partes";
+									lineaActual=_self.$$padre.getLineaActualPartes();
+
+									console.log(lineaActual);
+								}
+
+
 								
 								var tipoPuntoCirculo = $punto1.data("punto");
 								//var lineaActual =_self.ext_getLineaActual();
-								var lineaActual =_self.$$padre.$lineaActual;
+								_self.$$padre.$lineaActual;
 
 
 								switch(tipoPuntoCirculo){
 									case "punto1": 
 										_self.linea1.$linea= lineaActual;
 										_self.linea1.$punto= $punto;
+										_self.linea1.tipo= mitipo;
+
+
+
 										console.log(1)
 									
 									break;
@@ -135,18 +280,21 @@ function DiagramaF1 (){
 									case "punto2": 
 										_self.linea2.$linea= lineaActual;
 										_self.linea2.$punto= $punto;
+										_self.linea2.tipo= mitipo;
 										console.log(2)
 									break;
 
 									case "punto3": 
 										_self.linea3.$linea= lineaActual;
 										_self.linea3.$punto= $punto;
+										_self.linea3.tipo= mitipo;
 										console.log(3)
 									break;
 
 									case "punto4": 
 										_self.linea4.$linea= lineaActual;
 										_self.linea4.$punto= $punto;
+										_self.linea4.tipo= mitipo;
 
 
 
@@ -157,6 +305,11 @@ function DiagramaF1 (){
 
 
 							$punto1.removeClass("puntos_conexion_resaltados");
+
+
+
+				//	}/// fin function 
+
 							console.log("drop1.. satisfaccion");
 					
 						e.stopPropagation();
@@ -182,36 +335,57 @@ function DiagramaF1 (){
 							{
 								
 								var $punto = _self.$pagina.find(ui.draggable[0])
+								var mitipo=  $punto.hasClass("linea_partes_punto_circle")? "linea_partes" : "linea" ;
+								var lineaActual =null;
+
 								$punto.find("img").hide();
-								
+
+
+							if(_self.estado ==1)
+								{
+									
+									mitipo="linea";
+									lineaActual= _self.ext_getLineaActual();
+									
+								}
+								else {
+									mitipo ="linea_partes";
+									lineaActual=_self.$$padre.getLineaActualPartes();
+								}
+
+													
 
 								var tipoPuntoCirculo = $punto1.data("punto");
 								//var lineaActual =_self.ext_getLineaActual();
-								var lineaActual =_self.$$padre.$lineaActual;
+								
 
 								switch(tipoPuntoCirculo){
 									case "punto1": 
 										_self.linea1.$linea= lineaActual;
 										_self.linea1.$punto= $punto;
-										console.log(1)
-									
+										_self.linea1.tipo = mitipo;
+
+										
 									break;
 
 									case "punto2": 
 										_self.linea2.$linea= lineaActual;
 										_self.linea2.$punto= $punto;
+										_self.linea2.tipo = mitipo;
 										console.log(2)
 									break;
 
 									case "punto3": 
 										_self.linea3.$linea= lineaActual;
 										_self.linea3.$punto= $punto;
+										_self.linea3.tipo = mitipo;
 										console.log(3)
 									break;
 
 									case "punto4": 
 										_self.linea4.$linea= lineaActual;
 										_self.linea4.$punto= $punto;
+										_self.linea4.tipo = mitipo;
 										console.log(4)
 									break;
 								}
@@ -251,6 +425,7 @@ function DiagramaF1 (){
 										{
 											_self.linea1.$linea=null;
 											_self.linea1.$punto=null;
+											_self.linea1.tipo=null;
 
 										}
 									
@@ -262,6 +437,7 @@ function DiagramaF1 (){
 											{
 											_self.linea2.$linea= null;
 											_self.linea2.$punto= null;
+											_self.linea2.tipo=null;
 											}
 									break;
 
@@ -271,6 +447,7 @@ function DiagramaF1 (){
 											{
 											_self.linea3.$linea= null;
 											_self.linea3.$punto= null;
+											_self.linea3.tipo=null;
 											}
 									break;
 
@@ -281,6 +458,7 @@ function DiagramaF1 (){
 											{ 
 											_self.linea4.$linea= null;
 											_self.linea4.$punto= null;
+											_self.linea4.tipo=null;
 											}
 									break;
 								}
@@ -599,8 +777,15 @@ function DiagramaF1 (){
 			              _self.actualizaLineaAgrupada(_self.$c3, _self.linea3);
 			              _self.actualizaLineaAgrupada(_self.$c4, _self.linea4);
 			       
-			           	
+
+			              
 			           }
+
+			          ,stop:function( event, ui )
+			          {
+			          	// actualiza los puntos de encjal jae
+			           	_self.actualizarPuntos();
+			          } 
 			        });
 
 
@@ -797,8 +982,7 @@ function DiagramaF1 (){
 					var x = $c.offset().left - _self.$$padre.$paginaActual.offset().left;			  		
 					var y = $c.offset().top - _self.$$padre.$paginaActual.offset().top;
 
-					//colo los puntos en su ubiccaion y seleecion el objet
-					_self.$$padre.seleccionLineaActulaDOM($$linea.$linea);
+					
 
 
 					var $punto = $$linea.$punto;
@@ -810,8 +994,17 @@ function DiagramaF1 (){
 
 					});
 
-					//actualiza la linea
-					_self.$$padre.actualizacionBolasLinea(_self.$$padre,_self.$$padre.$lineaActual,null, null);
+					if($$linea.tipo=="linea")
+					{
+						//colo los puntos en su ubiccaion y seleecion el objet
+						_self.$$padre.seleccionLineaActulaDOM($$linea.$linea);
+						//actualiza la linea
+						_self.$$padre.actualizacionBolasLinea(_self.$$padre,_self.$$padre.$lineaActual,null, null);
+					}
+					else{
+						//actualiza la linea
+						_self.$$padre.actualizacionPuntosLineasPartes(_self.$$padre,_self.$$padre.objLineaPartes,null, null);
+					}
 
 
 			  	}
@@ -821,7 +1014,10 @@ function DiagramaF1 (){
 
 
 
-			   // ******************
+	
+
+
+		  // ******************
           // ***
           //
           ,cambiarColorDeFondo:function(color){
@@ -844,5 +1040,33 @@ function DiagramaF1 (){
             }
 
          }
+
+
+
+
+
+
+         ,collision:function ($div1, $misvg) {
+		      var x1 = $div1.offset().left;
+		      var y1 = $div1.offset().top;
+		      var h1 = $div1.height();
+		      var w1 = $div1.width();
+		      var b1 = y1 + h1;
+		      var r1 = x1 + w1;
+		      var x2 = $misvg.offset().left;
+		      var y2 = $misvg.offset().top;
+		      var h2 = $misvg[0].getBoundingClientRect().height;
+		      var w2 = $misvg[0].getBoundingClientRect().width;
+		      var b2 = y2 + h2;
+		      var r2 = x2 + w2;
+ 
+			 // console.log(x1+" "+y1+"->"+h1+"-"+w1+" -- "+b1+" -"+r1);
+			//  console.log(x2+" "+y2+"->"+h2+"-"+w2+" -- "+b2+" -"+r2);
+		      if (b1 < y2 || y1 > b2 || r1 < x2 || x1 > r2) 
+		      	return false;
+		      
+		      return true;
+		    }// function --> collision 
+
 	};
 };
