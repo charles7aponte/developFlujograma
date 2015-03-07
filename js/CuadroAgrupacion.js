@@ -61,6 +61,13 @@ function CuadradoAgrupacion (){
 					listaSeleccionados.push($diagramaPagina);
 					$diagramaPagina.addClass("elementos_seleccionado");
 
+					
+					var diagramObject =  _self.$$padre.getDiagramaF1ByDOM($diagramaPagina[0]);
+					if(diagramObject)
+					{
+						diagramObject.actualiza4Lineas();
+					}
+
 				}
 
 			}// fin de for
@@ -260,6 +267,11 @@ function CuadradoAgrupacion (){
 
 				$elementoDiagrama.css({"left":mileft});
 
+				var diagramObject =  _self.$$padre.getDiagramaF1ByDOM($elementoDiagrama[0]);
+				if(diagramObject)
+				{
+					diagramObject.actualiza4Lineas();
+				}
 
 			}
 
@@ -306,6 +318,13 @@ function CuadradoAgrupacion (){
 				$elementoDiagrama.css({"top":miTop});
 
 
+				var diagramObject =  _self.$$padre.getDiagramaF1ByDOM($elementoDiagrama[0]);
+				if(diagramObject)
+				{
+					diagramObject.actualiza4Lineas();
+				}
+
+
 			}
 
 
@@ -332,7 +351,7 @@ function CuadradoAgrupacion (){
 
 
 			//deseleccioan el utlim elemto seleccionado
-			_self.$$padre.deseleccionarElemento();
+			//_self.$$padre.deseleccionarElemento();
 
 			if(_self.estado!=3)
 			{
@@ -394,6 +413,33 @@ function CuadradoAgrupacion (){
 
 		    _self.$agrupador.css("display","none");
 		}///functon --> desagrupar
+
+
+
+
+
+
+		//fuction de centrar en modo horizontal
+		,actualizarELementosSeleccionados:function()
+		{
+
+
+			var _self=this;
+
+			$listaElementos =_self.listaDiagramasSelecccionados;
+	
+			for(var i=0; i<$listaElementos.length ; i++)
+			{
+				var $elementoDiagrama = $( $listaElementos[i]);
+				
+				var diagramObject =  _self.$$padre.getDiagramaF1ByDOM($elementoDiagrama[0]);
+				if(diagramObject)
+				{
+					diagramObject.actualiza4Lineas();
+				}
+			}
+
+		}// function ...>centrarModoHorizontal
 
 
 	};

@@ -19,7 +19,7 @@ function LineaPartes(){
 
 
 		,$elemento:null
-		, dibujar:function(id_nuevo){
+		,dibujar:function(id_nuevo){
 
 			var _seft= this;
 			var $elemento = $("<svg class='linea_partes' data-puntos_movible1='' "+
@@ -94,12 +94,14 @@ function LineaPartes(){
 
 		       _seft.$$padre.contadorLineasPartes++;
 		       _seft.$elemento.attr("id","id_linea_pares"+_seft.$$padre.contadorLineasPartes);
+		       _seft.$pagina= _seft.$$padre.$paginaActual;
 		       _seft.$textoP.hide();
             }  
 
 
 
             _seft.eventoClick()
+            _seft.activarIndicacionSelecccionada(true);
 		}// fin function dibujar
 
 
@@ -134,22 +136,17 @@ function LineaPartes(){
 
 
 
-					_seft.$$padre.objLineaPartes=null;
 					
-					/*var posicion = _seft.$$padre.listaLineaConexion.indexOf(_seft);
+					
+					for(var i=0; i< _seft.$$padre.listaLineasPartes.length ; i++)
+		     		{
+		     			if(_seft.$$padre.listaLineasPartes[i]== _seft)
+		     			{
+		     				_seft.$$padre.listaLineasPartes.splice(i,1);
 
-					if(posicion!=-1)
-					{
-						_seft.$$padre.listaLineaConexion.splice(posicion,1);
-						_seft.$elemento.remove();
-						_seft.$textoP.remove();
-
-					}
-					else{
-						console.error("no existe la linea en listado listaLineaConexion");
-					}
-					*/
-
+		     			}
+		     		}// fin de for
+		     		_seft.$$padre.objLineaPartes=null;
 				});
 
 			}
@@ -250,39 +247,11 @@ function LineaPartes(){
 
 
 		
-		 //
+		 //evnto al dar click sobre la linea
          _seft.$elemento.on('click',function (e) {
-      		
-         	_seft.cargarPosicionesPuntosData();
-
-      		if(_seft.$$padre.objLineaPartes)
-      		{
-      		_seft.$$padre.objLineaPartes.activarIndicacionSelecccionada(false);
-      		_seft.$$padre.objLineaPartes =null;
-      		}	
-
-
-         	switch(_seft.$$padre.estado){
-
-        
-
-         		case 10:
-         			//_seft.activarIndicacionSelecccionada(true);             
-	             	_seft.activarIndicacionSelecccionada(true); 
-	             	e.stopPropagation();
-         		break;
-
-         		 default:
-         			_seft.$$padre.cambioEstado(10); 
-					_seft.activarIndicacionSelecccionada(true); 
-				break;
-
-         	}
-
-
-         	_seft.$$padre.objLineaPartes=_seft;
-
-	//return false;
+	      		
+	         _seft.cargaPoscionAnterioresActu(e);
+			//return false;
         });
 
 
@@ -300,6 +269,46 @@ function LineaPartes(){
 		}// fin funcion->eventoClick
 
 
+
+
+		///cargar loas datos de las poscion gudardas .... 
+		,cargaPoscionAnterioresActu:function(e){
+
+			var _seft= this;
+			_seft.cargarPosicionesPuntosData();
+
+      		if(_seft.$$padre.objLineaPartes)
+      		{
+      		_seft.$$padre.objLineaPartes.activarIndicacionSelecccionada(false);
+      		_seft.$$padre.objLineaPartes =null;
+      		}	
+
+
+         	switch(_seft.$$padre.estado){
+
+        
+
+         		case 10:
+         			//_seft.activarIndicacionSelecccionada(true);             
+	             	_seft.activarIndicacionSelecccionada(true);
+	             	if(e)
+	             	{
+	             	e.stopPropagation();	
+	             	} 
+	             	
+         		break;
+
+         		 default:
+         			_seft.$$padre.cambioEstado(10); 
+					_seft.activarIndicacionSelecccionada(true); 
+				break;
+
+         	}
+
+
+         	_seft.$$padre.objLineaPartes=_seft;
+
+		}// function cargaPoscionAnterioresActu
 
 
 
@@ -350,7 +359,7 @@ function LineaPartes(){
 			 if(_seft.$elemento.width()<_seft.$elemento.height())
 			 {
 			 	// se debe centra en los dos sentidos ya q viene de ser creada o cambio de lugar
-			 	if(_seft.tipoMoviento==0 ||  _seft.tipoMoviento==2)
+			 	if(  _seft.tipoMoviento==2)
 			 	{
 			 		_seft.$p2.css({
 			 			'left':medioX+5
@@ -372,7 +381,7 @@ function LineaPartes(){
 			 else {
 
 			 	// se debe centra en los dos sentidos ya q viene de ser creada o cambio de lugar
-			 	if(_seft.tipoMoviento==0 ||  _seft.tipoMoviento==1)
+			 	if( _seft.tipoMoviento==1)
 			 	{
 			 		_seft.$p2.css({
 			 			'left':medioX+5

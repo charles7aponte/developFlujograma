@@ -20,14 +20,14 @@ if($cant>0){
 	$datos['respuesta']=true;	
 
 
-	echo "-->$sql";
+	
 	
 }else{
 	$sql = "INSERT INTO flujogramas (nid, data) VALUES($nid, \"$text\");";
 	$resultado = mysql_query($sql);
 	
 	$datos['respuesta']=true;
-	//echo "2-->$sql";	
+
 }
 
 echo json_encode($datos);

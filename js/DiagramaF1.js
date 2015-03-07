@@ -95,6 +95,8 @@ function DiagramaF1 (){
 
 
 
+		
+
 			// ..............
 			// actualizar puntos ... 
 			,actualizarPuntos:function(){
@@ -237,17 +239,20 @@ function DiagramaF1 (){
 
 				//	_self.$$padre.eventoDeDisparoAlCrearLineaConexion = function(){
 
-
+					console.error("mi ddown digram cruz");
 
 						var mitipo=null;
 						var lineaActual =null;
 
+
+
 								var $punto = null;
-								if(_self.estado ==2)
+								if(_self.$$padre.estado ==2)
 								{
 									$punto = _self.$pagina.find(".punto_movibleinicio");
 									mitipo="linea";
-									lineaActual= _self.ext_getLineaActual();
+									lineaActual= _self.$$padre.getLineaAcutal();
+								
 									
 								}
 								else {
@@ -341,14 +346,18 @@ function DiagramaF1 (){
 								$punto.find("img").hide();
 
 
-							if(_self.estado ==1)
+							if(_self.$$padre.estado ==2)
 								{
-									
+										
 									mitipo="linea";
-									lineaActual= _self.ext_getLineaActual();
+									lineaActual= _self.$$padre.getLineaAcutal();
+									
 									
 								}
-								else {
+								else
+								if(_self.$$padre.estado==10){
+
+								
 									mitipo ="linea_partes";
 									lineaActual=_self.$$padre.getLineaActualPartes();
 								}
@@ -356,6 +365,8 @@ function DiagramaF1 (){
 													
 
 								var tipoPuntoCirculo = $punto1.data("punto");
+								
+
 								//var lineaActual =_self.ext_getLineaActual();
 								
 
@@ -420,7 +431,7 @@ function DiagramaF1 (){
 								
 								switch(tipoPuntoCirculo){
 									case "punto1": 
-										if(_self.linea1 && _self.linea1.$linea &&  _self.linea1.$linea[0]== _self.$$padre.$lineaActual[0]
+										if(_self.$$padre.estado ==2 && _self.linea1 && _self.linea1.$linea &&  _self.linea1.$linea[0]== _self.$$padre.$lineaActual[0]
 											&&  	_self.linea1.$punto[0]==$punto)
 										{
 											_self.linea1.$linea=null;
@@ -428,32 +439,74 @@ function DiagramaF1 (){
 											_self.linea1.tipo=null;
 
 										}
+											else 
+											if(_self.$$padre.estado ==10 && _self.linea1 &&  _self.linea1.$linea && _self.$$padre.objLineaPartes  
+												&&  _self.linea1.$linea[0]== _self.$$padre.objLineaPartes
+												&&  _self.linea1.$punto[0]== $punto)
+											{ 
+											_self.linea1.$linea= null;
+											_self.linea1.$punto= null;
+											_self.linea1.tipo=null;
+											}
 									
 									break;
 
 									case "punto2": 
-										if(_self.linea2 && _self.linea2.$linea &&  _self.linea2.$linea[0]== _self.$$padre.$lineaActual[0]
+										if(_self.$$padre.estado ==2  && _self.linea2 && _self.linea2.$linea &&  _self.linea2.$linea[0]== _self.$$padre.$lineaActual[0]
 												&&  	_self.linea2.$punto[0]==$punto)
 											{
 											_self.linea2.$linea= null;
 											_self.linea2.$punto= null;
 											_self.linea2.tipo=null;
 											}
+											else 
+											if(_self.$$padre.estado ==10 && _self.linea2 &&  _self.linea2.$linea && _self.$$padre.objLineaPartes  
+												&&  _self.linea2.$linea[0]== _self.$$padre.objLineaPartes
+												&&  _self.linea2.$punto[0]== $punto)
+											{ 
+											_self.linea2.$linea= null;
+											_self.linea2.$punto= null;
+											_self.linea2.tipo=null;
+											}
 									break;
 
+
+
+
 									case "punto3": 
-										if(_self.linea3 && _self.linea3.$linea && _self.linea3.$linea[0]== _self.$$padre.$lineaActual[0]
+										if(_self.$$padre.estado ==2 &&  _self.linea3 && _self.linea3.$linea && _self.linea3.$linea[0]== _self.$$padre.$lineaActual[0]
 												&&  	_self.linea3.$punto[0]==$punto)
 											{
 											_self.linea3.$linea= null;
 											_self.linea3.$punto= null;
 											_self.linea3.tipo=null;
 											}
+											else 
+											if(_self.$$padre.estado ==10 && _self.linea3 &&  _self.linea3.$linea && _self.$$padre.objLineaPartes  
+												&&  _self.linea3.$linea[0]== _self.$$padre.objLineaPartes
+												&&  _self.linea3.$punto[0]== $punto)
+											{ 
+											_self.linea3.$linea= null;
+											_self.linea3.$punto= null;
+											_self.linea3.tipo=null;
+											}
 									break;
 
+
+
 									case "punto4":
-										if(_self.linea4 &&  _self.linea4.$linea && _self.$$padre.$lineaActual  
+										if(_self.$$padre.estado ==2 && _self.linea4 &&  _self.linea4.$linea && _self.$$padre.$lineaActual  
 												&&  _self.linea4.$linea[0]== _self.$$padre.$lineaActual[0]
+												&&  _self.linea4.$punto[0]== $punto)
+											{ 
+											_self.linea4.$linea= null;
+											_self.linea4.$punto= null;
+											_self.linea4.tipo=null;
+											}
+
+										else 
+											if(_self.$$padre.estado ==10 && _self.linea4 &&  _self.linea4.$linea && _self.$$padre.objLineaPartes  
+												&&  _self.linea4.$linea[0]== _self.$$padre.objLineaPartes
 												&&  _self.linea4.$punto[0]== $punto)
 											{ 
 											_self.linea4.$linea= null;
@@ -688,7 +741,9 @@ function DiagramaF1 (){
 	 			
 	 				
 
-	 				if(_self.$$padre.estado==3 && _self.alertaMensaje!=null)
+	 				if(_self.$$padre.estado==3
+
+	 				 && _self.alertaMensaje!=null)
 	 				{
 
 	 					_self.alertaMensaje.mostrar();
@@ -701,7 +756,7 @@ function DiagramaF1 (){
 
 	 			_self.$elemento.on('mousedown',function(e){
 	 					console.log("dfsaf")
-	 					if(_self.$$padre.estado==2)
+	 					if(_self.$$padre.estado==2 || _self.$$padre.estado==10)
 	 					{
 	 						e.stopPropagation();
 	 					}
@@ -756,6 +811,20 @@ function DiagramaF1 (){
 	 			} );
 	 		}
 
+
+	 		// 
+	 		// actualiza los elementos .. .
+	 		// como son puntos 
+	 		,actualiza4Lineas:function(){
+	 			var _self= this;
+
+		   	  _self.actualizaLineaAgrupada(_self.$c1, _self.linea1);
+	          _self.actualizaLineaAgrupada(_self.$c2, _self.linea2);
+	          _self.actualizaLineaAgrupada(_self.$c3, _self.linea3);
+	          _self.actualizaLineaAgrupada(_self.$c4, _self.linea4);
+
+
+	 		}
 
 
 
@@ -988,20 +1057,33 @@ function DiagramaF1 (){
 					var $punto = $$linea.$punto;
 					//$punto.show();
 
-					$punto.css({
-						top:y +"px",
-						left: x +"px"
-
-					});
+				
 
 					if($$linea.tipo=="linea")
 					{
-						//colo los puntos en su ubiccaion y seleecion el objet
-						_self.$$padre.seleccionLineaActulaDOM($$linea.$linea);
+			
+							_self.$$padre.seleccionLineaActulaDOM($$linea.$linea);
+
+							$punto.css({
+									top:y +"px",
+									left: x +"px"
+							});
+
 						//actualiza la linea
 						_self.$$padre.actualizacionBolasLinea(_self.$$padre,_self.$$padre.$lineaActual,null, null);
+						_self.$$padre.$paginaActual.find(".punto_moviblefin").show();
+
 					}
 					else{
+
+						_self.$$padre.objLineaPartes= $$linea.$linea;
+						_self.$$padre.objLineaPartes.cargarPosicionesPuntosData();
+
+						$punto.css({
+								top:y +"px",
+								left: x +"px"
+
+							});
 						//actualiza la linea
 						_self.$$padre.actualizacionPuntosLineasPartes(_self.$$padre,_self.$$padre.objLineaPartes,null, null);
 					}

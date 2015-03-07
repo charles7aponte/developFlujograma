@@ -564,7 +564,9 @@ function Flujo (idDOM){
 						$$diagramaF1.linea2= _self.construccionNuevosConexionesPuntos(json.linea2);
 						$$diagramaF1.linea3= _self.construccionNuevosConexionesPuntos(json.linea3);
 						$$diagramaF1.linea4= _self.construccionNuevosConexionesPuntos(json.linea4);
-			        }//
+					}//
+
+			        
 
 
 			        //evento al dar click y sin soltar
@@ -590,16 +592,28 @@ function Flujo (idDOM){
 
 			  	var linea=null;
 				var punto=null;
+				var tipo=null;
 
 			  	if(json && json.linea!=null && json.punto!=null)
 			  		{
-			  			linea=$(json.linea);
-						punto=$(json.punto);
+			  			punto=$(json.punto);
+						tipo= json.tipo;
+
+						if(tipo=="linea")
+						{
+							linea=$(json.linea);
+						}
+						else
+						//linea_partes 
+						{
+							linea= this.getLineaPartesById(json.linea);
+						}
 
 			  		}
 
 			   return {	'$linea' : linea , 
- 						'$punto' : punto
+ 						'$punto' : punto,
+ 						'tipo':    tipo
  					}; 						
 
 			  }// fn funcion -->construccionNuevosConexionesPuntos
@@ -628,7 +642,10 @@ function Flujo (idDOM){
 
 		  	    if(_self.$elementoSeleccionado)
 			      {
+
+			      	
 		          //deseleccciona el elemento 
+
 		          _self.$elementoSeleccionado.resizable( "option", { disabled: true } );
 		          _self.$elementoSeleccionado.removeClass( "elemento_seleccionado" );
 		          _self.$elementoSeleccionado.removeClass('ui-state-disabled');
@@ -636,6 +653,7 @@ function Flujo (idDOM){
 
 
 			  }// fin  function -->deseleccionarElemento
+
 
 
 
@@ -656,28 +674,29 @@ function Flujo (idDOM){
 
 				          if(_self.$elementoSeleccionado)
 				          {
-				          //deseleccciona el elemento 
-				          _self.$elementoSeleccionado.resizable( "option", { disabled: true } );
-				          _self.$elementoSeleccionado.removeClass( "elemento_seleccionado" );
-				          _self.$elementoSeleccionado.removeClass('ui-state-disabled');
-				          //_self.$elementoSeleccionado=null;                   
+					          //deseleccciona el elemento 
+					          _self.$elementoSeleccionado.resizable( "option", { disabled: true } );
+					          _self.$elementoSeleccionado.removeClass( "elemento_seleccionado" );
+					          _self.$elementoSeleccionado.removeClass('ui-state-disabled');
+					          //_self.$elementoSeleccionado=null;                   
 
-							if(_self.$elementoSeleccionado[0]!= $nuevoElemento_seleccionado[0] )
-							{
-							//alert("deselccionar gato");
-							_self.cerrarDialogEdicion();
+								if(_self.$elementoSeleccionado[0]!= $nuevoElemento_seleccionado[0] )
+								{
+								//alert("deselccionar gato");
+								_self.cerrarDialogEdicion();
 
-							}
+								}
 
 				          }
+
 
 				          //muestra la caja de herramientas
 				          _self.$elementoSeleccionado= $nuevoElemento_seleccionado;
 				          
 				          _self.$elementoSeleccionado.resizable( "option", { disabled: false } );
 				          _self.$elementoSeleccionado.addClass( "elemento_seleccionado" );
-
-				     
+				    
+				    	 
 			        });
 			      
 
@@ -689,26 +708,48 @@ function Flujo (idDOM){
 			       	switch(_self.estado)
 			       	{
 
-
-
 			       		case 1:
-			       			$diagramaNuevo.find(".descripcion_observada").focus();
+			       			//$diagramaNuevo.find(".descripcion_observada").focus();
 			       		break;
 
 
 			       		case 4:
+			       		case 10:
+			       		case 2:
+			       			_self.cambioEstado(1);
+			       			//$diagramaNuevo.find(".descripcion_observada").focus();
+			       		break;
+			       	}	
+			       	//_self.mostrarDialogoEdicion();
+
+			       });// fom del evento doble click
+
+
+
+
+
+			      // el doble click 
+			       $diagramaNuevo.dblclick(function(e){
+			       
+
+			       	switch(_self.estado)
+			       	{
+						case 1:
+			       			$diagramaNuevo.find(".descripcion_observada").focus();
+			       		break;
+
+			       		case 4:
+			       		case 10:
 			       		case 2:
 			       			_self.cambioEstado(1);
 			       			$diagramaNuevo.find(".descripcion_observada").focus();
 			       		break;
 			       	}	
-			       
-			       	
-			       
-
 			       	//_self.mostrarDialogoEdicion();
 
 			       });// fom del evento doble click
+
+
 
 
 			       // perdica de foco en el resumen
@@ -1094,6 +1135,7 @@ function Flujo (idDOM){
 
 		      	$elementos.on('mouseup',function(e){
 		      		_self.ban_escCuadro=0;
+		      		
 		      		console.log("cuadro mouseup");
 		      	});
 
@@ -1134,6 +1176,20 @@ function Flujo (idDOM){
 
 		      }// function -->construccionJsonNuevasLineas
 
+
+
+ 				// ***************
+		      // consturccion ... JSON con la linea 
+		      //
+		      ,construccionJsonNuevasLineasPorPartes:function(listaLineas){
+		      	var _self= this;
+		      		for(var i=0; i< listaLineas.length; i++)
+		      		{
+		      			_self.construccionNuevaLineaPorPartes(listaLineas[i]);
+
+		      		}
+
+		      }// function -->construccionJsonNuevasLineasPorPartes
 
 
 
@@ -1181,13 +1237,76 @@ function Flujo (idDOM){
 					lineaSVG.$textoP.blur();
 
 					_self.deseleccionaLineaConexion();
-					console.log(lineaSVG.$elementoDOM.attr("data-puntos_movibleinicio"));
 
+					
 		      	}
 		      	
 		      }// fin funcion -->construccionNuevaLinea
 
 
+
+
+		      // ***************
+		      //
+		      //
+		      ,construccionNuevaLineaPorPartes:function(JSON)
+		      {
+
+
+		      	if(JSON)
+		      	{
+		      		var _self=this;
+
+
+
+		      		_self.cambioEstado(10);
+		      	
+		      		_self.objLineaPartes = LineaPartes();
+					_self.objLineaPartes.$pagina=$(JSON.id_pagina);
+					_self.objLineaPartes.$$padre= _self;
+
+					_self.objLineaPartes.dibujar(JSON.id);
+					
+
+					//_self.seleccionaLineaConexion(lineaSVG);
+					_self.listaLineasPartes.push(_self.objLineaPartes);
+
+
+
+					//elementos
+					_self.objLineaPartes.$textoP.html(JSON.textoP);
+					_self.objLineaPartes.$elemento.data("label", JSON.textoP); 
+					_self.objLineaPartes.$elemento.css(
+								{"top": JSON.top,
+								"left":JSON.left,
+								
+								"width": JSON.width,
+								"height":JSON.height
+								});
+
+
+					_self.objLineaPartes.$elemento.attr("data-puntos_movible1",JSON.puntos_punto_1);
+					_self.objLineaPartes.$elemento.attr("data-puntos_movible2",JSON.puntos_punto_2);
+					_self.objLineaPartes.$elemento.attr("data-puntos_movible3",JSON.puntos_punto_3);
+
+					
+
+					_self.objLineaPartes.$textoP.blur();
+					_self.objLineaPartes.cargaPoscionAnterioresActu();
+					_self.objLineaPartes.actualizarPoscionCentralizado();
+
+				
+
+					console.log(_self.objLineaPartes.$elemento.attr("data-puntos_movible1"));
+					console.log(_self.objLineaPartes.$elemento.attr("data-puntos_movible2"));
+					console.log(_self.objLineaPartes.$elemento.attr("data-puntos_movible3"));
+
+					_self.objLineaPartes.activarIndicacionSelecccionada(false);
+					//_self.deseleccionaLineaConexion();
+				
+		      	}
+		      	
+		      }// fin funcion -->construccionNuevaLinea
 
 
 
@@ -1232,7 +1351,6 @@ function Flujo (idDOM){
 				 				{
 
 				 					_self.objCuadroAgrupacion.desagrupar();
-				 					console.log(".....................desagrupar");
 				 		
 				 				}
 
@@ -1472,7 +1590,7 @@ function Flujo (idDOM){
 				$elementos.on('mousedown',function(e){
 
 
-						// si  tiene click sobre un obj distonto a la pagina 
+					// si  tiene click sobre un obj distonto a la pagina 
 					if($(e.target).hasClass("paginas")==false && $(e.target).hasClass("puntos_conexion")==false)
 					{
 
@@ -1483,6 +1601,16 @@ function Flujo (idDOM){
 							return true;
 
 						}
+					}
+					else{
+							if(_self.objLineaPartes && _self.objLineaPartes.seleccionado)
+			 				{
+
+			 					
+			 					_self.objLineaPartes.activarIndicacionSelecccionada(false);
+			 					_self.cambioEstado(1);
+			 					_self.objLineaPartes=null;
+			 				}
 					}	
 
 					
@@ -1500,7 +1628,6 @@ function Flujo (idDOM){
 		      		 			
 					      		   	return true;
 					      		 }
-
 
 
 							if(!$elementoEvent.hasClass("punto_cuadrado"))
@@ -1526,7 +1653,6 @@ function Flujo (idDOM){
 							 		_self.$paginaActual.find(".linea_partes_punto_movible1").css(
 					      				posicionesInicio
 					      				);	
-					 				_self.$paginaActual.find(".linea_partes_punto_movible3").show();
 
 
 										if(_self.objCuadroAgrupacion!=null)
@@ -1542,32 +1668,10 @@ function Flujo (idDOM){
 										_self.objLineaPartes.$$padre= _self;
 
 										_self.objLineaPartes.dibujar();
+										_self.objLineaPartes.$elemento.hide();
 
 										_self.listaLineasPartes.push(_self.objLineaPartes);
 
-
-
-										/*console.info(_self.eventoDeDisparoAlCrearLineaConexion);
-										if(_self.eventoDeDisparoAlCrearLineaConexion)
-										{
-										_self.eventoDeDisparoAlCrearLineaConexion();
-										_self.eventoDeDisparoAlCrearLineaConexion=null;	
-										}*/
-
-
-
-									/*	_self.objCuadroAgrupacion= CuadradoAgrupacion();
-										_self.objCuadroAgrupacion.$$pagina=_self.$paginaActual;
-										_self.objCuadroAgrupacion.$$padre= _self;
-
-										_self.objCuadroAgrupacion.dibujar();
-
-										_self.objCuadroAgrupacion.$elementoInicioAgrupacion.hide();
-
-
-										*/
-						
-			
 
 
 
@@ -1607,19 +1711,11 @@ function Flujo (idDOM){
 	      		   {
 
 
-	      		   	if(_self.objLineaPartes!=null)
-	 				{
-	
-
-					}
-
 	      		   	
 
 	      		   		var x = e.clientX - _self.$paginaActual.offset().left-7;
 			        	var y = e.clientY - _self.$paginaActual.offset().top-7;
 				
-			        	_self.$paginaActual.find(".linea_partes_punto_movible1").show();
-			 			_self.$paginaActual.find(".linea_partes_punto_movible3").show();
 
 			 			_self.$paginaActual.find(".linea_partes_punto_movible1").css(
 		      				posicionesInicio
@@ -1630,6 +1726,9 @@ function Flujo (idDOM){
 					      		left: x
 					      		});	
 
+			        	_self.$paginaActual.find(".linea_partes_punto_movible1").show();
+			 			_self.$paginaActual.find(".linea_partes_punto_movible3").show();
+
 			 			
 
 			 				var coords = {
@@ -1639,6 +1738,8 @@ function Flujo (idDOM){
 
 						// _self.$paginaActual.find(".punto_c_moviblefin").simulate("mousedown", e);
 						
+
+
 					 		
 						if(_self.objLineaPartes &&  
 							_self.ban_crear_linea_partes==0
@@ -1646,17 +1747,43 @@ function Flujo (idDOM){
 							{
 								//eliminar..
 								//_self.objCuadroAgrupacion.agrupar();
+
 								_self.$paginaActual.find(".punto_cuadrado").hide();
 								_self.$paginaActual.find(".elementos_seleccionado").removeClass("elementos_seleccionado");
 
 							}
 					
 						else {
-								//_self.objCuadroAgrupacion.$elementoInicioAgrupacion.show();
+								
+							
 								_self.actualizacionPuntosLineasPartes(_self, _self.objLineaPartes ,e, null);
-					
+
+
+								var mi1xx= parseInt(_self.$paginaActual.find(".linea_partes_punto_movible1").css("left"));
+								var mi1yy= parseInt(_self.$paginaActual.find(".linea_partes_punto_movible1").css("top"));
+								var mi2xx= parseInt(_self.$paginaActual.find(".linea_partes_punto_movible3").css("left"));
+								var mi2yy= parseInt(_self.$paginaActual.find(".linea_partes_punto_movible3").css("top"));
+
+
+								// centrar el punto 2 
+								var miX2= Math.min(
+									mi1xx,
+									mi2xx
+									) +Math.abs(mi1xx-mi2xx)/2;
+
+
+							
+								_self.$paginaActual.find(".linea_partes_punto_movible2").css(
+									{left:miX2});
+
+								_self.$paginaActual.find(".linea_partes_punto_movible2").show();
+								
+
 								_self.$paginaActual.find(".linea_partes_punto_movible3").simulate("mousedown", coords);
-            			
+
+            					_self.ban_crear_linea_partes=-1;
+            					_self.objLineaPartes.$elemento.show();
+
 						}	
 
 						//_self.ban_crear_grupo=0;
@@ -1674,22 +1801,29 @@ function Flujo (idDOM){
 		      	$(document).on('mouseup',function(e){
 
 		      		//console.log("mouse up -->"+_self.ban_crear_linea_partes);
-		      		   if(_self.estado!=1)
+		      		   if(_self.estado!=10)
 		      		   {
-		      		   	_self.ban_crear_linea_partes=0;
-		      		   	return true;
+		      		   		_self.ban_crear_linea_partes=0;
+		      		   		return true;
 		      		   }
+
 						
-						if(_self.ban_crear_linea_partes>=1)
+						// se forma bien
+						if(_self.ban_crear_linea_partes==-1)
 		      		 	{
-		      		 		console.log("mouse up 2");
-
-		      		 		//_self.objCuadroAgrupacion.agrupar();
-
-		      		 		_self.ban_crear_linea_partes=0;
+		  	    		 	_self.ban_crear_linea_partes=0;
 		      		 	}
-		      		 	else{
-		      		 		_self.ban_crear_linea_partes=0;
+
+		      		 	//creo mal deber eleimiar
+		      		 	else
+		      		 	if(_self.ban_crear_linea_partes>=1){
+
+		      		 		if(_self.objLineaPartes)
+		      		 		{
+
+	      		 			_self.objLineaPartes.eliminarLinea();
+		      		 			_self.ban_crear_linea_partes=0;
+		      		 		}
 		      		 	}
 		      			
 		      	});
@@ -1897,7 +2031,7 @@ function Flujo (idDOM){
 
 
 	  					var x = e.clientX - _self.$paginaActual.offset().left-7;
-			        	var y = e.clientY - _self.$paginaActual.offset().top-7;
+			        	var y = e.clientY - _self.$paginaActual.offset().top-5;
 
 			        	_self.$paginaActual.find(".punto_movibleinicio").show();
 			 			_self.$paginaActual.find(".punto_moviblefin").show();
@@ -1933,7 +2067,7 @@ function Flujo (idDOM){
 
 						//_self.ban_crear_grupo=0;
 
-						
+					_self.ban_escribir=-1;	
 	      		   }
 
 				});
@@ -1955,10 +2089,9 @@ function Flujo (idDOM){
 		      		   	return true;
 		      		   }
 						
-						if(_self.ban_escribir>=1)
+						if(_self.ban_escribir==-1)
 		      		 	{
-		      		 		console.log("mouse up 2");
-
+		      		 		
 		      		 		if(_self.lineaConexionSeleccionada &&  
 							 _self.lineaConexionSeleccionada.$elementoDOM && 
 
@@ -1976,7 +2109,12 @@ function Flujo (idDOM){
 							}
 		      		 		_self.ban_escribir=0;
 		      		 	}
-		      		 	else{
+
+		      		 	else
+		      		 	if(_self.ban_escribir>=1){
+			      		 		_self.$lineaActual.hide();
+			      		 		_self.lineaConexionSeleccionada.eliminarLinea();
+		      		 			$(".punto_circle").hide();
 		      		 		_self.ban_escribir=0;
 		      		 	}
 		      			
@@ -2016,18 +2154,11 @@ function Flujo (idDOM){
 		      	var _self= this;
 		      	
 		      		_self.$lineaActual = $lineaA;
-					
-					console.log("modificaicon ->seleccionaLineaConexion")
-					console.log(_self.$lineaActual)
 						
 	
 						var arrayPuntoFin = _self.$lineaActual.attr("data-puntos_punto_moviblefin");
 						var arrayPuntoInicio = _self.$lineaActual.attr("data-puntos_movibleinicio");
-
-
-
  
-					
 						if(arrayPuntoFin!=null && 
  							arrayPuntoInicio!=null)
 						{
@@ -2077,9 +2208,9 @@ function Flujo (idDOM){
 		      ,construccionAllFromJsonJSON:function(strin){
 
 		      //var strin ="{'elementos':[{'mielemento':'n6','descripcion':'','registro':'','observacion':'','personal':'','resumen':'','ver_personal':'S','id_pagina':'contenedor_principal_pag_1','top':'45.8125px','left':'162px','width':'150','height':'150','linea1':{'$linea' : null , '$punto':null},'linea2':{'$linea' : null , '$punto':null},'linea3':{'$linea' : null , '$punto':null},'linea4':{'$linea' : '#id_linea_1' , '$punto':'.punto_movibleinicio'}},{'mielemento':'n3','descripcion':'','registro':'','observacion':'','personal':'','resumen':'','ver_personal':'N','id_pagina':'contenedor_principal_pag_1','top':'47.8125px','left':'455px','width':'150','height':'150','linea1':{'$linea' : null , '$punto':null},'linea2':{'$linea' : null , '$punto':null},'linea3':{'$linea' : null , '$punto':null},'linea4':{'$linea' : '#id_linea_1' , '$punto':'.punto_moviblefin'}},{'mielemento':'n6','descripcion':'','registro':'','observacion':'','personal':'','resumen':'','ver_personal':'S','id_pagina':'pagina_id_1','top':'69.8125px','left':'233px','width':'150','height':'150','linea1':{'$linea' : null , '$punto':null},'linea2':{'$linea' : '#id_linea_4' , '$punto':'.punto_moviblefin'},'linea3':{'$linea' : null , '$punto':null},'linea4':{'$linea' : '#id_linea_4' , '$punto':'.punto_movibleinicio'}},],'lineas':[{'id':'id_linea_1','id_pagina':'#contenedor_principal_pag_1','textoP':'','top':'38px','left':'245px','transform':'none','width':'290px','height':'2px','puntos_punto_moviblefin':'530;35','puntos_movibleinicio':'240;33'},{'id':'id_linea_2','id_pagina':'#contenedor_principal_pag_1','textoP':'','top':'53px','left':'569px','transform':'none','width':'25px','height':'16px','puntos_punto_moviblefin':'589;48','puntos_movibleinicio':'564;64'},{'id':'id_linea_4','id_pagina':'#pagina_id_1','textoP':'','top':'64px','left':'315px','transform':'matrix(1, 0, 0, 1, 0, 0)','width':'73px','height':'86px','puntos_punto_moviblefin':'383;145','puntos_movibleinicio':'310;59'},],'pagina':['contenedor_principal_pag_1','pagina_id_1','pagina_id_2',],'cuadros':[{'id_pagina':'#pagina_id_1','top':'49.8125px','left':'103px','width':'538px','height':'150px'},{'id_pagina':'#contenedor_principal_pag_1','top':'50.8125px','left':'759px','width':'68px','height':'95px'},{'id_pagina':'#pagina_id_2','top':'44.8125px','left':'318px','width':'90px','height':'81px'},]}";
-		     
-		      var gato;
-		     console.log(strin);
+		     var _self=this;
+		     var gato;
+		   		console.log(strin);
 		     // strin=_self.remplazarPalabras(manejo,"\\\\","");
 			//strin=_self.remplazarPalabras(manejo,"{{#-8-~#}}","\\'");
 
@@ -2087,15 +2218,26 @@ function Flujo (idDOM){
 
 		      eval("gato="+strin);
 
-		      console.log(gato);
+		      //console.log(gato);
 		     
 		      this.construccionJsonPagina(gato.pagina);
 		      this.construccionJsonNuevasLineas(gato.lineas);
+		      this.construccionJsonNuevasLineasPorPartes(gato.lineas_partes);
 		      this.construccionNuevaElementos(gato.elementos);
 		      this.construcionJSONNuevosCuadros(gato.cuadros);
 
-		      _self.cambioEstado(1);
 
+
+
+		      //actuali parte grafica de las lineas
+		     //_self.cambioEstado(2);
+		     setTimeout(function()
+			     {
+
+					_self.actualizaElementoAllPositionByPagina();
+			     
+			      _self.cambioEstado(1);
+			  	},700);
 //cuadros
 		      console.log(gato);
 
@@ -2828,6 +2970,19 @@ function Flujo (idDOM){
 			            +"         height:100%;'></div> "
 			            +"      </div>  "
 
+			            +"   <div class='linea_partes_punto_movible1 linea_partes_punto_circle' style='top:10px;left:10px;display:none' > "
+			            +"     <img src='"+URL__SERVIDOR+"/img/conexion_p.gif'  class='imagen_punto_mobil'>  "
+			            +"   </div> "
+
+			               
+			            +"    <div class='linea_partes_punto_movible2  linea_partes_punto_circle'  style='top:20px;left:20px;display:none'> "
+			            +"      <img src='"+URL__SERVIDOR+"/img/conexion_p.gif'  class='imagen_punto_mobil'>  "
+			            +"    </div> "
+			              
+
+			             +"   <div class='linea_partes_punto_movible3  linea_partes_punto_circle'  style='top:30px;left:30px;display:none'> "
+			            +"      <img src='"+URL__SERVIDOR+"/img/conexion_p.gif'  class='imagen_punto_mobil'>  "
+			            +"    </div> "
 
 
 				        +"   </div>";
@@ -3016,6 +3171,52 @@ function Flujo (idDOM){
 
 
 
+		   // retorna la linea parte por id del elemento principal  de la forma "#id"
+		   // en caso de no encontrarse retorna null
+		   ,getLineaPartesById:function(miid){
+
+			   	var _self=this;
+
+			   	for(var i=0; i< _self.listaLineasPartes.length; i++)
+			   	{
+			   		if(_self.listaLineasPartes[i].$elemento &&
+			   		("#"+_self.listaLineasPartes[i].$elemento.attr("id"))==miid )
+			   		{
+
+			   			return _self.listaLineasPartes[i]; 
+			   		}
+
+			   	}
+			   	return null;
+		   }// fin function getLineaPartesById
+
+
+		   // ********************
+		   // buscar LIneaAconexion
+		   // 
+		   ,getDiagramaF1ByDOM:function(elementoDOM)
+		   {
+
+		     
+		     	var _self=this;
+
+		     	for(var i = 0; i< _self.listaElementos.length ; i++ )
+		     	{
+
+		     		if(elementoDOM  && 
+		     			elementoDOM == _self.listaElementos[i].$elemento[0] )
+		     		{
+		     			return  _self.listaElementos[i];
+		     		}
+
+		     	}
+
+		     	return null;
+		     
+
+		   } // fin de la funcion --->
+
+
 		  // *************************
 		  // llama e diagolog de eidcion 
 		  // 
@@ -3087,6 +3288,14 @@ function Flujo (idDOM){
 
 					$(".caudro_lineal").draggable("disable");
 
+						if(_self.objLineaPartes)
+						{
+						 _self.objLineaPartes.activarIndicacionSelecccionada(false);
+			 			_self.objLineaPartes=null;
+						}
+
+
+
  				break;
 
 
@@ -3103,6 +3312,18 @@ function Flujo (idDOM){
 					  _self.deseleccionCuadroSeleccion();
 
 					  $(".caudro_lineal").draggable("disable");
+
+
+					  if(_self.objLineaPartes)
+						{
+						 _self.objLineaPartes.activarIndicacionSelecccionada(false);
+			 			_self.objLineaPartes=null;
+						}
+
+					if(_self.objCuadroAgrupacion)
+					{
+						_self.objCuadroAgrupacion.desagrupar();	
+					}						  	
 
  				break;
 
@@ -3123,6 +3344,19 @@ function Flujo (idDOM){
 
 					  $(".descripcion_observada").attr("contenteditable",false);
 					  $(".caudro_lineal").draggable("enable");
+
+					  	if(_self.objLineaPartes)
+						{
+						 _self.objLineaPartes.activarIndicacionSelecccionada(false);
+			 			_self.objLineaPartes=null;
+						}
+
+
+					if(_self.objCuadroAgrupacion)
+					{
+						_self.objCuadroAgrupacion.desagrupar();	
+					}						  	
+
  				break;
 
 
@@ -3139,9 +3373,22 @@ function Flujo (idDOM){
 					  _self.enbledDragDiagrama(false);
 					  _self.deseleccionaLineaConexion();
 
+ 					if(_self.objCuadroAgrupacion)
+					{
+						_self.objCuadroAgrupacion.desagrupar();	
+					}						  	
+
+
  				break;
 
-
+ 	
+ 				default:
+ 					if(_self.objCuadroAgrupacion)
+					{
+						_self.objCuadroAgrupacion.desagrupar();	
+					}						  	
+ 
+ 				break;
 
  			}
 
@@ -3227,6 +3474,14 @@ function Flujo (idDOM){
           ,modoOnlyRead:function(){
 
 	          	var _self=this;
+
+	          		if(_self.objCuadroAgrupacion)
+					{
+						_self.objCuadroAgrupacion.desagrupar();	
+					}						  	
+
+
+
 	          	// elmina cion de boton
 	          /*	$("#botones_panel_superior").hide();
 	          	//$("#bton_toogle_menu_iz").hide();
@@ -3315,9 +3570,11 @@ function Flujo (idDOM){
           	var manejo="{";
           	 	manejo+="'elementos':"+ 	  _self.getJSONStringListaElementos();
           	 	manejo+=",'lineas':"+ 	  	  _self.getJsonStringListaLineaConexion();
+          	 	manejo+=",'lineas_partes':"+  _self.getJsonStringListaLineaConexionPartes();
           	 	manejo+=",'pagina':"+		  _self.getJSONStringPagina();
           	 	manejo+=",'cuadros':"+		  _self.crearJSONCuadros();
           	manejo+="}";
+
 
          	
 
@@ -3325,10 +3582,11 @@ function Flujo (idDOM){
 	           //manejo=_self.remplazarPalabras(manejo,"{{#-8-~#}}","\'");
 
 	          	//console.info(manejo);
-	          	/*
+	          	
 	          	var gato;
+	          	console.log(manejo);
 	          	eval("gato="+manejo);
-	          	console.info(gato);*/
+	          	console.info(gato);
 
 
           		return manejo;
@@ -3427,8 +3685,8 @@ function Flujo (idDOM){
           	for(i=0; i< _self.listaLineaConexion.length ; i++)
           	{
 
-          		var $elemento =  _self.listaLineaConexion[i].$elementoDOM;
 
+          		var $elemento =  _self.listaLineaConexion[i].$elementoDOM;
           		var id_pagina =  _self.listaLineaConexion[i].$pagina.attr("id");
 				var textoP = 	 _self.listaLineaConexion[i].$textoP.html();
 				var id =  $elemento.attr("id");
@@ -3453,7 +3711,71 @@ function Flujo (idDOM){
 					json+= "'height'"	+":'"	+height+"',"
 					json+= "'puntos_punto_moviblefin'"	+":'"	+puntos_punto_moviblefin+"',"
 					json+= "'puntos_movibleinicio'"	+":'"		+puntos_movibleinicio+"'"
-						 
+				json +="}";
+
+				salida+=json+",";		
+
+
+          	}
+
+          	salida+="]";
+          	var gato;
+
+          	console.info(salida);
+          	
+          	eval("gato="+salida);
+          	console.log(gato);
+		
+
+
+			return salida;
+          }// fin function --> getJsonStringListaLineaConexion
+
+
+
+		 // ********************
+          // lista de lineas 
+          // forma el string de lista json de lineas 
+          ,getJsonStringListaLineaConexionPartes:function(){
+          	
+
+          	var _self= this;
+          	var  salida="[";
+
+          	for(i=0; i< _self.listaLineasPartes.length ; i++)
+          	{
+
+          		var $elemento =  _self.listaLineasPartes[i].$elemento;
+
+          		var id_pagina =  _self.listaLineasPartes[i].$pagina.attr("id");
+				var textoP = 	 _self.listaLineasPartes[i].$textoP.html();
+
+
+
+				var id =  $elemento.attr("id");
+				var top =  $elemento.css("top");
+ 				var left =  $elemento.css("left");
+			
+				var width =  $elemento.css("width");
+				var height =  $elemento.css("height");
+				
+				var puntos_punto_1    =$elemento.attr("data-puntos_movible1");
+				var puntos_punto_2    =$elemento.attr("data-puntos_movible2");
+				var puntos_punto_3    =$elemento.attr("data-puntos_movible3");
+
+
+
+				var json ="{";
+					json+= "'id'"+		 ":'"	+id+"',"	
+					json+= "'id_pagina'"+":'#"	+id_pagina+"',"	 
+					json+= "'textoP'"	+":'"	+textoP+"',"	 
+					json+= "'top'"		+":'"	+top+"',"	 
+					json+= "'left'"		+":'"	+left+"',"	 
+					json+= "'width'"	+":'"	+width+"',"	 
+					json+= "'height'"	+":'"	+height+"',"
+					json+= "'puntos_punto_1'"	+":'"	    +puntos_punto_1+"',"
+					json+= "'puntos_punto_2'"	+":'"		+puntos_punto_2+"',"
+					json+= "'puntos_punto_3'"	+":'"		+puntos_punto_3+"'"						 
 
 					json +="}";
 
@@ -3474,6 +3796,7 @@ function Flujo (idDOM){
 
 			return salida;
           }// fin function --> getJsonStringListaLineaConexion
+
 
 
 
@@ -3545,26 +3868,52 @@ function Flujo (idDOM){
           // creacion de puntos de conexion
           //@param linea JSON .. {$linea : null , $punto:null}
           ,creaJSONStringPuntosConexion:function(linea){
-            var json ="{'linea' : null , 'punto':null}"; 
+            var json ="{'linea' : null , 'punto':null, 'tipo':null}"; 
 
             	if(linea!=null && linea.$linea!=null && linea.$punto!=null )
             	{
             		// tipo de punto
             		var clasePunto="";
+            		var idLinea ="";//
             		
-
-            		if(linea.$punto.hasClass("punto_moviblefin"))
+            		//es una linea recta
+            		if(linea.tipo == "linea")
             		{
-            			clasePunto=".punto_moviblefin";
+
+	            		if(linea.$punto.hasClass("punto_moviblefin"))
+	            		{
+	            			clasePunto=".punto_moviblefin";
+	            		}
+	            		else{
+	            			clasePunto=".punto_movibleinicio";
+	            		}
+
+	            		idLinea = "#"+linea.$linea.attr("id");
+
             		}
-            		else{
-            			clasePunto=".punto_movibleinicio";
+            		else if(linea.tipo =="linea_partes") 
+            		{
+
+            			if(linea.$punto.hasClass("linea_partes_punto_movible1"))
+            			{
+            				clasePunto=".linea_partes_punto_movible1";
+            			}
+            			else if(linea.$punto.hasClass("linea_partes_punto_movible2"))
+            			{
+            				clasePunto=".linea_partes_punto_movible2";
+            			}
+            			else if(linea.$punto.hasClass("linea_partes_punto_movible3"))
+            			{
+            				clasePunto=".linea_partes_punto_movible3";
+            			}
+
+            			idLinea = "#"+linea.$linea.$elemento.attr("id");
+
             		}
 
 
 
-            		var idLinea ="#"+linea.$linea.attr("id");
-            		json="{'linea' : '"+idLinea+"' , 'punto':'"+clasePunto+"'}";
+            		json="{'linea' : '"+idLinea+"' ,'punto':'"+clasePunto+"','tipo':'"+linea.tipo+"'}";
 
             	}
 
@@ -3825,8 +4174,19 @@ function Flujo (idDOM){
 
 		    	$agrupador = _self.$paginaActual.find(".seleccionados_grupos");
 
-		    	$agrupador.draggable();
+		    	$agrupador.draggable({
+		    		drag:function(event, ui)
+			    		{
+			    			if(_self.objCuadroAgrupacion)
+			    			{
+			    				_self.objCuadroAgrupacion.actualizarELementosSeleccionados();
+			    			}
+			    			
+			    		}
+		    	});
 
+		    	
+		    	/*
 				$agrupador.resizable({
 				        // autoHide: true 
 				          handles: "bton_edicion,bton_ver_personal,n, e, s, w, ne, se, sw, nw, all" 
@@ -3840,7 +4200,7 @@ function Flujo (idDOM){
 				          {
 				          	// 
 				          } 
-					});
+					});*/
 
 
 				setTimeout(function(){
@@ -3850,6 +4210,19 @@ function Flujo (idDOM){
 		    }// function -->cargarElementosAgrupacion
 
 
+
+		    // actualiza 
+		    // la poscion de todas las lineaspartes exsitene en actaul
+		    ,actualizacionAllLineasPartes:function(){
+		    	
+		    	var _self=this;
+
+		    	for(var i=0; i<_self.listaLineasPartes.length ; i++)
+		    	{
+		    		_self.listaLineasPartes[i].actualizarPoscionCentralizado();	
+		    	}
+
+		    }//actualizacionAllLineasPartes
 
 
 		    // mostrar css activo 
@@ -3868,6 +4241,33 @@ function Flujo (idDOM){
 			}
 		}// fin function ---> mostrarAlineacionElementosAgrupados		    
 			
+
+
+		///
+		// actualiza las elementos con sus posicion 
+		,actualizaElementoAllPositionByPagina:function(){
+			var _self=this;
+
+			for(var p=_self.listaPaginas.length-1; p>=0 ; p--)
+			{
+				_self.cambiaPagina(p);
+				var $listaDiagramas = _self.$paginaActual.find("div[data-mielemento]");
+			
+				for(var i = 0; i< $listaDiagramas.length ; i++)
+				{
+					var diagramaObj= _self.getDiagramaF1ByDOM($listaDiagramas[i]);
+					if(diagramaObj)
+					{
+						diagramaObj.actualizarPuntos();	
+					
+					}	
+				}//fin de reccor diagrama dentro de la pagina				
+
+
+
+			}// fin de recorrida da paginas 
+
+		}
 
 
 		// GET  linea actual Partes

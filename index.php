@@ -2,20 +2,25 @@
 <html class="no-js" lang="en">
     <head>
       <script>
-       /* var URL_GUARDAR="http://localhost/triki1/public/flujograma/guardar/json";
-        var URLSOLICITUD="http://localhost/triki1/public/flujograma/cargar"; 
-        var URL__SERVIDOR = "http://localhost/triki1/public/";*/
-
+		/*
         var URL__SERVIDOR1 = "http://localhost/git/developFlujograma/";
         var URL__SERVIDOR = URL__SERVIDOR1+"";
         var URL_GUARDAR= URL__SERVIDOR+"/servicios/guardar.php";
         var URLSOLICITUD= URL__SERVIDOR+"/servicios/cargar.php"; 
+		
+		*/
+		var URL__SERVIDOR1 = "http://ma.factoryim.com";
+        var URL__SERVIDOR = URL__SERVIDOR1+"/flujograma/";
+        var URL_GUARDAR= URL__SERVIDOR+"/servicios/guardar.php";
+        var URLSOLICITUD= URL__SERVIDOR+"/servicios/cargar.php"; 
+       
        
     </script>
   
   
 <?php 
-  $URL_SERVIDOR="http://localhost/git/developFlujograma/";
+  //$URL_SERVIDOR="http://localhost/git/developFlujograma/";
+  $URL_SERVIDOR="http://ma.factoryim.com/flujograma/";
 ?>
 
       <meta charset="utf-8" />
@@ -315,6 +320,8 @@
         }
 
       body[data-estado='2']
+         .ui-resizable-handle,
+         body[data-estado='10']
          .ui-resizable-handle
         {
           display: none !important
@@ -332,10 +339,16 @@
 
 
 
+    body[data-estado='1'] .punto_circle{
+      display: none !important;
+    }
+
 
 
       body[data-estado='2'] .puntos_conexion
-      
+      ,body[data-estado='10'] .puntos_conexion
+      ,body[data-estado='4'] .puntos_conexion
+      ,body[data-estado='3'] .puntos_conexion
        {
         opacity:1 !important;
        }
@@ -349,7 +362,7 @@
 
        /*cursor*/
 
-       body[data-estado='2'] .paginas
+       body[data-estado='2'] .paginas, body[data-estado='10'] .paginas
        {
           cursor: url('<?php echo $URL_SERVIDOR.'/'?>img/puntero1.cur') ,auto;
        }
@@ -518,7 +531,7 @@
               <li>
                 <a href="#" onclick="false" id="bton_estado2" 
                 class="botonFondo [tiny small large] button [alert success secondary] [disabled]"
-                style="background-image:url(<?php echo $URL_SERVIDOR.'/'?>img/icon2.png) ;background-size: 71%;
+                style="background-image:url(<?php echo $URL_SERVIDOR.'/'?>img/icon5.png) ;background-size: 71%;
                   background-repeat: no-repeat;
                   background-position: 50%;"
                   >
@@ -809,134 +822,6 @@ margin: 0px;"></td>
 
           <!-- fin barra-->
 
-
-
-
-
-
-
-
-
-
-
-          <!--  inicio barra-->
-           <!-- herramienta 
-                   <ul id="herramientas_grupo_botones" class=" button-group [radius round]" style="height: 40px">               
-                      <li>
-                        
-                        <div id="panel_editar_letras"  style="display:none" class="panel callout radius panel_grupo_botones">
-                         
-                         <table style="width: 100%">
-                          <thead>
-                            <tr>
-                              <th width="10"></th>
-                              <th width="70"></th>
-                              
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr>
-                              <td>Color</td>
-                              <td><input type="text" id="panel_tipo_color" ></td>
-                            
-                            </tr>
-                              
-                        
-                            <tr>
-                              <td>fondo texto</td>
-                              <td>
-
-                              <input type="text" id="panel_fondo_color" >
-                              </td>
-                            </tr>
-                        
-
-                            <tr>
-                              <td>Fondo</td>
-                              <td><input type="text" id="panel_tipo_fondo" ></td>
-                            
-                            </tr>
-
-                            <tr>
-                              <td>Tamaño</td>
-                              <td><input type="text" readonly id="spinner" style="font-size:14px; padding:0px; margin:0px ; height:22px"></td>
-                            </tr>
-
-
-
-                            <tr>
-                              <td>style</td>
-                              <td>
-                                <table style="width: 100%">
-                                 
-                                  <tr>
-                                    
-                                    <td><p class="fi-align-left letras_alineacion"  id="panel_letras_left" data-propiedad="text-align" data-descativo="none" data-activo="left" ></p></td>
-                                  
-                                    <td><p class="fi-align-center letras_alineacion"  id="panel_letras_center" data-propiedad="text-align"  data-activo="center" ></p></td>
-
-                                    <td ><p class="fi-align-right letras_alineacion"  id="panel_letras_right" data-propiedad="text-align" data-descativo="none" data-activo="right"></p></td>
-                                  </tr>
-                                </table>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                        </div>
-                      </li>
-
-
-                      <li>
-                        <a id="boton_color_grupo"  class="fi-credit-card icon2 icon3 mi_h1_" title="editar letra"
-                         alt="editar letra">
-                        </a>                
-                      </li>
-
-                      <li>
-                        <a id="boton_capa" class="fi-background-color icon2 icon3  mi_h2_" title="capas" alt="capas">
-                          
-                        </a>
-                          
-                          <ul id="subgrupo_botones_boton_capa" class="button-group [radius round]" style="width:40px"> 
-                              <li>
-                                <a id="subgrupo_botones_boton_capa1"  onclick="false" class="icon2 sub_boton" title="1" alt="1">
-                                   <i class="mi_icons2">1</i>
-                                </a>
-                              </li> 
-         
-                              <li>
-                                <a id="subgrupo_botones_boton_capa2"  onclick="false" class=" icon2 sub_boton" title="2" alt="2">
-                                   <i class="mi_icons2 ">2</i>
-                                </a>
-                              </li> 
-
-                              <li>
-                                <a id="subgrupo_botones_boton_capa3" onclick="false" class=" icon2 sub_boton" title="3" alt="3">
-                                   <i class="mi_icons2 ">3</i>
-                                </a>
-                              </li> 
-                          </ul>
-                      </li> 
-
-
-                      <li>
-                        <a id="boton_delete_grupo"    class="fi-x icon2 icon3  mi_h3_" title="eliminar" alt="eliminar">
-                          
-                        </a>
-                      </li> 
-
-                      
-
-                      <li>
-                        <a id="herramientas_grupo" class="fi-arrows-in main icon2  mi_h4_ "  style="curso:move" title="" alt="">
-                         
-                        </a>
-                      </li> 
-                  </ul>
-                  fin  herramienta -->
-                    
-
-
           <!-- fin barra-->
 
 
@@ -977,17 +862,17 @@ margin: 0px;"></td>
 
 
               <!-- manejo de la lineas por partes -->
-              <div class="linea_partes_punto_movible1 linea_partes_punto_circle" style="top:10px;left:10px;" >
+              <div class="linea_partes_punto_movible1 linea_partes_punto_circle" style="top:10px;left:10px;display:none" >
                  <img src="<?php echo $URL_SERVIDOR.'/'?>/img/conexion_p.gif"  class="imagen_punto_mobil"> 
                </div>
 
                
-                <div class="linea_partes_punto_movible2  linea_partes_punto_circle"  style="top:20px;left:20px;">
+                <div class="linea_partes_punto_movible2  linea_partes_punto_circle"  style="top:20px;left:20px;display:none">
                   <img src="<?php echo $URL_SERVIDOR.'/'?>/img/conexion_p.gif"  class="imagen_punto_mobil"> 
                 </div>
               
 
-                <div class="linea_partes_punto_movible3  linea_partes_punto_circle"  style="top:30px;left:30px;">
+                <div class="linea_partes_punto_movible3  linea_partes_punto_circle"  style="top:30px;left:30px;display:none">
                   <img src="<?php echo $URL_SERVIDOR.'/'?>/img/conexion_p.gif"  class="imagen_punto_mobil"> 
                 </div>
 
