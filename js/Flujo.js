@@ -6,6 +6,9 @@ function Flujo (idDOM){
 	 		,listaPaginas:[ $("#contenedor_principal_pag_1")]
 	 		,estado:1/// qu se seleccion punte, lineas de conexion
 	 		,$text :null
+
+
+	 		,base_elementoFlecha: null /// svg de la flecha de las lineas 
 	 		,bandera_actualizacion:false // indica si se esta actualizando .... o no el flujogramma , true para una actualizacion o false para un nuevo flujograma
 
 	 		,$lineaActual:null // linea hecha
@@ -88,7 +91,7 @@ function Flujo (idDOM){
 */
 
 
-				  var sEleConector1=   Snap("#ele_menu_izq_conector1")
+				  var sEleConector1=  Snap("#ele_menu_izq_conector1")
 			       Snap.load(URL__SERVIDOR+"/img/n1.svg", function(f){
 			       	
 			       	_self.elementoN1= f;
@@ -186,6 +189,27 @@ function Flujo (idDOM){
 			        var g= f.select("g");
 			        g.attr({fill: "#bada55"});			        
 			        sEleConector5.append(f);
+			      });
+
+
+
+			         // // llama del proceso   - ele_menu_izq_conector4
+			      //var sEleConector5=   Snap("#ele_menu_izq_conector5")
+			       Snap.load(URL__SERVIDOR+"/img/flecha.svg", function(f){
+			       	
+			       	var g= f.select("svg");
+			        g.attr(
+			        	{fill: "#bada55"
+			        	,x:"5px"
+			        	,y:"1px"
+			        	});
+			       		
+
+			        _self.base_elementoFlecha= g;			        
+			        // gato
+			        //sEleConector5.append(f);
+			        //g.select("g").attr({transform:'r90'})
+			       
 			      });
 
 

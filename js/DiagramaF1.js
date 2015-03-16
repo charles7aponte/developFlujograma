@@ -159,7 +159,7 @@ function DiagramaF1 (){
 			// hace que los conectores toque el elementos
 			,moverConector:function(direccion,$puntoDIV){
 
-				var  delta=2;
+				var  delta=5;
 				var valorAuxiliar=0;
 				switch(direccion)
 				{
@@ -267,7 +267,7 @@ function DiagramaF1 (){
 								
 								var tipoPuntoCirculo = $punto1.data("punto");
 								//var lineaActual =_self.ext_getLineaActual();
-								_self.$$padre.$lineaActual;
+								//_self.$$padre.$lineaActual;
 
 
 								switch(tipoPuntoCirculo){
@@ -275,6 +275,8 @@ function DiagramaF1 (){
 										_self.linea1.$linea= lineaActual;
 										_self.linea1.$punto= $punto;
 										_self.linea1.tipo= mitipo;
+
+										_self.actualizaLineaAgrupada($punto1, _self.linea1);
 
 
 
@@ -286,13 +288,19 @@ function DiagramaF1 (){
 										_self.linea2.$linea= lineaActual;
 										_self.linea2.$punto= $punto;
 										_self.linea2.tipo= mitipo;
+										_self.actualizaLineaAgrupada($punto1, _self.linea2);
+
+
 										console.log(2)
+										console.info(_self.linea2);
+										console.info($punto1)
 									break;
 
 									case "punto3": 
 										_self.linea3.$linea= lineaActual;
 										_self.linea3.$punto= $punto;
 										_self.linea3.tipo= mitipo;
+										_self.actualizaLineaAgrupada($punto1, _self.linea3);
 										console.log(3)
 									break;
 
@@ -300,7 +308,7 @@ function DiagramaF1 (){
 										_self.linea4.$linea= lineaActual;
 										_self.linea4.$punto= $punto;
 										_self.linea4.tipo= mitipo;
-
+										_self.actualizaLineaAgrupada($punto1, _self.linea4);
 
 
 										console.log(4)
@@ -310,6 +318,7 @@ function DiagramaF1 (){
 
 
 							$punto1.removeClass("puntos_conexion_resaltados");
+
 
 
 
@@ -427,12 +436,15 @@ function DiagramaF1 (){
 
 								var tipoPuntoCirculo = $punto1.data("punto");
 								//var lineaActual =_self.ext_getLineaActual();
-								var lineaActual =_self.$$padre.$lineaActual;
+								//var lineaActual =_self.$$padre.$lineaActual;
+
+								console.log("estado ::: "+_self.$$padre.estado);
+								console.log(_self.linea1);
 								
 								switch(tipoPuntoCirculo){
 									case "punto1": 
 										if(_self.$$padre.estado ==2 && _self.linea1 && _self.linea1.$linea &&  _self.linea1.$linea[0]== _self.$$padre.$lineaActual[0]
-											&&  	_self.linea1.$punto[0]==$punto)
+											&&  	_self.linea1.$punto[0]==$punto[0])
 										{
 											_self.linea1.$linea=null;
 											_self.linea1.$punto=null;
@@ -440,9 +452,12 @@ function DiagramaF1 (){
 
 										}
 											else 
-											if(_self.$$padre.estado ==10 && _self.linea1 &&  _self.linea1.$linea && _self.$$padre.objLineaPartes  
-												&&  _self.linea1.$linea[0]== _self.$$padre.objLineaPartes
-												&&  _self.linea1.$punto[0]== $punto)
+											if(_self.$$padre.estado ==10 && _self.linea1 && 
+											 	_self.linea1.$linea 
+											 	&& _self.$$padre.objLineaPartes  
+												&&  _self.linea1.$linea== _self.$$padre.objLineaPartes
+												&&  _self.linea1.$punto[0]== $punto[0]
+												)
 											{ 
 											_self.linea1.$linea= null;
 											_self.linea1.$punto= null;
@@ -452,8 +467,11 @@ function DiagramaF1 (){
 									break;
 
 									case "punto2": 
-										if(_self.$$padre.estado ==2  && _self.linea2 && _self.linea2.$linea &&  _self.linea2.$linea[0]== _self.$$padre.$lineaActual[0]
-												&&  	_self.linea2.$punto[0]==$punto)
+										if(_self.$$padre.estado ==2  
+											&& _self.linea2
+											 && _self.linea2.$linea 
+											 &&  _self.linea2.$linea[0]== _self.$$padre.$lineaActual[0]
+											 &&  	_self.linea2.$punto[0]==$punto[0])
 											{
 											_self.linea2.$linea= null;
 											_self.linea2.$punto= null;
@@ -461,8 +479,8 @@ function DiagramaF1 (){
 											}
 											else 
 											if(_self.$$padre.estado ==10 && _self.linea2 &&  _self.linea2.$linea && _self.$$padre.objLineaPartes  
-												&&  _self.linea2.$linea[0]== _self.$$padre.objLineaPartes
-												&&  _self.linea2.$punto[0]== $punto)
+												&&  _self.linea2.$linea== _self.$$padre.objLineaPartes
+												&&  _self.linea2.$punto[0]== $punto[0])
 											{ 
 											_self.linea2.$linea= null;
 											_self.linea2.$punto= null;
@@ -475,7 +493,7 @@ function DiagramaF1 (){
 
 									case "punto3": 
 										if(_self.$$padre.estado ==2 &&  _self.linea3 && _self.linea3.$linea && _self.linea3.$linea[0]== _self.$$padre.$lineaActual[0]
-												&&  	_self.linea3.$punto[0]==$punto)
+												&&  	_self.linea3.$punto[0]==$punto[0])
 											{
 											_self.linea3.$linea= null;
 											_self.linea3.$punto= null;
@@ -483,8 +501,8 @@ function DiagramaF1 (){
 											}
 											else 
 											if(_self.$$padre.estado ==10 && _self.linea3 &&  _self.linea3.$linea && _self.$$padre.objLineaPartes  
-												&&  _self.linea3.$linea[0]== _self.$$padre.objLineaPartes
-												&&  _self.linea3.$punto[0]== $punto)
+												&&  _self.linea3.$linea== _self.$$padre.objLineaPartes
+												&&  _self.linea3.$punto[0]== $punto[0])
 											{ 
 											_self.linea3.$linea= null;
 											_self.linea3.$punto= null;
@@ -496,8 +514,8 @@ function DiagramaF1 (){
 
 									case "punto4":
 										if(_self.$$padre.estado ==2 && _self.linea4 &&  _self.linea4.$linea && _self.$$padre.$lineaActual  
-												&&  _self.linea4.$linea[0]== _self.$$padre.$lineaActual[0]
-												&&  _self.linea4.$punto[0]== $punto)
+												&&  _self.linea4.$linea == _self.$$padre.$lineaActual[0]
+												&&  _self.linea4.$punto[0]== $punto[0])
 											{ 
 											_self.linea4.$linea= null;
 											_self.linea4.$punto= null;
@@ -506,8 +524,8 @@ function DiagramaF1 (){
 
 										else 
 											if(_self.$$padre.estado ==10 && _self.linea4 &&  _self.linea4.$linea && _self.$$padre.objLineaPartes  
-												&&  _self.linea4.$linea[0]== _self.$$padre.objLineaPartes
-												&&  _self.linea4.$punto[0]== $punto)
+												&&  _self.linea4.$linea== _self.$$padre.objLineaPartes
+												&&  _self.linea4.$punto[0]== $punto[0])
 											{ 
 											_self.linea4.$linea= null;
 											_self.linea4.$punto= null;

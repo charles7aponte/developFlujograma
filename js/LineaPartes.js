@@ -1,7 +1,14 @@
 function LineaPartes(){
 	return {
+
 		$pagina:null
 		,tipo:"linea_partes"
+		
+		,tipoLinea:0 /// 0 sin linea , 1 con linea derecha , 2 linea izquierda ,  3 dos lineas 
+		,flechaDerecha:null 
+		,flechaIzquierda:null
+
+
 		/// padre
 		, $$padre:null
 
@@ -75,6 +82,11 @@ function LineaPartes(){
 			_seft.tipoMoviento=0;
 
 
+			///
+			_seft.flechaDerecha = _seft.$$padre.base_elementoFlecha.clone();
+			_seft.flechaIzquierda = _seft.$$padre.base_elementoFlecha.clone();
+			_seft.mi_snap.append(_seft.flechaDerecha);
+			_seft.mi_snap.append(_seft.flechaIzquierda);
 
 
 
@@ -102,6 +114,12 @@ function LineaPartes(){
 
             _seft.eventoClick()
             _seft.activarIndicacionSelecccionada(true);
+
+
+            
+
+
+
 		}// fin function dibujar
 
 
@@ -399,6 +417,9 @@ function LineaPartes(){
 			 	listaPuntosFinal=_seft.elecciondeTipoLinea2(p1,p2,p3);
 			 	_seft.tipoMoviento=2;
 
+
+			 	
+
 			 }
 
 
@@ -408,6 +429,10 @@ function LineaPartes(){
      		//guarda las posiciones de las esferas .. 
 
      		_seft.guardarLosDatosPuntosData();
+
+
+     		_seft.actualizarPositionFlechas();
+
 
      		return salida;
 
@@ -493,6 +518,130 @@ function LineaPartes(){
 		}// function -->conversionTopToy
 
 
+
+
+
+
+
+
+		// actualizar las posicion de las flechas 
+		,actualizarPositionFlechas:function(){
+			
+			var _seft= this;
+
+			var desFaseX =parseInt(_seft.$elemento.css("left"));
+				desFaseX= isNaN(desFaseX)? 0: desFaseX; 
+
+
+			var desFaseY =parseInt(_seft.$elemento.css("top"));
+				desFaseY= isNaN(desFaseY)? 0: desFaseY;
+
+			var medioY= desFaseY+_seft.$elemento.height()/2;  
+			var medioX= desFaseX+_seft.$elemento.width()/2;  
+			
+
+
+			//toma los coordenadas del los puntos p1,p2, y p3 
+     		var p1= _seft.conversionTopToy(_seft.$p1, desFaseX,desFaseY);
+     		var p2= _seft.conversionTopToy(_seft.$p2, desFaseX,desFaseY);
+     	
+     		var p3= _seft.conversionTopToy(_seft.$p3, desFaseX,desFaseY);
+
+
+     		var miXY={izquierda:{x:0,y:0}, derecha:{x:0,y:0}};
+
+
+     	
+
+
+			if(_seft.$elemento.width()>=_seft.$elemento.height())
+			{
+
+				if(p3.x >=  p2.x-2 && p3.x<= p2.x+2 )
+				{
+					_seft.flechaIzquierda.select("g").attr({transform:'r180'});
+				}
+				else
+				if(p1.x <=  p2.x)
+				{
+					_seft.flechaIzquierda.select("g").attr({transform:'r-90'});
+				}
+				else{
+					_seft.flechaIzquierda.select("g").attr({transform:'r90'});
+				
+				}
+
+
+				if(p3.x >=  p2.x-2 && p3.x<= p2.x+2 )
+				{
+					_seft.flechaDerecha.select("g").attr({transform:'r180'});
+				}
+				else
+				if(p3.x <  p2.x)
+				{
+					_seft.flechaDerecha.select("g").attr({transform:'r-90'});
+				}
+				else{
+					_seft.flechaDerecha.select("g").attr({transform:'r90'});
+				
+				}
+
+
+				miXY={izquierda:{x:p1.x-20	,y:p1.y-10 } , derecha: {x:p3.x-25,y: p3.y-10}};
+
+
+
+			}
+			else{
+
+				miXY={izquierda:{x:p1.x-20, y:p1.y-10 } , derecha: {x:p3.x-20, y:p3.y-10}};
+
+				if(p1.y>= p2.y-2 && p1.y<=p2.y+2  )
+				{
+					_seft.flechaIzquierda.select("g").attr({transform:'r-90'});	
+
+					miXY={izquierda:{x:p1.x-20, y:p1.y-10 } , derecha: {x:p3.x-20, y:p3.y}};
+				}
+				else if(p1.y <=  p2.y)
+				{
+					_seft.flechaIzquierda.select("g").attr({transform:'r0'});
+				}
+				else{
+					_seft.flechaIzquierda.select("g").attr({transform:'r180'});
+				
+				}
+
+
+				if(p3.y>= p2.y-2 && p3.y<=p2.y+2  )
+				{
+					_seft.flechaDerecha.select("g").attr({transform:'r90'});
+					miXY={izquierda:{x:p1.x-20, y:p1.y-10 } , derecha: {x:p3.x-20, y:p3.y-10}};	
+				}
+				else if(p3.y <  p2.y)
+				{
+					_seft.flechaDerecha.select("g").attr({transform:'r0'});
+				}
+				else{
+					_seft.flechaDerecha.select("g").attr({transform:'r180'});
+				
+				}
+
+
+				
+			}
+
+			_seft.flechaIzquierda.attr({x:miXY.izquierda.x, y:miXY.izquierda.y});
+			_seft.flechaDerecha.attr({x:miXY.derecha.x, y:miXY.derecha.y});
+
+
+
+
+
+// gato
+
+		}// --> function actualizarPositionFlechas 
+
+
 		// retorna un {pp1:{x,y},...pp5:{x,y}}
 		//con los puntos seleccionados . 
 		,elecciondeTipoLinea1:function(p1, p2, p3){
@@ -532,7 +681,7 @@ function LineaPartes(){
 
 			return [pp1, pp2,pp3,pp4, pp5];
 
-		}// function --> elecciondeTipoLinea
+		}// function --elecciondeTipoLinea2> elecciondeTipoLinea
 
 
 
