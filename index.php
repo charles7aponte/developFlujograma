@@ -86,8 +86,7 @@
           width: 12px;
           height: 12px;
           border-radius: 10px;
-         
-       
+        
         }
 
 
@@ -102,6 +101,11 @@
 
         svg.linea_partes {
         pointer-events: none;
+
+          min-width: 5px;
+          min-height: 5px;
+         
+    
         }
 
 
@@ -598,6 +602,42 @@
                 </a>
               </li>
 
+
+              <li>
+                <a href="#" onclick="false" id="bton_flecha_p1" alt="guardar"
+                class="  botonFondo [tiny small large] button [alert success secondary] [disabled]"
+                style="background-image:url(<?php echo $URL_SERVIDOR.'/'?>img/icon_flecha1.png) ;background-size: 71%;
+                  background-repeat: no-repeat;
+                  background-position: 50%;"
+                  >
+                </a>
+              </li>
+
+
+
+
+              <li>
+                <a href="#" onclick="false" id="bton_flecha_p2" alt="guardar"
+                class="  botonFondo [tiny small large] button [alert success secondary] [disabled]"
+                style="background-image:url(<?php echo $URL_SERVIDOR.'/'?>img/icon_flecha2.png) ;background-size: 71%;
+                  background-repeat: no-repeat;
+                  background-position: 50%;"
+                  >
+                </a>
+              </li>
+
+
+
+              <li>
+                <a href="#" onclick="false" id="bton_flecha_p3" alt="guardar"
+                class="  botonFondo [tiny small large] button [alert success secondary] [disabled]"
+                style="background-image:url(<?php echo $URL_SERVIDOR.'/'?>img/icon_flecha3.png) ;background-size: 71%;
+                  background-repeat: no-repeat;
+                  background-position: 50%;"
+                  >
+                </a>
+              </li>
+
         
           </ul>
      
@@ -928,7 +968,7 @@ height: 35px;">
 
     <script src="<?php echo $URL_SERVIDOR.'/'?>js/jquery.hittest.js"></script>
     <script src="<?php echo $URL_SERVIDOR.'/'?>js/MensajeDetalle.js"></script>
-    <script src="<?php echo $URL_SERVIDOR.'/'?>js/LineaConexion.js"></script>
+    <script src="<?php echo $URL_SERVIDOR.'/'?>js/LineaConexionSVG.js"></script>
     <script src="<?php echo $URL_SERVIDOR.'/'?>js/LineaPartes.js"></script>
 
     <script src="<?php echo $URL_SERVIDOR.'/'?>js/CuadroSeleccion.js"></script>

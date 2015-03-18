@@ -1,22 +1,20 @@
-function LineaPartes(){
+function LineaConexionSVG(){
 	return {
 
 		$pagina:null
-		,tipo:"linea_partes"
+		,tipo:"linea"
 		
 		,tipoLinea:0 /// 0 sin linea , 1 con linea derecha , 2 linea izquierda ,  3 dos lineas 
 		,flechaDerecha:null 
 		,flechaIzquierda:null
 
 
-		,estado_flechas:0 // 0 sin flechas , 1 flecha izquierda , 2 flecha derecha , 3 flechas a los dos lados
-
 		/// padre
 		, $$padre:null
 
 		,$p1:null
 		,$p2:null
-		,$p3:null
+		
 		,tipoMoviento:0// incioo 0 , 1 movientos vertical , 2 moviento 	horizontal
 		,$textoP:null
 		,mi_snap:null
@@ -31,8 +29,8 @@ function LineaPartes(){
 		,dibujar:function(id_nuevo){
 
 			var _seft= this;
-			var $elemento = $("<svg class='linea_partes' data-puntos_movible1='' "+
-								"data-puntos_movible2=''  data-puntos_movible3='' "
+			var $elemento = $("<svg class='linea_partes' data-puntos_punto_moviblefin='' "+
+								" data-puntos_movibleinicio='' "
 								+" style='z-index:5;width:20px; height:20px;position:absolute; overflow: visible;' "
 								+" data-label='' >");
 
@@ -42,16 +40,13 @@ function LineaPartes(){
 
 
 			//carga los elementos 
-			_seft.$p1= _seft.$pagina.find(".linea_partes_punto_movible1");
-			_seft.$p2= _seft.$pagina.find(".linea_partes_punto_movible2");
-			_seft.$p3= _seft.$pagina.find(".linea_partes_punto_movible3");
-
+			_seft.$p1= _seft.$pagina.find(".punto_movibleinicio");
+			_seft.$p2= _seft.$pagina.find(".punto_moviblefin");
+			
 			_seft.$pagina.append(_seft.$elemento);
 			_seft.$pagina.append(_seft.$textoP);
 
 
-
-			//añnade las nuevas lineas  
 
 			_seft.mi_snap= Snap($elemento[0]);
 			_seft.linea1 = _seft.mi_snap.line(0,0,0,10);
@@ -61,25 +56,7 @@ function LineaPartes(){
 			          strokeWidth: 2
 			      });
 
-			_seft.linea2 = _seft.mi_snap.line(0,10,10,10);
-			_seft.linea2.attr({
-			          fill: "#FDFEFA",
-			          stroke: "#000",
-			          strokeWidth: 2
-			      });
-			_seft.linea3 = _seft.mi_snap.line(10,10,20,10);
-			_seft.linea3.attr({
-			          fill: "#FDFEFA",
-			          stroke: "#000",
-			          strokeWidth: 2
-			      });
-
-			_seft.linea4 = _seft.mi_snap.line(20,10,20,20);
-			_seft.linea4.attr({
-			          fill: "#FDFEFA",
-			          stroke: "#000",
-			          strokeWidth: 2
-			      });
+			
 
 			_seft.tipoMoviento=0;
 
@@ -94,20 +71,20 @@ function LineaPartes(){
 
             if(id_nuevo)
             {
-              var partes= (id_nuevo+"").split("id_linea_pares");
+              var partes= (id_nuevo+"").split("id_linea_");
               var id_linea = parseInt(partes[1]);
 
 	              if(id_linea>_seft.$$padre.contadorLineasPartes)
 	              {
-	              	_seft.$$padre.contadorLineasPartes= id_linea;
+	              	_seft.$$padre.contadorLineas= id_linea;
 	              }
 
-	              _seft.$elemento.attr("id","id_linea_pares"+id_linea);
+	              _seft.$elemento.attr("id","id_linea_"+id_linea);
             }
             else{
 
-		       _seft.$$padre.contadorLineasPartes++;
-		       _seft.$elemento.attr("id","id_linea_pares"+_seft.$$padre.contadorLineasPartes);
+		       _seft.$$padre.contadorLineas++;
+		       _seft.$elemento.attr("id","id_linea_"+_seft.$$padre.contadorLineas);
 		       _seft.$pagina= _seft.$$padre.$paginaActual;
 		       _seft.$textoP.hide();
             }  
@@ -125,39 +102,6 @@ function LineaPartes(){
 		}// fin function dibujar
 
 
-
-		// ****************
-		// ****************
-		// actualiza visualmente, la visibilidad de las flechas segun el estado	
-		// 
-		,actualizarVisualmente:function(){
-			var _seft = this;
-			switch(_seft.estado_flechas){
-
-				case 0:
-					_seft.flechaDerecha.attr({display:'none'}); 
-					_seft.flechaIzquierda.attr({display:'none'});
-				break;
-
-				case 1:
-					_seft.flechaDerecha.attr({display:'none'}); 
-					_seft.flechaIzquierda.attr({display:'block'});
-				break;
-
-
-				case 2:
-					_seft.flechaDerecha.attr({display:'block'}); 
-					_seft.flechaIzquierda.attr({display:'none'});
-				break;
-
-
-				case 3:
-					_seft.flechaDerecha.attr({display:'block'}); 
-					_seft.flechaIzquierda.attr({display:'block'});
-				break;
-
-			}
-		}
 
 		,borrar:function(){
 			if(_seft.$textoP)
@@ -185,21 +129,21 @@ function LineaPartes(){
 				_seft.$elemento.effect( "explode", {},100, function(e){
 					
 
-					$(".linea_partes_punto_movible1,.linea_partes_punto_movible2,.linea_partes_punto_movible3").hide();
+					$(".punto_moviblefin, .punto_movibleinicio").hide();
 
 
 
 					
 					
-					for(var i=0; i< _seft.$$padre.listaLineasPartes.length ; i++)
+					for(var i=0; i< _seft.$$padre.listaLineaConexion.length ; i++)
 		     		{
-		     			if(_seft.$$padre.listaLineasPartes[i]== _seft)
+		     			if(_seft.$$padre.listaLineaConexion[i]== _seft)
 		     			{
-		     				_seft.$$padre.listaLineasPartes.splice(i,1);
+		     				_seft.$$padre.listaLineaConexion.splice(i,1);
 
 		     			}
 		     		}// fin de for
-		     		_seft.$$padre.objLineaPartes=null;
+		     		_seft.$$padre.lineaConexionSeleccionada=null;
 				});
 
 			}
@@ -215,18 +159,28 @@ function LineaPartes(){
 
 
 
-			var x =_seft.$p2.css("left");
-			var y =_seft.$p2.css("top");
+			var x1 =_seft.$p1.css("left");
+			var y1 =_seft.$p1.css("top");
 
-			x= parseFloat(x) + 20;
+			var x2 =_seft.$p2.css("left");
+			var y2 =_seft.$p2.css("top");
+
+
+			x1= parseFloat(x1) ;
+			y1= parseFloat(y1);
 			
+			x2= parseFloat(x2) ;
+			y2= parseFloat(y2);
+
+			var min_x = Math.min(x1,x2);
+			var min_y = Math.min(y1,y2);
+
+			var mi_ancho = Math.abs(x1-x2);
+			var mi_alto  =  Math.abs(y1-y2);
 
 
-			y= parseFloat(y) + 20;
-			
-
-			_seft.$textoP.css({'left':x, 
-								'top':y});
+			_seft.$textoP.css({'left':(min_x + mi_ancho/2), 
+								'top':(min_y + mi_alto/2)});
 
 
 			var letrasLabel= _seft.$textoP.html()+"";
@@ -341,7 +295,7 @@ function LineaPartes(){
 
         
 
-         		case 10:
+         		case 2:
          			//_seft.activarIndicacionSelecccionada(true);             
 	             	_seft.activarIndicacionSelecccionada(true);
 	             	if(e)
@@ -352,14 +306,14 @@ function LineaPartes(){
          		break;
 
          		 default:
-         			_seft.$$padre.cambioEstado(10); 
+         			_seft.$$padre.cambioEstado(2); 
 					_seft.activarIndicacionSelecccionada(true); 
 				break;
 
          	}
 
 
-         	_seft.$$padre.objLineaPartes=_seft;
+         	_seft.$$padre.lineaConexionSeleccionada=_seft;
 
 		}// function cargaPoscionAnterioresActu
 
@@ -369,14 +323,24 @@ function LineaPartes(){
 
 		/// ************** 
 		//  cads p1 es de la forma {x,y}
-		,actualizarPosicionXY:function(p1, p2,p3,p4,p5)
+		,actualizarPosicionXY:function(p1, p2)
 		{	
 			var _seft=this;
 
+			if(p2.x <= (p1.x+5) && p2.x >= (p1.x-5) )
+			{
+				p2.x =p1.x;	
+			}
+
+			
+			if(p2.y <= (p1.y+5) && p2.y >= (p1.y-5) )
+			{
+				p2.y =p1.y;	
+			}
+
+
 			_seft.linea1.attr({x1:p1.x ,y1:p1.y,  x2:p2.x ,y2:p2.y });
-			_seft.linea2.attr({x1:p2.x ,y1:p2.y,  x2:p3.x ,y2:p3.y });
-			_seft.linea3.attr({x1:p3.x ,y1:p3.y,  x2:p4.x ,y2:p4.y });
-			_seft.linea4.attr({x1:p4.x ,y1:p4.y,  x2:p5.x ,y2:p5.y });
+	
 
 		}// function --> actualizarPosicionXY
 
@@ -403,72 +367,21 @@ function LineaPartes(){
 			//toma los coordenadas del los puntos p1,p2, y p3 
      		var p1= _seft.conversionTopToy(_seft.$p1, desFaseX,desFaseY);
      		var p2= _seft.conversionTopToy(_seft.$p2, desFaseX,desFaseY);
-     		var p3= _seft.conversionTopToy(_seft.$p3, desFaseX,desFaseY);
+     		//var p3= _seft.conversionTopToy(_seft.$p3, desFaseX,desFaseY);
 
      		var listaPuntosFinal=[];// debe contenr 5 obj de la forma {x,y}
 
 
-				//centra el punto2 si es necesario 
-			 if(_seft.$elemento.width()<_seft.$elemento.height())
-			 {
-			 	// se debe centra en los dos sentidos ya q viene de ser creada o cambio de lugar
-			 	if(  _seft.tipoMoviento==2)
-			 	{
-			 		_seft.$p2.css({
-			 			'left':medioX+5
-			 			,'top': medioY
-			 		});
+		_seft.tipoMoviento=1;
 
-			 		salida=false;
-			 	}
-
-			 	_seft.$p2.css({'left':medioX });
-
-			 	p1= _seft.conversionTopToy(_seft.$p1, desFaseX,desFaseY);
-	     		p2= _seft.conversionTopToy(_seft.$p2, desFaseX,desFaseY);
-	     		p3= _seft.conversionTopToy(_seft.$p3, desFaseX,desFaseY);
-			 	listaPuntosFinal=_seft.elecciondeTipoLinea1(p1,p2,p3);
-
-			 	_seft.tipoMoviento=1;
-			 }
-			 else {
-
-			 	// se debe centra en los dos sentidos ya q viene de ser creada o cambio de lugar
-			 	if( _seft.tipoMoviento==1)
-			 	{
-			 		_seft.$p2.css({
-			 			'left':medioX+5
-			 			,'top': medioY
-			 		});
-
-			 		salida=false;
-			 	}
-
-			 	_seft.$p2.css({'top':medioY });
-			 	
-			 	p1= _seft.conversionTopToy(_seft.$p1, desFaseX,desFaseY);
-	     		p2= _seft.conversionTopToy(_seft.$p2, desFaseX,desFaseY);
-	     		p3= _seft.conversionTopToy(_seft.$p3, desFaseX,desFaseY);
-			 	listaPuntosFinal=_seft.elecciondeTipoLinea2(p1,p2,p3);
-			 	_seft.tipoMoviento=2;
-
-
-			 	
-
-			 }
-
-
-     		_seft.actualizarPosicionXY(listaPuntosFinal[0], listaPuntosFinal[1],listaPuntosFinal[2],listaPuntosFinal[3],listaPuntosFinal[4]);
+     		_seft.actualizarPosicionXY(p1, p2);
      		_seft.actualizoPosicionTexto();
 
-     		//guarda las posiciones de las esferas .. 
-
+     		
      		_seft.guardarLosDatosPuntosData();
 
 
      		_seft.actualizarPositionFlechas();
-
-     		
 
 
      		return salida;
@@ -489,14 +402,9 @@ function LineaPartes(){
 			var p2X= parseInt(_seft.$p2.css("left"));
 
 
-			var p3Y= parseInt(_seft.$p3.css("top"));
-			var p3X= parseInt(_seft.$p3.css("left"));
-
-
-			_seft.$elemento.attr("data-puntos_movible1",p1X+";"+p1Y);
-			_seft.$elemento.attr("data-puntos_movible2",p2X+";"+p2Y);
-			_seft.$elemento.attr("data-puntos_movible3",p3X+";"+p3Y);
-
+			_seft.$elemento.attr("data-puntos_movibleinicio",p1X+";"+p1Y);
+			_seft.$elemento.attr("data-puntos_punto_moviblefin",p2X+";"+p2Y);
+			
 
 
 		}// function  guardarLosDatosPuntosData
@@ -509,10 +417,9 @@ function LineaPartes(){
 
 			var _seft = this;
 
-			var l1= _seft.$elemento.attr("data-puntos_movible1").split(";");
-			var l2= _seft.$elemento.attr("data-puntos_movible2").split(";");
-			var l3= _seft.$elemento.attr("data-puntos_movible3").split(";");
-
+			var l1= _seft.$elemento.attr("data-puntos_movibleinicio").split(";");
+			var l2= _seft.$elemento.attr("data-puntos_punto_moviblefin").split(";");
+		
 
 			_seft.$p1.css({
 				top: l1[1]+"px",
@@ -525,11 +432,7 @@ function LineaPartes(){
 				left: l2[0]+"px"
 				});
 
-			_seft.$p3.css({
-				top: l3[1]+"px",
-				left: l3[0]+"px"
-				});
-
+		
 
 		}// function cargarPosicionesPuntosData
 
@@ -582,98 +485,69 @@ function LineaPartes(){
      		var p1= _seft.conversionTopToy(_seft.$p1, desFaseX,desFaseY);
      		var p2= _seft.conversionTopToy(_seft.$p2, desFaseX,desFaseY);
      	
-     		var p3= _seft.conversionTopToy(_seft.$p3, desFaseX,desFaseY);
-
+     		
 
      		var miXY={izquierda:{x:0,y:0}, derecha:{x:0,y:0}};
 
-
      	
+     		var mi_m = deltaY/deltaX;
 
+     		var deltaX = p1.x- p2.x;
+     		var deltaY = p1.y- p2.y;
+     		var mi_m = deltaY/deltaX;
 
-			if(_seft.$elemento.width()>=_seft.$elemento.height())
-			{
-
-				if(p3.x >=  p2.x-2 && p3.x<= p2.x+2 )
-				{
-					_seft.flechaIzquierda.select("g").attr({transform:'r180'});
-				}
-				else
-				if(p1.x <=  p2.x)
-				{
-					_seft.flechaIzquierda.select("g").attr({transform:'r-90'});
-				}
-				else{
-					_seft.flechaIzquierda.select("g").attr({transform:'r90'});
-				
-				}
-
-
-				if(p3.x >=  p2.x-2 && p3.x<= p2.x+2 )
-				{
+     		if(deltaX>-5 && deltaX<5)
+     		{
+     			if(p2.y>p1.y)
+     			{
+     				_seft.flechaIzquierda.select("g").attr({transform:'r0'});	
 					_seft.flechaDerecha.select("g").attr({transform:'r180'});
 				}
-				else
-				if(p3.x <  p2.x)
-				{
+				else {
+					_seft.flechaIzquierda.select("g").attr({transform:'r180'});	
+					_seft.flechaDerecha.select("g").attr({transform:'r0'});	
+				}
+
+
+     			// debo usar tanginverson
+     		}
+     		else if(deltaY>-5 && deltaY<5)
+     		{
+     			if(p1.x>p2.x)
+     			{
+     				_seft.flechaIzquierda.select("g").attr({transform:'r90'});	
 					_seft.flechaDerecha.select("g").attr({transform:'r-90'});
-				}
-				else{
-					_seft.flechaDerecha.select("g").attr({transform:'r90'});
-				
-				}
-
-
-				miXY={izquierda:{x:p1.x-20	,y:p1.y-10 } , derecha: {x:p3.x-25,y: p3.y-10}};
-
-
-
-			}
-			else{
-
-				miXY={izquierda:{x:p1.x-20, y:p1.y-10 } , derecha: {x:p3.x-20, y:p3.y-10}};
-
-				if(p1.y>= p2.y-2 && p1.y<=p2.y+2  )
-				{
+     			}
+     			else {
 					_seft.flechaIzquierda.select("g").attr({transform:'r-90'});	
-
-					miXY={izquierda:{x:p1.x-20, y:p1.y-10 } , derecha: {x:p3.x-20, y:p3.y}};
-				}
-				else if(p1.y <=  p2.y)
-				{
-					_seft.flechaIzquierda.select("g").attr({transform:'r0'});
-				}
-				else{
-					_seft.flechaIzquierda.select("g").attr({transform:'r180'});
-				
-				}
-
-
-				if(p3.y>= p2.y-2 && p3.y<=p2.y+2  )
-				{
 					_seft.flechaDerecha.select("g").attr({transform:'r90'});
-					miXY={izquierda:{x:p1.x-20, y:p1.y-10 } , derecha: {x:p3.x-20, y:p3.y-10}};	
 				}
-				else if(p3.y <  p2.y)
-				{
-					_seft.flechaDerecha.select("g").attr({transform:'r0'});
-				}
-				else{
-					_seft.flechaDerecha.select("g").attr({transform:'r180'});
-				
-				}
+     		}
+     		else {
+     			var grados= Math.atan(mi_m);
+
+     			grados= grados*180/Math.PI+90;
+     			
+     			
+     			if(p2.x> p1.x)
+     			{
+     				_seft.flechaIzquierda.select("g").attr({transform:'r'+(grados+180)});	
+					_seft.flechaDerecha.select("g").attr({transform:'r'+(grados)});
+     			}
+     			else {
+     				_seft.flechaIzquierda.select("g").attr({transform:'r'+(grados)});	
+					_seft.flechaDerecha.select("g").attr({transform:'r'+(grados+180)});
+     			}
+     		}
 
 
-				
-			}
+
+     		miXY={izquierda:{x:p1.x-20, y:p1.y-10}, derecha:{x:p2.x-20, y:p2.y-10}};
+
+
 
 			_seft.flechaIzquierda.attr({x:miXY.izquierda.x, y:miXY.izquierda.y});
 			_seft.flechaDerecha.attr({x:miXY.derecha.x, y:miXY.derecha.y});
-
-
-
-			_seft.actualizarVisualmente();
-
 
 
 		}// --> function actualizarPositionFlechas 
@@ -683,21 +557,18 @@ function LineaPartes(){
 
 		// retorna un {pp1:{x,y},...pp5:{x,y}}
 		//con los puntos seleccionados . 
-		,elecciondeTipoLinea1:function(p1, p2, p3){
+		,elecciondeTipoLinea1:function(p1, p2){
 			
 			var _seft= this;
 			var pp1={x:p1.x ,y:p1.y};
-			var pp2={x:p1.x ,y:p2.y};
-			var pp3={x:p2.x ,y:p2.y};
-			var pp4={x:p3.x ,y:p2.y};
-			var pp5={x:p3.x ,y:p3.y};
+			var pp2={x:p2.x ,y:p2.y};
+			
 
-
-			 _seft.$p2.draggable({axis:"y" });
-			 _seft.$p2.css({'cursor':'n-resize'});
+			 //_seft.$p2.draggable({axis:"y" });
+			// _seft.$p2.css({'cursor':'n-resize'});
 		
 
-			return [pp1, pp2,pp3,pp4, pp5];
+			return [pp1, pp2];
 
 		}// function --> elecciondeTipoLinea
 
@@ -734,24 +605,17 @@ function LineaPartes(){
 			{
 				_self.$p1.show();
 				_self.$p2.show();
-				_self.$p3.show();
+				
 
 				_self.linea1.attr({ stroke: "#425EC8"});
-				_self.linea2.attr({ stroke: "#425EC8"});
-				_self.linea3.attr({ stroke: "#425EC8"});
-				_self.linea4.attr({ stroke: "#425EC8"});
 							
 
 			}
 			else{
 				_self.$p1.hide();
 				_self.$p2.hide();
-				_self.$p3.hide();
 
 				_self.linea1.attr({ stroke: "#000000"});
-				_self.linea2.attr({ stroke: "#000000"});
-				_self.linea3.attr({ stroke: "#000000"});
-				_self.linea4.attr({ stroke: "#000000"});
 			}
 
 		}// function activarIndicacionSelecccionada

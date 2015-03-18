@@ -118,8 +118,8 @@ para de los cuadritos
 /* elemento de posiciones  */
 .puntos_conexion
 {
-	width: 6px;
-	height: 6px;	
+	width: 10px;
+	height: 10px;	
 	position: absolute;
 	background-image:url('../img/cruz.gif');
 	background-size: 100% 100%;

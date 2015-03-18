@@ -11,7 +11,6 @@ function Flujo (idDOM){
 	 		,base_elementoFlecha: null /// svg de la flecha de las lineas 
 	 		,bandera_actualizacion:false // indica si se esta actualizando .... o no el flujogramma , true para una actualizacion o false para un nuevo flujograma
 
-	 		,$lineaActual:null // linea hecha
 	 		,listaLineaConexion:[]
 	 		,listaElementos:[]
 	 		,listaCuadroSeleccion:[]
@@ -33,7 +32,8 @@ function Flujo (idDOM){
 	 		,ban_escribir:0// bandera maneja las conexiones en orde
 	 		,ban_crear_grupo:0// bandera maneja las conexiones en orde
 	 		,ban_crear_linea_partes:0// bandera maneja las conexiones en orde
-	 		
+	 		,ban_crear_linea_conexion:0// bandera maneja las conexiones lineales
+	 			
 	 		
 	 		,ban_escCuadro:0 // bandera para creacion de cuadros 
 
@@ -644,18 +644,7 @@ function Flujo (idDOM){
 
 
 
-			  // *************************
-			  // ****** 
-			  // 
-			  , getLineaAcutal:function(){
-
-			  	var _self=this;
-
-			  	console.log("sellamo ")
-			  	console.log(_self.$lineaActual)
-			  	return _self.$lineaActual;
-
-			  }
+			
 
 
 			  /// *******************
@@ -1217,55 +1206,64 @@ function Flujo (idDOM){
 
 
 
+
+
 		      // ***************
 		      //
 		      //
 		      ,construccionNuevaLinea:function(JSON)
 		      {
 
+		      	
 		      	if(JSON)
 		      	{
 		      		var _self=this;
 
-		      		_self.deseleccionaLineaConexion();
 
 
- 					var lineaSVG = LineaConexion();
-		
-					lineaSVG.$$padre = _self;
-		      		lineaSVG.$pagina = $(JSON.id_pagina);
+		      		_self.cambioEstado(2);
+		      	
+		      		_self.lineaConexionSeleccionada = LineaConexionSVG();
+					_self.lineaConexionSeleccionada.$pagina=$(JSON.id_pagina);
+					_self.lineaConexionSeleccionada.$$padre= _self;
 
-		      		lineaSVG.dibujar(JSON.id);
+					_self.lineaConexionSeleccionada.dibujar(JSON.id);
+					
 
-					//_self.$lineaActual = lineaSVG.$elementoDOM;
-					//_self.lineaConexionSeleccionada=lineaSVG;
-					_self.seleccionaLineaConexion(lineaSVG);
-					_self.listaLineaConexion.push(lineaSVG);
+					//_self.seleccionaLineaConexion(lineaSVG);
+					_self.listaLineasPartes.push(_self.lineaConexionSeleccionada);
+
 
 
 					//elementos
-					lineaSVG.$textoP.html(JSON.textoP);
-					lineaSVG.$elementoDOM.data("label", JSON.textoP); 
-					lineaSVG.$elementoDOM.css(
+					_self.lineaConexionSeleccionada.$textoP.html(JSON.textoP);
+					_self.lineaConexionSeleccionada.$elemento.data("label", JSON.textoP); 
+					_self.lineaConexionSeleccionada.$elemento.css(
 								{"top": JSON.top,
-								"left":JSON.left,
-								"transform":JSON.transform,
+								"left":JSON.left,								
 								"width": JSON.width,
 								"height":JSON.height
 								});
+
+
 
 					lineaSVG.$elementoDOM.attr("data-puntos_punto_moviblefin", JSON.puntos_punto_moviblefin);
 					lineaSVG.$elementoDOM.attr("data-puntos_movibleinicio",   JSON.puntos_movibleinicio);  
 					
 
-					lineaSVG.$textoP.blur();
 
-					_self.deseleccionaLineaConexion();
+					_self.objLineaPartes.$textoP.blur();
+					_self.objLineaPartes.cargaPoscionAnterioresActu();
+					_self.objLineaPartes.actualizarPoscionCentralizado();
+
+					_self.objLineaPartes.activarIndicacionSelecccionada(false);
+					//_self.deseleccionaLineaConexion();
 
 					
 		      	}
 		      	
 		      }// fin funcion -->construccionNuevaLinea
+
 
 
 
@@ -1292,7 +1290,6 @@ function Flujo (idDOM){
 					_self.objLineaPartes.dibujar(JSON.id);
 					
 
-					//_self.seleccionaLineaConexion(lineaSVG);
 					_self.listaLineasPartes.push(_self.objLineaPartes);
 
 
@@ -1928,8 +1925,9 @@ function Flujo (idDOM){
 		      	//_self.$paginaActual.mouseup(function(e){
 				$elementos.on('mousedown',function(e){
 
+
 					// si  tiene click sobre un obj distonto a la pagina 
-					if($(e.target).hasClass("paginas")==false)
+					if($(e.target).hasClass("paginas")==false && $(e.target).hasClass("puntos_conexion")==false)
 					{
 
 						// evita q los componentes 
@@ -1939,52 +1937,52 @@ function Flujo (idDOM){
 							return true;
 
 						}
-					}	
-					else {
-
-						
-							if(_self.lineaConexionSeleccionada!=null && _self.lineaConexionSeleccionada.banderaSeleccionado)
-				 				{
-
-				 					_self.cambioEstado(1);
-				 					_self.deseleccionaLineaConexion();
-				 				}
-
 					}
+					else{
+							if(_self.lineaConexionSeleccionada && _self.lineaConexionSeleccionada.seleccionado)
+			 				{
 
+			 					
+			 					_self.lineaConexionSeleccionada.activarIndicacionSelecccionada(false);
+			 					_self.cambioEstado(1);
+			 					_self.lineaConexionSeleccionada=null;
+			 				}
+					}	
 
-					///valida segun el estado 
+					
 					if(_self.estado!=2)
 						{
-							_self.ban_escribir=0;
+
+
+							 
+							_self.ban_crear_linea_conexion=0;
 							return true;
 						}
-				
-
-
-
-
 
 							var $elementoEvent= $(e.target);
 
-							if(_self.ban_escribir!=0)
+							if(_self.ban_crear_linea_conexion!=0)
 								{
-					      		   	
+
+		      		 			
 					      		   	return true;
-					      		   }
+					      		 }
 
 
-
-							if(!$elementoEvent.hasClass("punto_circle"))
+							if(!$elementoEvent.hasClass("punto_cuadrado"))
 							{
-								_self.deseleccionaLineaConexion();
+								//_self.deseleccionaLineaConexion();
+
+								_self.ban_crear_linea_conexion=1;
+
+								//if(_self.objLineaPartes==null)
+								{
+									
+
 								
-
-								_self.ban_escribir=1;
-								var x = e.clientX - _self.$paginaActual.offset().left-7;
-					        	var y = e.clientY - _self.$paginaActual.offset().top-5;
-
-						        	posicionesInicio={
+									var x = e.clientX - _self.$paginaActual.offset().left-7;
+						        	var y = e.clientY - _self.$paginaActual.offset().top-5;
+							        	posicionesInicio={
 						        		left:x,
 						        		top:y
 						        	}
@@ -1992,33 +1990,32 @@ function Flujo (idDOM){
 							 		_self.$paginaActual.find(".punto_movibleinicio").css(
 					      				posicionesInicio
 					      				);	
-					 				_self.$paginaActual.find(".punto_movibleinicio").show();
 
 
+						 			if(_self.objCuadroAgrupacion!=null)
+						 				{
+											_self.objCuadroAgrupacion.desagrupar();
+						 				
+						 				}
 
-									_self.deseleccionaLineaConexion();
+
+									
+
+										_self.lineaConexionSeleccionada = LineaConexionSVG();
+										_self.lineaConexionSeleccionada.$pagina=_self.$paginaActual;
+										_self.lineaConexionSeleccionada.$$padre= _self;
+
+										_self.lineaConexionSeleccionada.dibujar();
+										_self.lineaConexionSeleccionada.$elemento.hide();
+
+										_self.listaLineaConexion.push(_self.lineaConexionSeleccionada);
 
 
-					 				var lineaSVG = LineaConexion();
-							
-										lineaSVG.$$padre = _self;
-							      		lineaSVG.$pagina = _self.$paginaActual;
-
-							      		lineaSVG.dibujar();
-										
-
-										_self.$lineaActual = lineaSVG.$elementoDOM;
-										_self.lineaConexionSeleccionada=lineaSVG;
-										_self.$lineaActual.hide();
-
-										_self.seleccionaLineaConexion(lineaSVG);
-										_self.listaLineaConexion.push(lineaSVG);
-			
 
 
 								//e.stopPropagation();
 								//false;
-								
+								} 
 							}
 							//e.stopPropagation();
 
@@ -2038,27 +2035,26 @@ function Flujo (idDOM){
 			//evento de mover
 				$elementos.mousemove(function(e){
  					
- 					//console.log(" "+e.clientX+" --" +e.clientY);
-				   if(_self.estado!=2)
+ 				 if(_self.estado!=2)
 	      		   {
-	      		   	_self.ban_escribir=0;
+	      		   	_self.ban_crear_linea_conexion=0;
 	      		   	return true;
 	      		   }
 						
 
-	      		   if(_self.ban_escribir>=1 && _self.ban_escribir<10)
+	      		   if(_self.ban_crear_linea_conexion>=1 && _self.ban_crear_linea_conexion<10)
 	      		   {
-	      		   		_self.ban_escribir++;
+	      		   		_self.ban_crear_linea_conexion++;
 	      		   }
-	      		   else if(_self.ban_escribir>=10)
+	      		   else if(_self.ban_crear_linea_conexion>=10)
 	      		   {
 
 
-	  					var x = e.clientX - _self.$paginaActual.offset().left-7;
-			        	var y = e.clientY - _self.$paginaActual.offset().top-5;
+	      		   	
 
-			        	_self.$paginaActual.find(".punto_movibleinicio").show();
-			 			_self.$paginaActual.find(".punto_moviblefin").show();
+	      		   		var x = e.clientX - _self.$paginaActual.offset().left-7;
+			        	var y = e.clientY - _self.$paginaActual.offset().top-7;
+				
 
 			 			_self.$paginaActual.find(".punto_movibleinicio").css(
 		      				posicionesInicio
@@ -2069,6 +2065,9 @@ function Flujo (idDOM){
 					      		left: x
 					      		});	
 
+			        	_self.$paginaActual.find(".punto_movibleinicio").show();
+			 			_self.$paginaActual.find(".punto_moviblefin").show();
+
 			 			
 
 			 				var coords = {
@@ -2076,23 +2075,60 @@ function Flujo (idDOM){
 						        clientY: e.clientY
 						    };
 
-				
-
-
- 		
-					
-							 _self.$paginaActual.find(".punto_moviblefin").simulate("mousedown", e);
+						// _self.$paginaActual.find(".punto_c_moviblefin").simulate("mousedown", e);
 						
-				 			_self.actualizacionBolasLinea(_self,_self.$lineaActual,e, null);
-				 			
-				 			_self.$lineaActual.show();
-				 			_self.$lineaActual.click();//actuliza la animacion
-		
 
-						//_self.ban_crear_grupo=0;
 
-					_self.ban_escribir=-1;	
-	      		   }
+					 		
+						if(_self.lineaConexionSeleccionada &&  
+							_self.ban_crear_linea_conexion==0
+							)
+							{
+								//eliminar..
+								//_self.objCuadroAgrupacion.agrupar();
+
+								_self.$paginaActual.find(".punto_circle").hide();
+								_self.$paginaActual.find(".elementos_seleccionado").removeClass("elementos_seleccionado");
+
+							}
+					
+						else {
+								
+							
+								_self.actualizacionPuntosLineaConexion(_self, _self.lineaConexionSeleccionada ,e, null);
+
+
+
+
+								var mi1xx= parseInt(_self.$paginaActual.find(".punto_movibleinicio").css("left"));
+								var mi1yy= parseInt(_self.$paginaActual.find(".punto_movibleinicio").css("top"));
+								var mi2xx= parseInt(_self.$paginaActual.find(".punto_moviblefin").css("left"));
+								var mi2yy= parseInt(_self.$paginaActual.find(".punto_moviblefin").css("top"));
+
+
+								// centrar el punto 2 
+								var miX2= Math.min(
+									mi1xx,
+									mi2xx
+									) +Math.abs(mi1xx-mi2xx)/2;
+
+
+							
+								/*_self.$paginaActual.find(".punto_moviblefin").css(
+									{left:miX2});
+
+								_self.$paginaActual.find(".punto_moviblefin").show();
+								*/
+
+								_self.$paginaActual.find(".punto_moviblefin").simulate("mousedown", coords);
+
+            					_self.ban_crear_linea_partes=-1;
+            					_self.lineaConexionSeleccionada.$elemento.show();
+
+            					// gato .. gato 
+
+							}	
+					}
 
 				});
 
@@ -2102,44 +2138,30 @@ function Flujo (idDOM){
 		      	$(document).on('mouseup',function(e){
 
 
-	  					var x = e.clientX - _self.$paginaActual.offset().left-7;
-			        	var y = e.clientY - _self.$paginaActual.offset().top-7;
-
-
-		      		//console.log("mouse up -->"+_self.ban_crear_linea_partes);
+	  					//console.log("mouse up -->"+_self.ban_crear_linea_partes);
 		      		   if(_self.estado!=2)
 		      		   {
-		      		   	_self.ban_escribir=0;
-		      		   	return true;
+		      		   		_self.ban_crear_linea_conexion=0;
+		      		   		return true;
 		      		   }
+
 						
-						if(_self.ban_escribir==-1)
+						// se forma bien
+						if(_self.ban_crear_linea_conexion==-1)
 		      		 	{
-		      		 		
-		      		 		if(_self.lineaConexionSeleccionada &&  
-							 _self.lineaConexionSeleccionada.$elementoDOM && 
-
-							Math.abs(posicionesInicio.left - x)<10 &&
-							Math.abs(posicionesInicio.top - y)<10
-							)
-							{
-								//eliminar..
-								
-		      		 			_self.$lineaActual.hide();
-		      		 			_self.lineaConexionSeleccionada.eliminarLinea();
-		      		 			$(".punto_circle").hide();
-		      		 			
-
-							}
-		      		 		_self.ban_escribir=0;
+		  	    		 	_self.ban_crear_linea_conexion=0;
 		      		 	}
 
+		      		 	//creo mal deber eleimiar
 		      		 	else
-		      		 	if(_self.ban_escribir>=1){
-			      		 		_self.$lineaActual.hide();
-			      		 		_self.lineaConexionSeleccionada.eliminarLinea();
-		      		 			$(".punto_circle").hide();
-		      		 		_self.ban_escribir=0;
+		      		 	if(_self.ban_crear_linea_conexion>=1){
+
+		      		 		if(_self.lineaConexionSeleccionada)
+		      		 		{
+
+	      		 				//_self.lineaConexionSeleccionada.eliminarLinea();
+		      		 			_self.ban_crear_linea_conexion=0;
+		      		 		}
 		      		 	}
 		      			
 		      	});
@@ -2158,7 +2180,7 @@ function Flujo (idDOM){
 		       function publica. para actualizar la linea de conexion seleccionada
 		      ** prepara la parte grafica . .. 
 		      @param tipo_lineaConexion {LineaConexion} la linea de conexion seleeccionada 
-		      */
+		      
 		      ,seleccionaLineaConexion:function(tipo_lineaConexion)
 		      {
 		      	var _self = this;
@@ -2171,13 +2193,13 @@ function Flujo (idDOM){
 
 
 		      }// fin  fucion -->seleccionaLineaConexion
-
+*/
 
 		      //seleccioan Query de la linea actual
 		      ,seleccionLineaActulaDOM:function($lineaA){
 		      	var _self= this;
 		      	
-		      		_self.$lineaActual = $lineaA;
+		      	/*	_self.$lineaActual = $lineaA;
 						
 	
 						var arrayPuntoFin = _self.$lineaActual.attr("data-puntos_punto_moviblefin");
@@ -2202,7 +2224,7 @@ function Flujo (idDOM){
 		      				});
 
 						}
-
+				*/
 
 		      }// fin de la funcion -> seleccion$lineaActula
 
@@ -2215,10 +2237,10 @@ function Flujo (idDOM){
 		      		{
 
 		      			_self.lineaConexionSeleccionada
-		      				.eliminarSeleccionado();
+		      				.activarIndicacionSelecccionada(false);
 
 		      			_self.lineaConexionSeleccionada=null;
-						_self.$lineaActual=null;
+					
 
 		      		}
 
@@ -2291,7 +2313,7 @@ function Flujo (idDOM){
 		      		{
 
 		      			//edicion de estado
-		      			if(_self.estado==2)
+		      			/*if(_self.estado==2)
 		      			{
 
 			      			if(_self.ban_escribir==1 || _self.ban_escribir==2 )
@@ -2318,7 +2340,7 @@ function Flujo (idDOM){
 
 		      			}	
 
-
+						*/
 
 		      		}else
 		      		//SUPRIMIR
@@ -2351,12 +2373,15 @@ function Flujo (idDOM){
 				    		// edicion de lineas de conexion
 				    		case 2:
 
-				    			if(_self.lineaConexionSeleccionada &&
-				    				_self.lineaConexionSeleccionada.sePuedeEliminar())
-				    				{
-				    					_self.lineaConexionSeleccionada.eliminarLinea();
-				    				}	
+				    			if(_self.lineaConexionSeleccionada && _self.lineaConexionSeleccionada.seleccionado)
+					    		{
+					    				_self.lineaConexionSeleccionada.eliminarLinea();
+
+					    		}
+
 				    		break;
+
+
 
 				    		case 4:
 					    		if(_self.cuadroSeleccionado && _self.cuadroSeleccionado.sePuedeDelte())
@@ -2602,16 +2627,16 @@ function Flujo (idDOM){
 			            ,opacity: 0.6
 			            //,"zIndex": 100
 			            ,drag:function( event, ui ){
-			            		if(_self.$lineaActual==null)
+			            		if(_self.lineaConexionSeleccionada==null)
 		      						return;
-			            	 _self.actualizacionBolasLinea(_self,_self.$lineaActual,event, ui);
+			            	 _self.actualizacionPuntosLineaConexion(_self,_self.lineaConexionSeleccionada ,event, ui);
 			            }
 			            ,stop:function( event, ui ){
-			            		if(_self.$lineaActual==null)
+			            		if(_self.lineaConexionSeleccionada==null)
 		      						return;
 
 
-			            	_self.actualizacionBolasLinea(_self,_self.$lineaActual,event, ui);
+			            	_self.actualizacionPuntosLineaConexion(_self,_self.lineaConexionSeleccionada,event, ui);
 			            }
 			            //,revert:""
 			            ,scroll: false  
@@ -2680,104 +2705,11 @@ function Flujo (idDOM){
 
 
 
-		      // **************************
-		      // funcion --> actualizacionBolasLinea() 
-		      // 
-		     , actualizacionBolasLinea:function(_self,$lineaActual,event, ui ){
-
-
-	             var xFin = parseInt( _self.$paginaActual.find(".punto_moviblefin").css("left"))+5;
-	             var xInicio = parseInt( _self.$paginaActual.find(".punto_movibleinicio").css("left"))+5;	
-	             var mileft=0; 
-	             var miAncho=0;
-	             var escalaX=1;
-	             
-	             var yFin = parseInt( _self.$paginaActual.find(".punto_moviblefin").css("top"))+5;
-	             var yInicio = parseInt( _self.$paginaActual.find(".punto_movibleinicio").css("top"))+5;	
-	             var mitop=0; 
-	             var miAlto=0;
-	             
-	             var escalaY=1; 
-
-	             /// guarda las posiciones de esferas de conexion
-	             _self.$lineaActual.attr("data-puntos_punto_moviblefin",""+(xFin-5)+";"+(yFin-5)); 
-	             _self.$lineaActual.attr("data-puntos_movibleinicio",""+(xInicio-5)+";"+(yInicio-5)); 
-
-
-	             console.info("sleeccion puntos_movibleinicio  :: "+ _self.$lineaActual.attr("data-puntos_movibleinicio"));
-
-	              //manejo en el X
-	              if(xFin>xInicio)
-	              {
-		              	mileft=xInicio;
-		              	miAncho =xFin- xInicio;
-		              	escalaX=1;
-	              }
-	              else {
-
-		              	mileft=xFin;
-		              	miAncho = xInicio-xFin;
-		              	escalaX=-1;
-	              }
-
-
-
-	              // manejo en el Y
-	              if(yFin>yInicio)
-	              {
-	              	mitop = yInicio;
-	              	miAlto = yFin - yInicio;
-	              	escalaY=1;
-	              }
-	              else {
-
-	              	mitop=yFin;
-	              	miAlto = yInicio-yFin;
-	              	escalaY=-1;
-	              }
-
-
-	              var mitransform='matrix('+escalaX+', 0, 0, '+escalaY+', 0, 0)';
-		           //  console.log(" "+mileft +"-> " +miAncho);
-		           if(miAncho<2)
-		           		miAncho=2;
-
-		           if(miAlto<2)
-		           		miAlto =2;
-		           	
-
-	              $lineaActual.css(
-	              			{left: mileft, 
-	              			 width: miAncho,
-	              			 transform: mitransform , 
-	              			 top:mitop ,
-	              			 height:miAlto});
-
-	              if(_self.lineaConexionSeleccionada)
-	              {
-	              	_self.lineaConexionSeleccionada.actualizoPosicionTexto();
-	              }
-
-		     }// fin --> actualizacionBolasLinea()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+		    
 
 
   // **************************
-		      // funcion --> actualizacionBolasLinea() 
+		      // funcion --> actualizacionPuntosAgrupacion() 
 		      // 
 		     , actualizacionPuntosAgrupacion:function(_self,mi_objCuadroAgrupacion,event, ui ){
 
@@ -2852,7 +2784,7 @@ function Flujo (idDOM){
 	              }
 	             
 
-		     }// fin --> actualizacionBolasLinea()
+		     }// fin --> actualizacionPuntosAgrupacion()
 
 
 
@@ -2861,7 +2793,7 @@ function Flujo (idDOM){
 
 
   // **************************
-		      // funcion --> actualizacionBolasLinea() 
+		      // funcion --> actualizacionPuntosLineasPartes() 
 		      // 
 		     , actualizacionPuntosLineasPartes:function(_self, mi_objLineaPartes, event, ui ){
  
@@ -2904,10 +2836,57 @@ function Flujo (idDOM){
 	             
 	             return true;
 
-		     }// fin --> actualizacionBolasLinea()
+		     }// fin --> actualizacionPuntosLineasPartes()
 
 
 
+
+
+
+
+  			// **************************
+		      // funcion --> actualizacionPuntosLineaConexion() 
+		      // 
+		     , actualizacionPuntosLineaConexion:function(_self, mi_lineaConexion, event, ui ){
+ 
+
+
+	             var x1 = parseInt( _self.$paginaActual.find(".punto_movibleinicio").css("left"))+5;
+	             var x2 = parseInt( _self.$paginaActual.find(".punto_moviblefin").css("left"))+5;
+	            
+
+	             var y1 = parseInt( _self.$paginaActual.find(".punto_movibleinicio").css("top"))+5;	
+				 var y2 = parseInt( _self.$paginaActual.find(".punto_moviblefin").css("top"))+5;	
+	             	             
+	             // el  top . el mas bajo en y
+	            var mitop=Math.min(y1,y2);
+	            var miAlto=Math.max(y1,y2);
+	            	miAlto= Math.abs(miAlto-mitop);
+		         
+
+
+	            var mileft=Math.min(x1,x2);
+	            var miAncho=Math.max(x1,x2);
+	            	miAncho= Math.abs(miAncho-mileft);  	
+
+	              
+	             if(mi_lineaConexion &&  mi_lineaConexion.$elemento )
+	              {
+	              	mi_lineaConexion.$elemento.css(
+	              			{left: mileft, 
+	              			 width: miAncho,
+	              			 top:mitop ,
+	              			 height:miAlto});
+
+	              	//resalta los elemnentos seleccaiondos
+	              	 return mi_lineaConexion.actualizarPoscionCentralizado();
+
+	              	
+	              }
+	             
+	             return true;
+
+		     }// fin --> actualizacionPuntosLineaConexion()
 
 
 
@@ -3107,7 +3086,7 @@ function Flujo (idDOM){
 
 		     	for(var i=0; i< _self.listaLineaConexion.length ; i++)
 		     	{
-		     		_self.listaLineaConexion[i].eliminarSeleccionado();
+		     		_self.listaLineaConexion[i].activarIndicacionSelecccionada(false);
 
 
 		     	}
@@ -3131,8 +3110,7 @@ function Flujo (idDOM){
 		     				_self.listaLineaConexion.splice(i,1);
 
 		     				_self.lineaConexionSeleccionada=null;
-		     				_self.$lineaActual=null;
-
+		     				
 		     			}
 		     		}// fin de for
 

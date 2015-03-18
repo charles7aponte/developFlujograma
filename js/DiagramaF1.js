@@ -237,7 +237,7 @@ function DiagramaF1 (){
 				$punto1.on('mousedown',function(e){
 					
 
-				//	_self.$$padre.eventoDeDisparoAlCrearLineaConexion = function(){
+					//_self.$$padre.eventoDeDisparoAlCrearLineaConexion = function(){
 
 					console.error("mi ddown digram cruz");
 
@@ -251,7 +251,7 @@ function DiagramaF1 (){
 								{
 									$punto = _self.$pagina.find(".punto_movibleinicio");
 									mitipo="linea";
-									lineaActual= _self.$$padre.getLineaAcutal();
+									lineaActual= _self.$$padre.lineaConexionSeleccionada;
 								
 									
 								}
@@ -359,7 +359,7 @@ function DiagramaF1 (){
 								{
 										
 									mitipo="linea";
-									lineaActual= _self.$$padre.getLineaAcutal();
+									lineaActual= _self.$$padre.lineaConexionSeleccionada;
 									
 									
 								}
@@ -411,12 +411,10 @@ function DiagramaF1 (){
 								}
 
 
-
-								console.log("se inserto-...");
 							}
 
 							$punto1.removeClass("puntos_conexion_resaltados");
-							console.log("drop1.. satisfaccion");
+							//console.log("drop1.. satisfaccion");
 						},
 						out:function(event, ui) {
 
@@ -438,13 +436,16 @@ function DiagramaF1 (){
 								//var lineaActual =_self.ext_getLineaActual();
 								//var lineaActual =_self.$$padre.$lineaActual;
 
-								console.log("estado ::: "+_self.$$padre.estado);
-								console.log(_self.linea1);
+								console.info (" salio..........consoleestado ::: "+_self.$$padre.estado);
+								console.log(".... ---> "+tipoPuntoCirculo);
 								
 								switch(tipoPuntoCirculo){
 									case "punto1": 
-										if(_self.$$padre.estado ==2 && _self.linea1 && _self.linea1.$linea &&  _self.linea1.$linea[0]== _self.$$padre.$lineaActual[0]
-											&&  	_self.linea1.$punto[0]==$punto[0])
+										if(_self.$$padre.estado ==2 && 
+											    _self.linea1 
+											&&  _self.linea1.$linea 
+											&&  _self.linea1.$linea == _self.$$padre.lineaConexionSeleccionada
+											&&  _self.linea1.$punto[0]==$punto[0])
 										{
 											_self.linea1.$linea=null;
 											_self.linea1.$punto=null;
@@ -470,7 +471,7 @@ function DiagramaF1 (){
 										if(_self.$$padre.estado ==2  
 											&& _self.linea2
 											 && _self.linea2.$linea 
-											 &&  _self.linea2.$linea[0]== _self.$$padre.$lineaActual[0]
+											 &&  _self.linea2.$linea== _self.$$padre.lineaConexionSeleccionada
 											 &&  	_self.linea2.$punto[0]==$punto[0])
 											{
 											_self.linea2.$linea= null;
@@ -478,7 +479,10 @@ function DiagramaF1 (){
 											_self.linea2.tipo=null;
 											}
 											else 
-											if(_self.$$padre.estado ==10 && _self.linea2 &&  _self.linea2.$linea && _self.$$padre.objLineaPartes  
+											if(_self.$$padre.estado ==10 
+												&& _self.linea2 
+												&&  _self.linea2.$linea 
+												&& _self.$$padre.objLineaPartes  
 												&&  _self.linea2.$linea== _self.$$padre.objLineaPartes
 												&&  _self.linea2.$punto[0]== $punto[0])
 											{ 
@@ -486,21 +490,29 @@ function DiagramaF1 (){
 											_self.linea2.$punto= null;
 											_self.linea2.tipo=null;
 											}
+
+											console.info(_self.linea2);
 									break;
 
 
 
 
 									case "punto3": 
-										if(_self.$$padre.estado ==2 &&  _self.linea3 && _self.linea3.$linea && _self.linea3.$linea[0]== _self.$$padre.$lineaActual[0]
-												&&  	_self.linea3.$punto[0]==$punto[0])
+										if(_self.$$padre.estado ==2 && 
+												 _self.linea3 && 
+												 _self.linea3.$linea && 
+												 _self.linea3.$linea== _self.$$padre.lineaConexionSeleccionada
+												&& 	_self.linea3.$punto[0]==$punto[0])
 											{
 											_self.linea3.$linea= null;
 											_self.linea3.$punto= null;
 											_self.linea3.tipo=null;
 											}
 											else 
-											if(_self.$$padre.estado ==10 && _self.linea3 &&  _self.linea3.$linea && _self.$$padre.objLineaPartes  
+											if(_self.$$padre.estado ==10 
+												&&  _self.linea3 
+												&&  _self.linea3.$linea 
+												&&  _self.$$padre.objLineaPartes  
 												&&  _self.linea3.$linea== _self.$$padre.objLineaPartes
 												&&  _self.linea3.$punto[0]== $punto[0])
 											{ 
@@ -513,8 +525,12 @@ function DiagramaF1 (){
 
 
 									case "punto4":
-										if(_self.$$padre.estado ==2 && _self.linea4 &&  _self.linea4.$linea && _self.$$padre.$lineaActual  
-												&&  _self.linea4.$linea == _self.$$padre.$lineaActual[0]
+
+										if(_self.$$padre.estado ==2 
+												&& _self.linea4 
+												&&  _self.linea4.$linea 
+												&& _self.$$padre.$lineaConexionSeleccionada  
+												&&  _self.linea4.$linea == _self.$$padre.lineaConexionSeleccionada
 												&&  _self.linea4.$punto[0]== $punto[0])
 											{ 
 											_self.linea4.$linea= null;
@@ -523,14 +539,18 @@ function DiagramaF1 (){
 											}
 
 										else 
-											if(_self.$$padre.estado ==10 && _self.linea4 &&  _self.linea4.$linea && _self.$$padre.objLineaPartes  
-												&&  _self.linea4.$linea== _self.$$padre.objLineaPartes
+											if(_self.$$padre.estado ==10 
+												&& _self.linea4 
+												&&  _self.linea4.$linea 
+												&& _self.$$padre.objLineaPartes  
+												&&  _self.linea4.$linea == _self.$$padre.objLineaPartes
 												&&  _self.linea4.$punto[0]== $punto[0])
 											{ 
 											_self.linea4.$linea= null;
 											_self.linea4.$punto= null;
 											_self.linea4.tipo=null;
 											}
+
 									break;
 								}
 
@@ -863,8 +883,6 @@ function DiagramaF1 (){
 			              _self.actualizaLineaAgrupada(_self.$c2, _self.linea2);
 			              _self.actualizaLineaAgrupada(_self.$c3, _self.linea3);
 			              _self.actualizaLineaAgrupada(_self.$c4, _self.linea4);
-			       
-
 			              
 			           }
 
@@ -1080,7 +1098,7 @@ function DiagramaF1 (){
 					if($$linea.tipo=="linea")
 					{
 			
-							_self.$$padre.seleccionLineaActulaDOM($$linea.$linea);
+							//_self.$$padre.seleccionLineaActulaDOM($$linea.$linea);
 
 							$punto.css({
 									top:y +"px",
@@ -1088,7 +1106,7 @@ function DiagramaF1 (){
 							});
 
 						//actualiza la linea
-						_self.$$padre.actualizacionBolasLinea(_self.$$padre,_self.$$padre.$lineaActual,null, null);
+						_self.$$padre.actualizacionPuntosLineaConexion(_self.$$padre, $$linea.$linea,null, null);
 						_self.$$padre.$paginaActual.find(".punto_moviblefin").show();
 
 					}
