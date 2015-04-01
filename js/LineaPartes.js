@@ -285,9 +285,8 @@ function LineaPartes(){
 
 		   _seft.$elemento.on('mousedown',function (e) {
 
-
-
-		   	_seft.activarIndicacionSelecccionada(true);
+			_seft.cargaPoscionAnterioresActu(e);
+		   	//_seft.activarIndicacionSelecccionada(true);
 		   	e.stopPropagation();
 		   });
 
@@ -333,7 +332,7 @@ function LineaPartes(){
 		 //evnto al dar click sobre la linea
          _seft.$elemento.on('click',function (e) {
 	      		
-	         _seft.cargaPoscionAnterioresActu(e);
+	         //_seft.cargaPoscionAnterioresActu(e);
 			//return false;
         });
 
@@ -356,6 +355,7 @@ function LineaPartes(){
 
 		///cargar loas datos de las poscion gudardas .... 
 		,cargaPoscionAnterioresActu:function(e){
+
 
 			var _seft= this;
 			_seft.cargarPosicionesPuntosData();

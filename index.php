@@ -93,7 +93,7 @@
 
         body[data-estado=1]
         .linea_partes_punto_circle {
-           display: none; 
+           display: none 
         }
 
 
@@ -697,7 +697,7 @@
                           <a href="#" 
                           alt="regresar"
                           onclick="false" 
-                          style="padding:2px 10px; margin:0px 0px 1px 42px;" 
+                          style="padding:2px 10px; margin:0px 0px 1px 2px;" 
                           id="bton_regresar"
                           class="miboton [tinmibotony small large] button [alert success secondary] [disabled]">
                           <span style="font-size:29px;" class="fi-x">
