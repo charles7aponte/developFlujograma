@@ -181,6 +181,16 @@ function DiagramaF1 (){
 						  	case "n3":
 						  		$puntoDIV.css("bottom",(valor-3)+"px");
 						  	break;
+
+
+						  	case "n7":
+						  		
+						  		$puntoDIV.css("bottom",(valor+_self.$elemento.width()/8)+"px");
+						  	break;
+
+						  	case "n8":
+						  		$puntoDIV.css("bottom",(valor+_self.$elemento.width()/10)+"px");
+						  	break;
 						  }
 					break;
 
@@ -975,6 +985,7 @@ function DiagramaF1 (){
 
 			  		_self.$elemento.resizable({
 			        // autoHide: true 
+			         aspectRatio: 1,	
 			          handles: "bton_edicion,bton_ver_personal,n, e, s, w, ne, se, sw, nw, all" 
 			          ,resize:function(event, ui)
 			           {
