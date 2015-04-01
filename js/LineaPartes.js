@@ -4,6 +4,9 @@ function LineaPartes(){
 		$pagina:null
 		,tipo:"linea_partes"
 		
+
+		,lineaActual:null // guarda al alainea que se enlacza
+
 		,tipoLinea:0 /// 0 sin linea , 1 con linea derecha , 2 linea izquierda ,  3 dos lineas 
 		,flechaDerecha:null 
 		,flechaIzquierda:null
@@ -28,11 +31,12 @@ function LineaPartes(){
 
 
 		,$elemento:null
-		,dibujar:function(id_nuevo){
+		,dibujar:function(id_nuevo,estado){
 
 			var _seft= this;
-			var $elemento = $("<svg class='linea_partes' data-puntos_movible1='' "+
-								"data-puntos_movible2=''  data-puntos_movible3='' "
+			var $elemento = $("<svg class='linea_partes' data-puntos_movible1='' "
+								+" data-puntos_movible2=''  data-puntos_movible3='' "
+								+" data-estado_flechas='0' "
 								+" style='z-index:5;width:20px; height:20px;position:absolute; overflow: visible;' "
 								+" data-label='' >");
 
@@ -103,6 +107,15 @@ function LineaPartes(){
 	              }
 
 	              _seft.$elemento.attr("id","id_linea_pares"+id_linea);
+
+
+
+	              if(estado)
+	              {
+	              	_seft.$elemento.attr("data-estado_flechas",estado+"");
+	              	_seft.$elemento.data("estado_flechas",estado+"");
+	              	_seft.estado_flechas= estado;
+	              }
             }
             else{
 
@@ -110,6 +123,8 @@ function LineaPartes(){
 		       _seft.$elemento.attr("id","id_linea_pares"+_seft.$$padre.contadorLineasPartes);
 		       _seft.$pagina= _seft.$$padre.$paginaActual;
 		       _seft.$textoP.hide();
+
+		       _seft.$$padre.actualizaBotonesFlechas(0);
             }  
 
 
@@ -118,6 +133,7 @@ function LineaPartes(){
             _seft.activarIndicacionSelecccionada(true);
 
 
+        
             
 
 
@@ -131,31 +147,37 @@ function LineaPartes(){
 		// actualiza visualmente, la visibilidad de las flechas segun el estado	
 		// 
 		,actualizarVisualmente:function(){
+
+
 			var _seft = this;
-			switch(_seft.estado_flechas){
+			switch(_seft.estado_flechas+""){
 
-				case 0:
-					_seft.flechaDerecha.attr({display:'none'}); 
-					_seft.flechaIzquierda.attr({display:'none'});
+				case '0':
+					_seft.flechaDerecha.attr({opacity:'0'}); 
+					_seft.flechaIzquierda.attr({opacity:'0'});
 				break;
 
-				case 1:
-					_seft.flechaDerecha.attr({display:'none'}); 
-					_seft.flechaIzquierda.attr({display:'block'});
-				break;
+				case '1':
 
-
-				case 2:
-					_seft.flechaDerecha.attr({display:'block'}); 
-					_seft.flechaIzquierda.attr({display:'none'});
+					_seft.flechaDerecha.attr({opacity:'0'}); 
+					_seft.flechaIzquierda.attr({opacity:'1'});
 				break;
 
 
-				case 3:
-					_seft.flechaDerecha.attr({display:'block'}); 
-					_seft.flechaIzquierda.attr({display:'block'});
+				case '2':
+					_seft.flechaDerecha.attr({opacity:'1'}); 
+					_seft.flechaIzquierda.attr({opacity:'0'});
 				break;
 
+
+				case '3':
+					_seft.flechaDerecha.attr({opacity:'1'}); 
+					_seft.flechaIzquierda.attr({opacity:'1'});
+				break;
+
+
+				_seft.$elemento.attr("data-estado_flechas",_seft.estado_flechas+"");
+				_seft.$elemento.data("estado_flechas",_seft.estado_flechas+"");
 			}
 		}
 
@@ -187,6 +209,12 @@ function LineaPartes(){
 
 					$(".linea_partes_punto_movible1,.linea_partes_punto_movible2,.linea_partes_punto_movible3").hide();
 
+					_seft.$textoP.remove();
+
+					if(_seft.lineaActual)
+					{
+						_seft.lineaActual={$linea : null , $punto:null, tipo:null};	
+					}
 
 
 					
@@ -201,6 +229,8 @@ function LineaPartes(){
 		     		}// fin de for
 		     		_seft.$$padre.objLineaPartes=null;
 				});
+
+
 
 			}
 
@@ -359,6 +389,9 @@ function LineaPartes(){
          	}
 
 
+         	/// cargar visualemene la flechas seleccionadoas
+         	_seft.$$padre.actualizaBotonesFlechas(_seft.estado_flechas);//
+
          	_seft.$$padre.objLineaPartes=_seft;
 
 		}// function cargaPoscionAnterioresActu
@@ -445,6 +478,8 @@ function LineaPartes(){
 			 	}
 
 			 	_seft.$p2.css({'top':medioY });
+
+			 	
 			 	
 			 	p1= _seft.conversionTopToy(_seft.$p1, desFaseX,desFaseY);
 	     		p2= _seft.conversionTopToy(_seft.$p2, desFaseX,desFaseY);
@@ -624,20 +659,20 @@ function LineaPartes(){
 				}
 
 
-				miXY={izquierda:{x:p1.x-20	,y:p1.y-10 } , derecha: {x:p3.x-25,y: p3.y-10}};
+				miXY={izquierda:{x:p1.x-10	,y:p1.y-5 } , derecha: {x:p3.x-10,y: p3.y-5}};
 
 
 
 			}
 			else{
 
-				miXY={izquierda:{x:p1.x-20, y:p1.y-10 } , derecha: {x:p3.x-20, y:p3.y-10}};
+				miXY={izquierda:{x:p1.x-10, y:p1.y-5 } , derecha: {x:p3.x-10, y:p3.y-5}};
 
 				if(p1.y>= p2.y-2 && p1.y<=p2.y+2  )
 				{
 					_seft.flechaIzquierda.select("g").attr({transform:'r-90'});	
 
-					miXY={izquierda:{x:p1.x-20, y:p1.y-10 } , derecha: {x:p3.x-20, y:p3.y}};
+					miXY={izquierda:{x:p1.x-10, y:p1.y-5 } , derecha: {x:p3.x-10, y:p3.y-5}};
 				}
 				else if(p1.y <=  p2.y)
 				{
@@ -652,7 +687,7 @@ function LineaPartes(){
 				if(p3.y>= p2.y-2 && p3.y<=p2.y+2  )
 				{
 					_seft.flechaDerecha.select("g").attr({transform:'r90'});
-					miXY={izquierda:{x:p1.x-20, y:p1.y-10 } , derecha: {x:p3.x-20, y:p3.y-10}};	
+					miXY={izquierda:{x:p1.x-10, y:p1.y-5 } , derecha: {x:p3.x-10, y:p3.y-5}};	
 				}
 				else if(p3.y <  p2.y)
 				{
@@ -673,6 +708,8 @@ function LineaPartes(){
 
 
 			_seft.actualizarVisualmente();
+
+
 
 
 

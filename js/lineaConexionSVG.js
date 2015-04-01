@@ -8,9 +8,13 @@ function LineaConexionSVG(){
 		,flechaDerecha:null 
 		,flechaIzquierda:null
 
+		,lineaActual:null // guarda al alainea que se enlacza
+
+		,estado_flechas:0 // 0 sin flechas , 1 flecha izquierda , 2 flecha derecha , 3 flechas a los dos lados
+
 
 		/// padre
-		, $$padre:null
+		,$$padre:null
 
 		,$p1:null
 		,$p2:null
@@ -26,11 +30,12 @@ function LineaConexionSVG(){
 
 
 		,$elemento:null
-		,dibujar:function(id_nuevo){
+		,dibujar:function(id_nuevo, estado){
 
 			var _seft= this;
-			var $elemento = $("<svg class='linea_partes' data-puntos_punto_moviblefin='' "+
-								" data-puntos_movibleinicio='' "
+			var $elemento = $("<svg class='linea_partes' data-puntos_punto_moviblefin='' "
+								+" data-puntos_movibleinicio='' "
+								+" data-estado_flechas='0' "
 								+" style='z-index:5;width:20px; height:20px;position:absolute; overflow: visible;' "
 								+" data-label='' >");
 
@@ -80,6 +85,13 @@ function LineaConexionSVG(){
 	              }
 
 	              _seft.$elemento.attr("id","id_linea_"+id_linea);
+
+	              if(estado)
+	              {
+	              	_seft.$elemento.attr("data-estado_flechas",estado+"");
+	              	_seft.$elemento.data("estado_flechas",estado+"");
+	              	_seft.estado_flechas= estado;
+	              }
             }
             else{
 
@@ -87,6 +99,7 @@ function LineaConexionSVG(){
 		       _seft.$elemento.attr("id","id_linea_"+_seft.$$padre.contadorLineas);
 		       _seft.$pagina= _seft.$$padre.$paginaActual;
 		       _seft.$textoP.hide();
+		       _seft.$$padre.actualizaBotonesFlechas(0);
             }  
 
 
@@ -98,8 +111,49 @@ function LineaConexionSVG(){
             
 
 
-
 		}// fin function dibujar
+
+
+
+
+
+
+		// ****************
+		// ****************
+		// actualiza visualmente, la visibilidad de las flechas segun el estado	
+		// 
+		,actualizarVisualmente:function(){
+			var _seft = this;
+			switch(_seft.estado_flechas+""){
+
+				case '0':
+					_seft.flechaDerecha.attr({opacity:'0'}); 
+					_seft.flechaIzquierda.attr({opacity:'0'});
+				break;
+
+				case '1':
+					_seft.flechaDerecha.attr({opacity:'0'}); 
+					_seft.flechaIzquierda.attr({opacity:'1'});
+				break;
+
+
+				case '2':
+					_seft.flechaDerecha.attr({opacity:'1'}); 
+					_seft.flechaIzquierda.attr({opacity:'0'});
+				break;
+
+
+				case '3':
+					_seft.flechaDerecha.attr({opacity:'1'}); 
+					_seft.flechaIzquierda.attr({opacity:'1'});
+				break;
+
+
+				_seft.$elemento.attr("data-estado_flechas",_seft.estado_flechas+"");
+				_seft.$elemento.data("estado_flechas",_seft.estado_flechas+"");
+
+			}
+		}
 
 
 
@@ -130,8 +184,12 @@ function LineaConexionSVG(){
 					
 
 					$(".punto_moviblefin, .punto_movibleinicio").hide();
+					_seft.$textoP.remove();
+					if(_seft.lineaActual)
+					{
+						_seft.lineaActual={$linea : null , $punto:null, tipo:null};	
 
-
+					}
 
 					
 					
@@ -284,10 +342,10 @@ function LineaConexionSVG(){
 			var _seft= this;
 			_seft.cargarPosicionesPuntosData();
 
-      		if(_seft.$$padre.objLineaPartes)
+      		if(_seft.$$padre.lineaConexionSeleccionada)
       		{
-      		_seft.$$padre.objLineaPartes.activarIndicacionSelecccionada(false);
-      		_seft.$$padre.objLineaPartes =null;
+      		_seft.$$padre.lineaConexionSeleccionada.activarIndicacionSelecccionada(false);
+      		_seft.$$padre.lineaConexionSeleccionada =null;
       		}	
 
 
@@ -313,6 +371,9 @@ function LineaConexionSVG(){
          	}
 
 
+			/// cargar visualemene la flechas seleccionadoas
+         	_seft.$$padre.actualizaBotonesFlechas(_seft.estado_flechas);//
+
          	_seft.$$padre.lineaConexionSeleccionada=_seft;
 
 		}// function cargaPoscionAnterioresActu
@@ -330,12 +391,20 @@ function LineaConexionSVG(){
 			if(p2.x <= (p1.x+5) && p2.x >= (p1.x-5) )
 			{
 				p2.x =p1.x;	
+
+
+				_seft.flechaIzquierda.attr({x:p2.x});
+				_seft.flechaDerecha.attr({x:p2.x});
+
 			}
 
 			
 			if(p2.y <= (p1.y+5) && p2.y >= (p1.y-5) )
 			{
-				p2.y =p1.y;	
+				p2.y =p1.y;
+
+				_seft.flechaIzquierda.attr({y:p2.y});
+				_seft.flechaDerecha.attr({y:p2.y});	
 			}
 
 
@@ -372,7 +441,8 @@ function LineaConexionSVG(){
      		var listaPuntosFinal=[];// debe contenr 5 obj de la forma {x,y}
 
 
-		_seft.tipoMoviento=1;
+			_seft.tipoMoviento=1;
+
 
      		_seft.actualizarPosicionXY(p1, p2);
      		_seft.actualizoPosicionTexto();
@@ -382,7 +452,6 @@ function LineaConexionSVG(){
 
 
      		_seft.actualizarPositionFlechas();
-
 
      		return salida;
 
@@ -419,7 +488,10 @@ function LineaConexionSVG(){
 
 			var l1= _seft.$elemento.attr("data-puntos_movibleinicio").split(";");
 			var l2= _seft.$elemento.attr("data-puntos_punto_moviblefin").split(";");
-		
+	
+			//if(l1.length>2 && l2.length>1)
+			{
+
 
 			_seft.$p1.css({
 				top: l1[1]+"px",
@@ -431,6 +503,7 @@ function LineaConexionSVG(){
 				top: l2[1]+"px",
 				left: l2[0]+"px"
 				});
+			}
 
 		
 
@@ -542,7 +615,7 @@ function LineaConexionSVG(){
 
 
 
-     		miXY={izquierda:{x:p1.x-20, y:p1.y-10}, derecha:{x:p2.x-20, y:p2.y-10}};
+     		miXY={izquierda:{x:p1.x-10, y:p1.y-5}, derecha:{x:p2.x-10, y:p2.y-5}};
 
 
 

@@ -138,6 +138,9 @@ var manejoFlujo = Flujo("");
  manejoFlujo.leerGET();   
 
 
+ manejoFlujo.actualizaBotonesFlechas(-1);
+
+
 
 //btones y eventos de agrupacion
 //
@@ -200,6 +203,25 @@ $("#bton_estado4").click(function(e){
 $("#bton_Guardar").click(function(e){
   manejoFlujo.guardarDatosJson();
 
+});
+
+
+
+$("#bton_flecha_p1").click(function(){
+
+
+  manejoFlujo.actualizaEstadoRealFlechas(1);
+});
+
+
+
+$("#bton_flecha_p2").click(function(){
+  manejoFlujo.actualizaEstadoRealFlechas(2);
+});
+
+
+$("#bton_flecha_p3").click(function(){
+  manejoFlujo.actualizaEstadoRealFlechas(3);
 });
 
 

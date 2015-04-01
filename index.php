@@ -9,18 +9,18 @@
         var URLSOLICITUD= URL__SERVIDOR+"/servicios/cargar.php"; 
 		
 		/*
-		var URL__SERVIDOR1 = "http://ma.factoryim.com";
+		    var URL__SERVIDOR1 = "http://ma.factoryim.com";
         var URL__SERVIDOR = URL__SERVIDOR1+"/flujograma/";
         var URL_GUARDAR= URL__SERVIDOR+"/servicios/guardar.php";
         var URLSOLICITUD= URL__SERVIDOR+"/servicios/cargar.php"; 
-   */    
+      */
        
     </script>
   
   
 <?php 
-  $URL_SERVIDOR="http://localhost/git/developFlujograma/";
- // $URL_SERVIDOR="http://ma.factoryim.com/flujograma/";
+    $URL_SERVIDOR="http://localhost/git/developFlujograma/";
+    //$URL_SERVIDOR="http://ma.factoryim.com/flujograma/";
 ?>
 
       <meta charset="utf-8" />
@@ -71,6 +71,7 @@
           width: 12px;
           height: 12px;
           border-radius: 10px;
+          opacity: 0.8;
           cursor: url("<?php echo $URL_SERVIDOR.'/'?>css/cursor/icn_cursor_move.cur"),move !important;
        
         }
@@ -85,8 +86,14 @@
           background-position: -626px -114px; 
           width: 12px;
           height: 12px;
+          opacity: 0.8;
           border-radius: 10px;
         
+        }
+
+        body[data-estado=1]
+        .linea_partes_punto_circle {
+           display: none; 
         }
 
 
@@ -246,6 +253,18 @@
   border: none;
   opacity: 0.8;
   }
+
+
+
+   #botones_panel_superior>ul>li>a.miActivo1, a.miActivo1
+  {
+    background: #A2BCC5;
+    color: #E5F3F8;
+    border: none;
+    opacity: 0.8;
+  }
+
+
   
   /*#botones_panel_superior>ul>li>a.miActivo:hover, a.miActivo:hover
   {
@@ -569,15 +588,7 @@
          
 
 
-              <li>
-                <a href="#" onclick="false" id="bton_Guardar" alt="guardar"
-                class="botonFondo [tiny small large] button [alert success secondary] [disabled]"
-                style="background-image:url(<?php echo $URL_SERVIDOR.'/'?>img/icon_save.png) ;background-size: 71%;
-                  background-repeat: no-repeat;
-                  background-position: 50%;"
-                  >
-                </a>
-              </li>
+             
 
 
                 <li>
@@ -617,7 +628,7 @@
 
 
               <li>
-                <a href="#" onclick="false" id="bton_flecha_p2" alt="guardar"
+                <a href="#" onclick="false" id="bton_flecha_p3" alt="guardar"
                 class="  botonFondo [tiny small large] button [alert success secondary] [disabled]"
                 style="background-image:url(<?php echo $URL_SERVIDOR.'/'?>img/icon_flecha2.png) ;background-size: 71%;
                   background-repeat: no-repeat;
@@ -629,7 +640,7 @@
 
 
               <li>
-                <a href="#" onclick="false" id="bton_flecha_p3" alt="guardar"
+                <a href="#" onclick="false" id="bton_flecha_p2" alt="guardar"
                 class="  botonFondo [tiny small large] button [alert success secondary] [disabled]"
                 style="background-image:url(<?php echo $URL_SERVIDOR.'/'?>img/icon_flecha3.png) ;background-size: 71%;
                   background-repeat: no-repeat;
@@ -647,6 +658,17 @@
               <div class="small-4 large-4 columns" style="float:right" id="btone_derecho">
                  <div class="button-bar" id="botones_panel_inferior">
                     <ul class="button-group [radius round]">
+                      
+                      <li class="">
+                        <a href="#" 
+                         onclick="false"  
+                         id="bton_Guardar"
+                         alt="guardar"
+                         class="miboton [tiny small large] button [alert success secondary] [disabled]">
+                        <span style="font-size:29px;" class="fi-save"></span>
+                        </a></li>
+
+
                       <li class="">
                         <a href="#" onclick="false"  
                         id="bton_nueva_pagina"
@@ -663,6 +685,7 @@
                           </span></a>
                         </li>
 
+                      
 
              
                         <li>
@@ -968,7 +991,7 @@ height: 35px;">
 
     <script src="<?php echo $URL_SERVIDOR.'/'?>js/jquery.hittest.js"></script>
     <script src="<?php echo $URL_SERVIDOR.'/'?>js/MensajeDetalle.js"></script>
-    <script src="<?php echo $URL_SERVIDOR.'/'?>js/LineaConexionSVG.js"></script>
+    <script src="<?php echo $URL_SERVIDOR.'/'?>js/lineaConexionSVG.js"></script>
     <script src="<?php echo $URL_SERVIDOR.'/'?>js/LineaPartes.js"></script>
 
     <script src="<?php echo $URL_SERVIDOR.'/'?>js/CuadroSeleccion.js"></script>

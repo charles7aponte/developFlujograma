@@ -132,6 +132,7 @@ function DiagramaF1 (){
 				var siguiente=true;
 				var _self= this;
 				var ni=0;
+				var valor=0;
 
 
 				for(ni=0; ni< 1000 && siguiente ;ni++)
@@ -139,7 +140,6 @@ function DiagramaF1 (){
 
 					var s=_self.collision($puntoDIV,$elementoSVG);
 					
-					console.log(s);
 					if(s)
 					{
 						siguiente= false;
@@ -148,6 +148,77 @@ function DiagramaF1 (){
 					else {			
 					_self.moverConector(direccion,$puntoDIV);
 					}
+				}
+
+
+
+				//finaliza 
+				switch(direccion)
+				{
+					case "ab":// de arriba hacia abajo						 
+						  valor= parseInt($puntoDIV.css("top"));
+						  
+						  switch(_self.$elemento.data("mielemento"))
+						  {
+						  	case "n3":
+					  			$puntoDIV.css("top",(valor-2)+"px");
+					  			 
+						  	break;
+
+						  	case "n4":https://www.youtube.com/upload
+					  			$puntoDIV.css("top",(valor-2)+"px");
+					  			 
+						  	break;
+						  }
+					break;
+
+					case "ar":// de abajo hacia arriba
+						  valor= parseInt($puntoDIV.css("bottom"));
+						   
+						  switch(_self.$elemento.data("mielemento"))
+						  {
+						  	case "n4":
+						  	case "n3":
+						  		$puntoDIV.css("bottom",(valor-3)+"px");
+						  	break;
+						  }
+					break;
+
+
+
+					case "de":// izq a dercha
+						 valor =parseInt($puntoDIV.css("left"));
+						  switch(_self.$elemento.data("mielemento"))
+						  {
+						  	case "n3":
+						  		$puntoDIV.css("left",(valor-2)+"px");
+						  	break;
+
+						  
+						  }
+					break;
+
+
+					case "iz":// derecha a izq
+						 valor =parseInt($puntoDIV.css("right"));
+						  
+						  switch(_self.$elemento.data("mielemento"))
+						  {
+						  	case "n3":
+						  		$puntoDIV.css("right",(valor-4)+"px");
+						  	break;
+
+						  	case "n4":
+						  		$puntoDIV.css("right",(valor-4)+"px");
+						  	break;
+
+						  		case "n6":
+						  		$puntoDIV.css("right",(valor-5)+"px");
+						  	break;
+						  }
+					break;
+
+
 				}
 
 
@@ -161,6 +232,7 @@ function DiagramaF1 (){
 
 				var  delta=5;
 				var valorAuxiliar=0;
+				var _seft=this;
 				switch(direccion)
 				{
 					case "ab":// de arriba hacia abajo
@@ -170,8 +242,10 @@ function DiagramaF1 (){
 						 	valorAuxiliar=0;	
 						 	}
 
-						 valorAuxiliar +=delta; 
-						 $puntoDIV.css("top",valorAuxiliar+"px")
+						 valorAuxiliar +=delta; 				
+
+						
+						 $puntoDIV.css("top",(valorAuxiliar-2)+"px");
 					break;
 
 					case "ar":// de abajo hacia arriba
@@ -181,7 +255,7 @@ function DiagramaF1 (){
 						 	valorAuxiliar=0;	
 						 	}
 						 valorAuxiliar +=delta; 
-						 $puntoDIV.css("bottom",valorAuxiliar+"px")
+				 		 $puntoDIV.css("bottom",valorAuxiliar+"px");
 					break;
 
 
@@ -193,7 +267,9 @@ function DiagramaF1 (){
 						 	valorAuxiliar=0;	
 						 	}
 					 valorAuxiliar +=delta; 
-					 $puntoDIV.css("left",valorAuxiliar+"px")
+					
+				 		$puntoDIV.css("left",(valorAuxiliar-4)+"px");
+
 					break;
 
 
@@ -204,7 +280,10 @@ function DiagramaF1 (){
 							 	valorAuxiliar=0;	
 							 	}
 						 valorAuxiliar +=delta; 
-						 $puntoDIV.css("right",valorAuxiliar+"px")
+
+
+				 		 $puntoDIV.css("right",(valorAuxiliar+3)+"px");
+						
 					break;
 
 
@@ -253,14 +332,13 @@ function DiagramaF1 (){
 									mitipo="linea";
 									lineaActual= _self.$$padre.lineaConexionSeleccionada;
 								
-									
+									lineaActual.cargarPosicionesPuntosData();
 								}
 								else {
 									$punto = _self.$pagina.find(".linea_partes_punto_movible1");
 									mitipo ="linea_partes";
 									lineaActual=_self.$$padre.getLineaActualPartes();
 
-									console.log(lineaActual);
 								}
 
 
@@ -289,11 +367,6 @@ function DiagramaF1 (){
 										_self.linea2.$punto= $punto;
 										_self.linea2.tipo= mitipo;
 										_self.actualizaLineaAgrupada($punto1, _self.linea2);
-
-
-										console.log(2)
-										console.info(_self.linea2);
-										console.info($punto1)
 									break;
 
 									case "punto3": 
@@ -314,8 +387,6 @@ function DiagramaF1 (){
 										console.log(4)
 									break;
 								}
-
-
 
 							$punto1.removeClass("puntos_conexion_resaltados");
 
@@ -385,6 +456,8 @@ function DiagramaF1 (){
 										_self.linea1.$punto= $punto;
 										_self.linea1.tipo = mitipo;
 
+										lineaActual.lineaActual=_self.linea1;
+
 										
 									break;
 
@@ -392,6 +465,8 @@ function DiagramaF1 (){
 										_self.linea2.$linea= lineaActual;
 										_self.linea2.$punto= $punto;
 										_self.linea2.tipo = mitipo;
+
+											lineaActual.lineaActual=_self.linea2;
 										console.log(2)
 									break;
 
@@ -399,6 +474,8 @@ function DiagramaF1 (){
 										_self.linea3.$linea= lineaActual;
 										_self.linea3.$punto= $punto;
 										_self.linea3.tipo = mitipo;
+
+											lineaActual.lineaActual=_self.linea3;
 										console.log(3)
 									break;
 
@@ -406,6 +483,9 @@ function DiagramaF1 (){
 										_self.linea4.$linea= lineaActual;
 										_self.linea4.$punto= $punto;
 										_self.linea4.tipo = mitipo;
+
+
+											lineaActual.lineaActual=_self.linea4;
 										console.log(4)
 									break;
 								}
@@ -447,9 +527,13 @@ function DiagramaF1 (){
 											&&  _self.linea1.$linea == _self.$$padre.lineaConexionSeleccionada
 											&&  _self.linea1.$punto[0]==$punto[0])
 										{
+											_self.linea1.$linea.lineaActual=null;
 											_self.linea1.$linea=null;
 											_self.linea1.$punto=null;
 											_self.linea1.tipo=null;
+
+
+
 
 										}
 											else 
@@ -460,6 +544,8 @@ function DiagramaF1 (){
 												&&  _self.linea1.$punto[0]== $punto[0]
 												)
 											{ 
+											_self.linea1.$linea.lineaActual=null;	
+
 											_self.linea1.$linea= null;
 											_self.linea1.$punto= null;
 											_self.linea1.tipo=null;
@@ -474,6 +560,8 @@ function DiagramaF1 (){
 											 &&  _self.linea2.$linea== _self.$$padre.lineaConexionSeleccionada
 											 &&  	_self.linea2.$punto[0]==$punto[0])
 											{
+											_self.linea2.$linea.lineaActual=null;
+												
 											_self.linea2.$linea= null;
 											_self.linea2.$punto= null;
 											_self.linea2.tipo=null;
@@ -486,6 +574,8 @@ function DiagramaF1 (){
 												&&  _self.linea2.$linea== _self.$$padre.objLineaPartes
 												&&  _self.linea2.$punto[0]== $punto[0])
 											{ 
+											_self.linea2.$linea.lineaActual=null;
+												
 											_self.linea2.$linea= null;
 											_self.linea2.$punto= null;
 											_self.linea2.tipo=null;
@@ -504,6 +594,8 @@ function DiagramaF1 (){
 												 _self.linea3.$linea== _self.$$padre.lineaConexionSeleccionada
 												&& 	_self.linea3.$punto[0]==$punto[0])
 											{
+											_self.linea3.$linea.lineaActual=null;
+												
 											_self.linea3.$linea= null;
 											_self.linea3.$punto= null;
 											_self.linea3.tipo=null;
@@ -516,6 +608,8 @@ function DiagramaF1 (){
 												&&  _self.linea3.$linea== _self.$$padre.objLineaPartes
 												&&  _self.linea3.$punto[0]== $punto[0])
 											{ 
+											_self.linea3.$linea.lineaActual=null;
+												
 											_self.linea3.$linea= null;
 											_self.linea3.$punto= null;
 											_self.linea3.tipo=null;
@@ -532,7 +626,10 @@ function DiagramaF1 (){
 												&& _self.$$padre.$lineaConexionSeleccionada  
 												&&  _self.linea4.$linea == _self.$$padre.lineaConexionSeleccionada
 												&&  _self.linea4.$punto[0]== $punto[0])
-											{ 
+											{
+											_self.linea4.$linea.lineaActual=null; 
+
+
 											_self.linea4.$linea= null;
 											_self.linea4.$punto= null;
 											_self.linea4.tipo=null;
@@ -546,6 +643,8 @@ function DiagramaF1 (){
 												&&  _self.linea4.$linea == _self.$$padre.objLineaPartes
 												&&  _self.linea4.$punto[0]== $punto[0])
 											{ 
+											_self.linea4.$linea.lineaActual=null;
+												
 											_self.linea4.$linea= null;
 											_self.linea4.$punto= null;
 											_self.linea4.tipo=null;
@@ -1099,15 +1198,17 @@ function DiagramaF1 (){
 					{
 			
 							//_self.$$padre.seleccionLineaActulaDOM($$linea.$linea);
-
+							$$linea.$linea.cargarPosicionesPuntosData();
 							$punto.css({
 									top:y +"px",
 									left: x +"px"
 							});
 
+
+						_self.$$padre.lineaConexionSeleccionada= $$linea.$linea;	
 						//actualiza la linea
 						_self.$$padre.actualizacionPuntosLineaConexion(_self.$$padre, $$linea.$linea,null, null);
-						_self.$$padre.$paginaActual.find(".punto_moviblefin").show();
+						_self.$$padre.$paginaActual.find(".punto_movibleinicio").show();
 
 					}
 					else{

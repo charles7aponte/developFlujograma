@@ -492,6 +492,7 @@ cursor: pointer;
 
 
 /***** botnes ****/
+#bton_Guardar,
 #bton_nueva_pagina,
 #bton_elimina_pagina
 {
@@ -500,7 +501,7 @@ cursor: pointer;
 	border-color: #368a55 !important;
 	color: white !important;
 }
-
+#bton_Guardar>span,
 #bton_nueva_pagina>span,
 #bton_elimina_pagina>span
 {
