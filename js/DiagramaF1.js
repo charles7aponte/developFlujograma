@@ -983,9 +983,17 @@ function DiagramaF1 (){
 			  	var _self= this;
 			  	_self.$elemento= $diagramaNuevo;
 
+			  			var miradio=1;
+			  		if(_self.$elemento.data("mielemento")=="n3" || _self.$elemento.data("mielemento")=="n4")
+			  		{
+			  			miradio=0;
+			  		}
+
+
+
 			  		_self.$elemento.resizable({
 			        // autoHide: true 
-			         aspectRatio: 1,	
+			         aspectRatio: miradio,	
 			          handles: "bton_edicion,bton_ver_personal,n, e, s, w, ne, se, sw, nw, all" 
 			          ,resize:function(event, ui)
 			           {

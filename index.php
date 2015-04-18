@@ -2,25 +2,25 @@
 <html class="no-js" lang="en">
     <head>
       <script>
-		
+		/*
         var URL__SERVIDOR1 = "http://localhost/git/developFlujograma/";
         var URL__SERVIDOR = URL__SERVIDOR1+"";
         var URL_GUARDAR= URL__SERVIDOR+"/servicios/guardar.php";
         var URLSOLICITUD= URL__SERVIDOR+"/servicios/cargar.php"; 
 		
-		/*
+		 */ 
 		    var URL__SERVIDOR1 = "http://ma.factoryim.com";
         var URL__SERVIDOR = URL__SERVIDOR1+"/flujograma/";
         var URL_GUARDAR= URL__SERVIDOR+"/servicios/guardar.php";
         var URLSOLICITUD= URL__SERVIDOR+"/servicios/cargar.php"; 
-      */
+    
        
     </script>
   
   
 <?php 
-    $URL_SERVIDOR="http://localhost/git/developFlujograma/";
-    //$URL_SERVIDOR="http://ma.factoryim.com/flujograma/";
+    //$URL_SERVIDOR="http://localhost/git/developFlujograma/";
+    $URL_SERVIDOR="http://ma.factoryim.com/flujograma/";
 ?>
 
       <meta charset="utf-8" />
@@ -169,7 +169,7 @@
       top: 15%;
       line-height: 0.9;
       font-size: small;
-      padding: 0px 10px;
+      padding:2px 10px;
       background: transparent;
      /* margin-left: 5px;
       margin-right: 5px;
@@ -422,11 +422,37 @@
 
 
 
+ div[data-mielemento=n4] .descripcion_observada {
+  width: 62%;
+  }
+
+
     </style>
   
 
 
   <body data-estado='1'>
+
+    
+    <div id="myModal_preload" class="reveal-modal" data-reveal
+    style="overflow: hidden;
+      
+        border-radius: 2px;
+        border: 1px solid rgb(204, 204, 204);
+        box-shadow: rgba(0, 0, 0, 0.0980392) 0px 2px 4px;
+        color: rgb(68, 68, 68);
+        width: 123px;
+        height: 136px;
+        visibility: visible;
+       background-color: rgba(255, 255, 255, 0.67);">
+     
+     
+       <img src="images/ajax-loader.gif" /> 
+       <label style="5px 2px 2px 2px; color:#515F46">Guardando...</label>
+
+    </div>
+
+
 
 
    
@@ -453,6 +479,10 @@
 
     </div>
     
+
+
+
+
 
 
   <div id="myModal_eliminacion_pagina" class="reveal-modal" data-reveal
