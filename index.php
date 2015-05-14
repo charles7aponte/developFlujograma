@@ -2,13 +2,13 @@
 <html class="no-js" lang="en">
     <head>
       <script>
-		/*
-        var URL__SERVIDOR1 = "http://localhost/git/developFlujograma/";
+		
+    /*    var URL__SERVIDOR1 = "http://localhost/git/developFlujograma/";
         var URL__SERVIDOR = URL__SERVIDOR1+"";
         var URL_GUARDAR= URL__SERVIDOR+"/servicios/guardar.php";
         var URLSOLICITUD= URL__SERVIDOR+"/servicios/cargar.php"; 
 		
-		 */ 
+		*/  
 		    var URL__SERVIDOR1 = "http://ma.factoryim.com";
         var URL__SERVIDOR = URL__SERVIDOR1+"/flujograma/";
         var URL_GUARDAR= URL__SERVIDOR+"/servicios/guardar.php";
@@ -133,6 +133,19 @@
         }
 
 
+
+#mensaje_de_guardado{
+  cursor: default;
+  display: block;
+  font-weight: normal;
+  line-height: 1.5;
+  margin-bottom: 0;
+  display: inline;
+  float: left;
+
+    color: rgba(182, 177, 177, 1);
+  margin: 6px 5px;
+}
 
   .imagen_punto_mobil{
      width: 200%;
@@ -684,6 +697,7 @@
      
 
 
+          
 
               <div class="small-4 large-4 columns" style="float:right" id="btone_derecho">
                  <div class="button-bar" id="botones_panel_inferior">
@@ -1003,8 +1017,13 @@ height: 35px;">
                 </ul>
               </div>
             </div>
-         </div>     
+
+             <label id="mensaje_de_guardado" for=""></label>  
+         </div>  
+
       </div>
+
+
   </div>
 
 

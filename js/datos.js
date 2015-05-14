@@ -206,6 +206,13 @@ $("#bton_Guardar").click(function(e){
 });
 
 
+setInterval(function(){
+console.info("guardado automatico");
+  manejoFlujo.guardarDatosJsonAutomatico();
+},2*60000);
+
+
+
 
 $("#bton_flecha_p1").click(function(){
 

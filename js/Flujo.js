@@ -481,6 +481,8 @@ function Flujo (idDOM){
    			        {
    			        	var pagina=$("#"+json.id_pagina);
    			        	pagina.append($nuevoElemento);
+
+
    			        	console.log(json.id_pagina);
    			        }
    			        else{
@@ -537,7 +539,6 @@ function Flujo (idDOM){
 				        
 			        	
 				        $$diagramaF1.$pagina=  $("#"+json.id_pagina);
-
 
 			        }
 			        else{
@@ -598,6 +599,17 @@ function Flujo (idDOM){
 						$$diagramaF1.linea2= _self.construccionNuevosConexionesPuntos(json.linea2);
 						$$diagramaF1.linea3= _self.construccionNuevosConexionesPuntos(json.linea3);
 						$$diagramaF1.linea4= _self.construccionNuevosConexionesPuntos(json.linea4);
+					
+						 if(json.ver_personal=='S')
+				        {
+				        	//$$diagramaF1 .actualizaEstadoVerPersonal(true);
+				        	
+				        }
+				        else {
+				        	$$diagramaF1 .actualizaEstadoVerPersonal(false);
+				        		
+				        }
+
 					}//
 
 			        
@@ -4203,6 +4215,73 @@ function Flujo (idDOM){
 					 
 
           }// leerGET
+
+
+
+
+
+          // *************
+          //guara los dtos implementando.. ajx	
+          ,guardarDatosJsonAutomatico:function(){
+
+
+          		var a =new Date();
+          		var _self=this;
+          		var ulr ="";
+          		var json= _self.crearJSON();
+          		var option={};
+
+          			//actualizando
+          		/*if(_self.bandera_actualizacion)
+          		{
+          			option={
+          				"nid":	_self.nitNodo,
+          				"text":json
+          			};
+
+          			 ulr ="http://localhost/triki1/public/flujograma/actualizar/json";
+          		}
+          		// guardando uno nuevo flujograma
+          		else{*/
+          			option={
+          				"nid":	_self.nitNodo,
+          				"text":json
+          			};
+
+          			ulr =URL_GUARDAR;
+          		//}
+
+
+          		
+
+      			$.ajax(
+					 	{
+						 	data:option
+						 	,url:ulr
+						 	,type:'POST'
+						 	,success:function(data){
+				    			if(data)
+				    			{
+				    			$("#mensaje_de_guardado").html("guardado automatico ("+a.getFullYear()+"-"+ a.getDate()+" "+a.getHours() +":"+a.getMinutes() +")");
+				    			}//edicion
+				    			else{
+				    				//alert("Vuelva a intentar cargarlo");
+				    			}
+
+				  			}
+				  			,error:function(data)
+				  			{
+				  				$('#myModal_preload').foundation('reveal', 'close');
+				  				//alert("Vuelva a intentar cargarlo");
+				  			}
+				  		});
+
+
+          }//fin funcion -->guardarDatosJson
+
+
+
+
 
 
           // *************
