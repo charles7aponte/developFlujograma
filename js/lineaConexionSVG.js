@@ -124,7 +124,9 @@ function LineaConexionSVG(){
 		// 
 		,actualizarVisualmente:function(){
 			var _seft = this;
+			
 			switch(_seft.estado_flechas+""){
+
 
 				case '0':
 					_seft.flechaDerecha.attr({opacity:'0'}); 
@@ -375,6 +377,8 @@ function LineaConexionSVG(){
          	_seft.$$padre.actualizaBotonesFlechas(_seft.estado_flechas);//
 
          	_seft.$$padre.lineaConexionSeleccionada=_seft;
+         	_seft.actualizarPoscionCentralizado();
+         	_seft.actualizarVisualmente();
 
 		}// function cargaPoscionAnterioresActu
 

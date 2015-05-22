@@ -8,6 +8,10 @@ function Flujo (idDOM){
 	 		,$text :null
 
 
+	 		,SALTO_LINEA:"\n"
+			,SALTO_LINEA_HTML:"##{{S}}##"
+
+
 	 		,base_elementoFlecha: null /// svg de la flecha de las lineas 
 	 		,bandera_actualizacion:false // indica si se esta actualizando .... o no el flujogramma , true para una actualizacion o false para un nuevo flujograma
 
@@ -575,17 +579,17 @@ function Flujo (idDOM){
 			        // eleementos de carga con Json
 			        if(json)
 			        {
-			        	$$diagramaF1.$elemento.data('mielemento',json.mielemento);
-						$$diagramaF1.$elemento.data('descripcion',json.descripcion);
-						$$diagramaF1.$elemento.data('registro',json.registro);
-						$$diagramaF1.$elemento.data('observacion',json.observacion);
-						$$diagramaF1.$elemento.data('personal',json.personal);
-						$$diagramaF1.$elemento.data('resumen',json.resumen);
+			        	$$diagramaF1.$elemento.data('mielemento', json.mielemento);
+						$$diagramaF1.$elemento.data('descripcion',_self.conversionSaltosDeLineas(json.descripcion, _self.SALTO_LINEA_HTML, _self.SALTO_LINEA));
+						$$diagramaF1.$elemento.data('registro',_self.conversionSaltosDeLineas(json.registro, _self.SALTO_LINEA_HTML, _self.SALTO_LINEA));
+						$$diagramaF1.$elemento.data('observacion',_self.conversionSaltosDeLineas(json.observacion, _self.SALTO_LINEA_HTML, _self.SALTO_LINEA));
+						$$diagramaF1.$elemento.data('personal',_self.conversionSaltosDeLineas(json.personal, _self.SALTO_LINEA_HTML, _self.SALTO_LINEA));
+						$$diagramaF1.$elemento.data('resumen',_self.conversionSaltosDeLineas(json.resumen, _self.SALTO_LINEA_HTML, _self.SALTO_LINEA));
 
-						$$diagramaF1.$elemento.find(".descripcion_observada").html(json.resumen);
-						$$diagramaF1.$elemento.find(".descripcion_personaje").html(json.personal);
+						$$diagramaF1.$elemento.find(".descripcion_observada").html(_self.conversionSaltosDeLineas(json.resumen, _self.SALTO_LINEA_HTML, _self.SALTO_LINEA));
+						$$diagramaF1.$elemento.find(".descripcion_personaje").html(_self.conversionSaltosDeLineas(json.personal, _self.SALTO_LINEA_HTML, _self.SALTO_LINEA));
 
-						$$diagramaF1.$elemento.data('ver_personal',json.ver_personal);
+						$$diagramaF1.$elemento.data('ver_personal',_self.conversionSaltosDeLineas(json.ver_personal, _self.SALTO_LINEA_HTML, _self.SALTO_LINEA));
 
 						$$diagramaF1.$elemento.css({
 								top:json.top,
@@ -2335,6 +2339,10 @@ function Flujo (idDOM){
 			      	_self.cambioEstado(1);
 			  		_self.actualizaListaConexionSVG();
 					_self.actualizaListaPartes();
+
+
+					_self.cambioEstado(1);
+			  		
 			  	},700);
 //cuadros
 		      console.log(gato);
@@ -3945,8 +3953,8 @@ function Flujo (idDOM){
  		  //****************
           // string listaELEMtnoe
           ,getJSONStringListaElementos:function(){
-
-          var salida="[";	
+          	var _self=this;
+         	var salida="[";	
 
           	for(var i=0;i<_self.listaElementos.length; i++ )
           	{
@@ -3972,11 +3980,11 @@ function Flujo (idDOM){
 
 				var miJson="{";
 					miJson+="'mielemento'"+   ":'"  + mielemento+"'," 
-					miJson+="'descripcion'"+  ":'"  + descripcion+"'," 
-					miJson+="'registro'"+  	  ":'" + registro+"'," 
-					miJson+="'observacion'"+  ":'" + observacion+"'," 
-					miJson+="'personal'"+     ":'" + personal+"'," 
-					miJson+="'resumen'"+      ":'" + resumen+"'," 
+					miJson+="'descripcion'"+  ":'"  + _self.conversionSaltosDeLineas(descripcion, _self.SALTO_LINEA, _self.SALTO_LINEA_HTML)+"'," 
+					miJson+="'registro'"+  	  ":'" + _self.conversionSaltosDeLineas(registro, _self.SALTO_LINEA, _self.SALTO_LINEA_HTML)+"'," 
+					miJson+="'observacion'"+  ":'" + _self.conversionSaltosDeLineas(observacion, _self.SALTO_LINEA, _self.SALTO_LINEA_HTML)+"'," 
+					miJson+="'personal'"+     ":'" + _self.conversionSaltosDeLineas(personal, _self.SALTO_LINEA, _self.SALTO_LINEA_HTML)+"'," 
+					miJson+="'resumen'"+      ":'" + _self.conversionSaltosDeLineas(resumen, _self.SALTO_LINEA, _self.SALTO_LINEA_HTML)+"'," 
 					miJson+="'ver_personal'"+ ":'" + ver_personal+"'," 
 					miJson+="'id_pagina'"	+ ":'" + idPagina+"'," 
 					miJson+="'top'"+		  ":'" + top+"'," 
@@ -4508,7 +4516,8 @@ function Flujo (idDOM){
 					var diagramaObj= _self.listaLineaConexion[i];
 					if(diagramaObj)
 					{
-						diagramaObj.actualizarPositionFlechas();	
+						diagramaObj.actualizarPositionFlechas();
+						diagramaObj.$elemento.click();
 					
 					}	
 				}//fin de reccor diagrama dentro de la pagina				
@@ -4529,7 +4538,7 @@ function Flujo (idDOM){
 					if(diagramaObj)
 					{
 						diagramaObj.actualizarPositionFlechas();	
-					
+						diagramaObj.cargaPoscionAnterioresActu(null);
 					}	
 				}//fin de reccor diagrama dentro de la pagina				
 
@@ -4598,6 +4607,7 @@ function Flujo (idDOM){
 
 
 
+
 		 /// cambia el estadoFlecha .. segun eleemnto seleccionado 
 		,actualizaEstadoRealFlechas:function(estadoN){
 			var _seft= this;
@@ -4638,6 +4648,26 @@ function Flujo (idDOM){
 
 
 		}//actualizaEstadoRealFlechas
+
+
+		// conversion de salto de lineas a \n
+		,conversionSaltosDeLineas:function(palabra,elementoAnterior,elementoNuevo){
+			if(palabra)
+			{
+				var miposicion=-1;
+				while((miposicion=palabra.indexOf(elementoAnterior))!=-1)
+				{
+					palabra=palabra.replace(elementoAnterior,elementoNuevo);
+				}
+
+			}
+
+			return palabra;
+		}// fin funcion conversionSaltosDeLineas
+
+
+
+
 
 	 };
 

@@ -394,6 +394,10 @@ function LineaPartes(){
 
          	_seft.$$padre.objLineaPartes=_seft;
 
+         	_seft.actualizarPoscionCentralizado();
+         	_seft.actualizarVisualmente();
+
+
 		}// function cargaPoscionAnterioresActu
 
 

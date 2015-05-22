@@ -3,24 +3,24 @@
     <head>
       <script>
 		
-    /*    var URL__SERVIDOR1 = "http://localhost/git/developFlujograma/";
+        var URL__SERVIDOR1 = "http://localhost/git/developFlujograma/";
         var URL__SERVIDOR = URL__SERVIDOR1+"";
         var URL_GUARDAR= URL__SERVIDOR+"/servicios/guardar.php";
         var URLSOLICITUD= URL__SERVIDOR+"/servicios/cargar.php"; 
 		
-		*/  
+		/*  
 		    var URL__SERVIDOR1 = "http://ma.factoryim.com";
         var URL__SERVIDOR = URL__SERVIDOR1+"/flujograma/";
         var URL_GUARDAR= URL__SERVIDOR+"/servicios/guardar.php";
         var URLSOLICITUD= URL__SERVIDOR+"/servicios/cargar.php"; 
-    
+    */
        
     </script>
   
   
 <?php 
-    //$URL_SERVIDOR="http://localhost/git/developFlujograma/";
-    $URL_SERVIDOR="http://ma.factoryim.com/flujograma/";
+    $URL_SERVIDOR="http://localhost/git/developFlujograma/";
+    //$URL_SERVIDOR="http://ma.factoryim.com/flujograma/";
 ?>
 
       <meta charset="utf-8" />
@@ -834,6 +834,8 @@
 
 
         <div  style="overflow:none;" id="contenedor_principal">
+
+        
           <div style="width:100% ;background: #ddd;
           height: 6px;">
           </div>
@@ -843,6 +845,9 @@
             ">
          
             <h5  id="nombre_pagina" style="margin-left:10px">pag. 1</h5>
+
+            
+
           </div>
 
 
