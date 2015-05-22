@@ -649,9 +649,11 @@ function Flujo (idDOM){
 			  			punto=$(json.punto);
 						tipo= json.tipo;
 
+						
 						if(tipo=="linea")
 						{
-							linea=$(json.linea);
+							
+							linea=this.getObjeLineSVGPorId(json.linea);
 						}
 						else
 						//linea_partes 
@@ -4009,7 +4011,7 @@ function Flujo (idDOM){
 			eval ("gato="+salida);
 			console.info(gato);*/
 
-		return salida;
+			return salida;
           }// fin de la funcion 
 
 
@@ -4232,7 +4234,7 @@ function Flujo (idDOM){
           //guara los dtos implementando.. ajx	
           ,guardarDatosJsonAutomatico:function(){
 
-
+/*
           		var a =new Date();
           		var _self=this;
           		var ulr ="";
@@ -4240,17 +4242,7 @@ function Flujo (idDOM){
           		var option={};
 
           			//actualizando
-          		/*if(_self.bandera_actualizacion)
-          		{
-          			option={
-          				"nid":	_self.nitNodo,
-          				"text":json
-          			};
-
-          			 ulr ="http://localhost/triki1/public/flujograma/actualizar/json";
-          		}
-          		// guardando uno nuevo flujograma
-          		else{*/
+          
           			option={
           				"nid":	_self.nitNodo,
           				"text":json
@@ -4284,7 +4276,7 @@ function Flujo (idDOM){
 				  			}
 				  		});
 
-
+*/
           }//fin funcion -->guardarDatosJson
 
 
@@ -4649,6 +4641,28 @@ function Flujo (idDOM){
 
 		}//actualizaEstadoRealFlechas
 
+
+
+		,getObjeLineSVGPorId:function (id)
+		{
+
+			for(var i=0; i<_self.listaLineaConexion.length ; i++)
+			{
+
+
+				console.info(_self.listaLineaConexion.length+"--"+_self.listaLineaConexion[i].$elemento.attr("id")+"---"+id);
+				if(_self.listaLineaConexion[i].$elemento &&
+					"#"+_self.listaLineaConexion[i].$elemento.attr("id")==id)
+				{
+					return _self.listaLineaConexion[i];
+				}
+
+				
+
+			}
+return null;
+
+		}//getObjeLineSVGPorId
 
 		// conversion de salto de lineas a \n
 		,conversionSaltosDeLineas:function(palabra,elementoAnterior,elementoNuevo){
