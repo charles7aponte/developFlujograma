@@ -4314,12 +4314,7 @@ function Flujo (idDOM){
           		//}
 
 
-          		///abrir el preload
-          		$('#myModal_preload').foundation('reveal', 'open',{
-						    			close_on_background_click: false
-
-
-						    		});
+          		
 
 
       			$.ajax(
@@ -4328,21 +4323,31 @@ function Flujo (idDOM){
 						 	,url:ulr
 						 	,type:'POST'
 						 	,success:function(data){
-				    			$('#myModal_preload').foundation('reveal', 'close');
+				    			//$('#myModal_preload').foundation('reveal', 'close');
 				    			if(data)
 				    			{
 				    			 console.log(data);
-				    			 alert("se ha almacenado");		
+				    			 alert("Se ha almacenado correctamente la informacion");		
 				    			}//edicion
 				    			else{
-				    				alert("Vuelva a intentar cargarlo");
+				    				alert("Vuelva a intentar duardar. Error de conexión ");
 				    			}
+
+				    			//$('#myModal_preload').foundation('reveal', 'close');
 
 				  			}
 				  			,error:function(data)
 				  			{
-				  				$('#myModal_preload').foundation('reveal', 'close');
-				  				alert("Vuelva a intentar cargarlo");
+				  				
+				  				alert("Vuelva a intentar guardarlo. Existe un error en el servidor");
+				  				//$('#myModal_preload').foundation('reveal', 'close');
+				  			}
+				  			,beforeSend:function(){
+				  				///abrir el preload
+				  				alert("Ha comenzado el proceso de guarda la información.\nPor favor no cierre la aplicación ");
+			          			/*$('#myModal_preload').foundation('reveal', 'open',{
+									    			close_on_background_click: false
+								});*/
 				  			}
 				  		});
 

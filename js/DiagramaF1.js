@@ -1213,9 +1213,13 @@ function DiagramaF1 (){
 
 				
 
-					if($$linea.tipo=="linea")
+					if($$linea.$linea && $$linea.$linea.cargarPosicionesPuntosData &&  $$linea.tipo=="linea")
 					{
 			
+
+			console.info($$linea.$linea);
+			console.info($$linea.$linea.cargarPosicionesPuntosData);
+
 							//_self.$$padre.seleccionLineaActulaDOM($$linea.$linea);
 							$$linea.$linea.cargarPosicionesPuntosData();
 							$punto.css({
@@ -1231,17 +1235,20 @@ function DiagramaF1 (){
 
 					}
 					else{
+						if($$linea.$linea)
+						{
+							_self.$$padre.objLineaPartes= $$linea.$linea;
+							_self.$$padre.objLineaPartes.cargarPosicionesPuntosData();
 
-						_self.$$padre.objLineaPartes= $$linea.$linea;
-						_self.$$padre.objLineaPartes.cargarPosicionesPuntosData();
+							$punto.css({
+									top:y +"px",
+									left: x +"px"
 
-						$punto.css({
-								top:y +"px",
-								left: x +"px"
+								});
+							//actualiza la linea
+							_self.$$padre.actualizacionPuntosLineasPartes(_self.$$padre,_self.$$padre.objLineaPartes,null, null);
 
-							});
-						//actualiza la linea
-						_self.$$padre.actualizacionPuntosLineasPartes(_self.$$padre,_self.$$padre.objLineaPartes,null, null);
+						}
 					}
 
 
